@@ -1,0 +1,40 @@
+/*******
+-<> signs are NOT part of the git command and should be replaced by what is staged between them. EX: <repository_url> would become https://github.com/MSLearningProductionTeam/The-Kitchen-Sink.git
+-anything following a : is NOT part of the git command and are simply notes on the command.
+*****/
+
+1. Download git
+  - https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+  - Gui clients: https://git-scm.com/downloads/guis
+2. Remotes: Remotes are simply the local repo on your computer that tracks any changes you make to files
+    1. git init: initialize a repo locally so that it is under git control. Being under git control means that your files are being monitored for changes by git.
+       Any modification, addition, or deletion will be noted and tracked by git. This command is typically used for creating a brand new project.
+        - git remote add origin <repository_url> : Use this command in conjunction with git init to connect your local remote to a github repository. If the
+          github repo does not already exist on github it will first have be to created.
+    2. git clone <repository_url>: Create a copy of a github repository on your local machine. This is used for projects that already exist and you simply need
+       a local version of the github repository on your computer.
+3. Staging: Staging refers to the process of making changes to files and preparing them for commit to the github repo
+  - https://softwareengineering.stackexchange.com/questions/119782/what-does-stage-mean-in-git : This stack overflow post explains the entire process quite clearly.
+    Below are a list of commands that are important for staging your changes:
+    1. git status: shows what files you have changed locally
+    2. git pull: get files from a github repo and update your files locally. This will have to be done before you can push local changes as you cannot
+      push to a github repo unless your local files are up to date with the repo you are pushing to.
+    3. git add <file_name_you_want_to_stage>: stages files for commit. This is how you select what files you want to prep for commit. You can add files individually
+       or add multiple files. Below are example commands for adding multiple files.
+        - git add -A: stages all files
+        - git add .: stages files that are new and modified, but not deleted files
+        - git add -u: stages files that are modified and deleted, but not new files
+    4. git commit -m "commit_message_dont_drop_the_quotes": sets the message for the commit. Commit messages are used to tell other people working on the project What
+       changes you have made. The message after -m needs to be surrounded by quotes.
+    5. git push origin <branch>: push files to specified branch. This will actually push your changes to the repository specified. Origin is shorthand for the github repository
+       url you used in step one. EX: https://github.com/MSLearningProductionTeam/The-Kitchen-Sink.git. Branch is the specific repo branch you wish to push to.
+4. Branches: Branches are copies of the repo that are separate from one another. This allows teams to work on different updates/additions without interfering with
+   each other. The master branch is the main project branch that all other team members pull from. Other branches are used in order to ensure no bugs or conflicts
+   are introduced to the master branch. When work is finished on a branch and you are ready to integrate the work to the master branch, create a pull request through
+   github to begin the process of merging the sub-branch to the mater branch. Below are some important branch related commands:
+    1. git checkout -b <branch_name>: creates a branch for your local machine
+    2. git checkout <branch_name>: Switch between branches
+    3. git push <remote_name> <branch_name>: push work from your local branch to the corresponding github branch
+5. Use stack overflow, it will be your best friend. There will be instances where git will throw you an error message or not allow you to do something that you
+   are trying to do. As annoying as it may be troubleshooting is part of the git experience. When you run into a wall check out stack overflow and other similar
+   resources to try to solve your issue.
