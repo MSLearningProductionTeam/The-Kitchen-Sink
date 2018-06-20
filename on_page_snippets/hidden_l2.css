@@ -6,6 +6,6 @@ requires that the l1 still has an empty l2 under it
  <style>
  /*ensure that .ip-table.ca-single-column is targetting the table that contains the list items */
 .ip-table.ca-single-column tbody tr:first-child td  {padding:0.3125rem 0.625rem !important; border:none !important;}
-.ip-table.ca-single-column tbody tr:first-child td .expander{display:none !important;}
+.ip-table.ca-single-column tbody tr:first-child td .expander{display:block !important;}
 .ip-table.ca-single-column tbody tr:first-child td .cell-more{display:none !important;}
 </style>
