@@ -1,0 +1,5 @@
+//08/06/18 (v-trborr)//
+1. Get current user (first name only)
+2. Update current form selection with 5 windows forms
+3. Clean up page to look like a windows page
+4. Round corners on boxes
