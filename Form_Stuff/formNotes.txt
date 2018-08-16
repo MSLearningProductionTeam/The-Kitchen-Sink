@@ -1,5 +1,2 @@
-//08/06/18 (v-trborr)//
-1. Get current user (first name only)
-2. Update current form selection with 5 windows forms
-3. Clean up page to look like a windows page
-4. Round corners on boxes
+Form can be found here: https://microsoft.sharepoint.com/sites/Infopedia_G05/Pages/tab-flat-page.aspx
+Test list for the form can be found here: https://microsoft.sharepoint.com/sites/Infopedia_G05/Lists/New%20Intake%20Form%20Test/AllItems.aspx?InitialTabId=Ribbon%2EList&VisibilityContext=WSSTabPersistence#InplviewHashcf923b9f-44a2-454e-bb98-b277de97cd21=InitialTabId%3DRibbon%252EList-VisibilityContext%3DWSSTabPersistence-SortField%3DDocumentID-SortDir%3DDesc
