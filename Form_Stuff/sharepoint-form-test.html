@@ -6,7 +6,7 @@
     .incorrect_color{background-color: rgb(251, 51, 51) !important;}
     .hidden{display:none !important;}
     .flexibleDisplay{display: flex;}
-    .fillContentArea{width: 100%}
+    .fillContentArea{min-width: 100%; max-width: 100%;}
     .subText{font-size: 12px; margin: 5px 0 5px 0;}
     .loadingImg{width: 20px; height: 20px;}
     .hyperLinkBlue{color:#0061A7 !important;}
@@ -31,10 +31,13 @@
         .intakeFormSection{border: 1px solid rgb(228, 233, 246); display: flex; font-size:17px; margin:-1px;}
           .formSectionTitle{padding:10px; width: 185px; min-width: 185px; border-right: 1px solid rgb(228, 233, 246); text-align: right; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;}
             .formSectionTitle ul li{list-style-type: none; font-size:12px; }
-          .formSectionInput{margin:10px; flex-grow: 1; align-self: center;}
+          .formSectionInput{margin:10px; flex-grow: 1; align-self: center; overflow: hidden;}
             #ownerInput{width: 295px;}
             #coownerInput{width: 295px;}
             #attachmentInput{color:black !important;}
+            #autocomplete{width: 295px; background: white; border: 1px solid lightgray; border-top: none; position: absolute;}
+              #autocomplete div{padding: 5px; cursor: pointer;}
+              #autocomplete div:hover{background: lightgray;}
           .seeExampleButton{background:rgb(237, 235, 235); border:1px solid rgb(213, 217, 211);  width: 20px; height: 20px; margin: 10px 10px 10px 5px;}
           .seeExampleButton:hover{background: rgb(109, 112, 109);}
           .seeExampleButton.selected{background: rgb(109, 112, 109);}
@@ -78,6 +81,7 @@
         setGreetingName();
         //attach the events to the controls
         attachEvents();
+
       }
 
       //checks that all inputs that are going to be submited are valid
@@ -287,7 +291,7 @@
                       'AllowEmailAddresses':true,
                       'AllowMultipleEntities':false,
                       'AllUrlZones':false,
-                      'MaximumEntitySuggestions':4,
+                      'MaximumEntitySuggestions':5,
                       'Required': true,
                       'PrincipalSource':15,
                       'PrincipalType': 1,
@@ -301,22 +305,53 @@
               },
               success: function (data) {
                 var results = JSON.parse(data.d.ClientPeoplePickerSearchUser);
-                //if the object is empty consider the input invalid
-                //if the object returns more then 1 result consider the input invalid
-                if(results.length <= 0 || results.length > 1){
-                  $("#"+inputField).removeClass('correct_response');
-                  $("#"+inputField).removeClass('correct_color');
+                console.log(results);
+                //if the object returns more then 1 result display the suggestion box with all returned people
+                if(results.length >= 2){
+                    var suggestions = "";
+                    $.each(results,function(i,val){
+                      suggestions += "<div>"+this.DisplayText+"</div>";
+                    });
+
+
+                      $("#"+inputField).next().html(suggestions);
+                      $("#"+inputField).next().removeClass("hidden");
+
+                      //add the click event to the newly created suggestion elements
+                      $("#"+inputField).next().children().on("click",function(){
+                        //update the value in the text input to the value clicked on
+                        $(this).parent().prev().val($(this).html());
+                        //hide the suggestion box
+                        $(this).parent().addClass("hidden");
+                        //add the correct color and response class and remove the inccorect color and response class
+                        $(this).parent().prev().removeClass('incorrect_response');
+                        $(this).parent().prev().removeClass('incorrect_color');
+                        $(this).parent().prev().addClass('correct_response');
+                        $(this).parent().prev().addClass('correct_color');
+                      });
+
+                      //remove the correct and incorrect classes
+                      $("#"+inputField).removeClass('correct_response');
+                      $("#"+inputField).removeClass('correct_color');
+                      $("#"+inputField).removeClass('incorrect_response');
+                      $("#"+inputField).removeClass('incorrect_color');
+                }
+                //if no results are returned consider the input incorrect
+                else if(results.length <= 0){
                   $("#"+inputField).addClass('incorrect_response');
                   $("#"+inputField).addClass('incorrect_color');
+                  $("#"+inputField).removeClass('correct_response');
+                  $("#"+inputField).removeClass('correct_color');
+                  $("#"+inputField).next().addClass("hidden");
                 }
-                else{
-                  //if the person is considered valid mark it as valid and update the
-                  //text displayed to the returned display text
+                //if the search returns a single result consider it valid and update the text in the input box
+                else if(results.length == 1){
                   $("#"+inputField).removeClass('incorrect_response');
                   $("#"+inputField).removeClass('incorrect_color');
                   $("#"+inputField).val(results[0].DisplayText);
                   $("#"+inputField).addClass('correct_response');
                   $("#"+inputField).addClass('correct_color');
+                  $("#"+inputField).next().addClass("hidden");
                 }
               },
               error: function (data) {
@@ -452,6 +487,7 @@
             var typedVal = $(this).val();
             var inputId = $(this).attr("id");
 
+
             if(typedVal !== ""){
               //if the user stops typing for 1 second check if the value they have
               //input is a valid user
@@ -504,6 +540,7 @@
           $("#newBtn").on("click",function(){
             resetForm();
           });
+
 
 
           $("#ninjaTile").draggable();
@@ -756,8 +793,10 @@
                 <div class="subText" style="float:left; width:320px;">
                   Co-Owner Alias (Optional)
                 </div>
-                <input id="ownerInput" class=" requiredInput formInput" data-property="Owner" type="text" autocomplete="off"></input>
-                <input id="coownerInput" class="optionalInput formInput" data-property="CoOwner" type="text" autocomplete="off"></input>
+                  <input id="ownerInput" class=" requiredInput formInput" data-property="Owner" type="text" autocomplete="off"></input>
+                  <div id="autocomplete" class="hidden"></div>
+                  <input id="coownerInput" class="optionalInput formInput" data-property="CoOwner" type="text" autocomplete="off"></input>
+                  <div id="autocomplete" class="hidden" style="left:494px;"></div>
               </div>
           </div>
           <div class="intakeFormSection Form1">
