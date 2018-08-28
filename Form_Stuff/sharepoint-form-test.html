@@ -64,17 +64,17 @@
       var peoplePickerTimer;
       //timer to show and hide the attachment loading circle
       var loadingTimer;
-      //object containing all attachment data
+      //array of object containing the data on all attached files
       var attachedFileData;
-      //the attached file in the file input
-      var attachmentFile;
+      //the attached files in the file input
+      var attachmentFiles;
 
 
       init();
 
       function init(){
         //initalize variables
-        attachedFileData = {};
+        attachedFileData = [];
         //define the siteUrl variable if the _spPageContextInfo object exists
         if(typeof _spPageContextInfo !== 'undefined'){siteUrl = _spPageContextInfo.webAbsoluteUrl;}
         //set greeting name
@@ -88,8 +88,8 @@
       function validateForm(){
         //initalize the deferred object
         var validationDeferred = $.Deferred();
-        //get the file to read
-        attachmentFile = typeof $("#attachmentInput:visible")[0] !== "undefined" ? $("#attachmentInput:visible")[0].files[0] : undefined;
+        //get the files to read
+        attachmentFiles = typeof $("#attachmentInput:visible")[0] !== "undefined" ? $("#attachmentInput:visible")[0].files : undefined;
 
 
         //check that all required inputs are filled in and valid
@@ -129,29 +129,21 @@
             $(this).removeClass("valid");
           }
         });
-
+        var promises = [];
+        //loop through all attachments and add a promise to the promise array
+        $.each(attachmentFiles,function(){
+          promises.push(readFile(this,fileReadSucess,fileReadFail));
+        });
+        //set a timer so that if the files being read takes longer then 5 seconds a loading icon is displayed
+        loadingTimer = setTimeout(function(){
+            $("#attachmentLoadingImage").removeClass("hidden");
+        },5000);
         //read the file in the file input before checking for final validation
-        $.when(readFile(attachmentFile,function(e){
+        $.when.apply($, promises).then(function(e){
           //stop the loading timer and hide the image
           clearTimeout(loadingTimer);
           $("#attachmentLoadingImage").addClass("hidden");
-          //if the read operation completes
-          //fill out the attachment object
-          attachedFileData.fileString = e.target.result;
-          attachedFileData.fileName =  $("#attachmentInput")[0].files[0].name;
-          //remove invalid and add valid
-          $("#attachmentInput").removeClass("invalid");
-          $("#attachmentInput").addClass("valid");
-        },function(e){
-          //if the read operation fails
-          //stop the loading timer and hide the image
-          clearTimeout(loadingTimer);
-          $("#attachmentLoadingImage").addClass("hidden");
-
-          //remove the valid class and add invalid
-          $("#attachmentInput").removeClass("valid");
-          $("#attachmentInput").addClass("invalid");
-        })).then(function(e){
+          console.log("all files read");
           //if any of the visible inputs is invalid or not marked as valid reject the promise
           if($("#intakeFormContainer .intakeFormSection:visible .formInput").hasClass("invalid") || !$("#intakeFormContainer .intakeFormSection:visible .formInput").hasClass("valid")){
             alert("plase fill in all fields with the correct information");
@@ -209,26 +201,18 @@
                   var itemId = successData.d.Id;
                   var typeofRequest = $(".typeOfRequest.selected").attr("data-footerVal");
                   //check if there is an attachment
-                  if(typeof attachmentFile !== "undefined"){
-                    $.ajax({
-                        url: siteUrl + "/_api/web/lists/getbytitle('NewIntakeFormTest')/items("+itemId+")/AttachmentFiles/add(FileName='"+attachment.fileName+"')",
-                        type: "POST",
-                        data: attachment.fileString,
-                        processData: false,
-                        headers: {
-                            "Accept": "application/json;odata=verbose",
-                            "content-type": "application/json; odata=verbose",
-                            "X-RequestDigest":  data[0].d.GetContextWebInformation.FormDigestValue,
-                        },
-                        success: function (data) {
-                          console.log("Created new list item ");
-                          showThankYou(itemId,typeofRequest);
-                        },
-                        error: function (data) {
-                          console.log(data);
-                            throw new Error("There was an error in attaching the file to the sharepoint list");
-
-                        }
+                  //if there is send all the attached file to the newly created sharepoint list item
+                  if(typeof attachmentFiles !== "undefined"){
+                    var promises = [];
+                    $.each(attachment,function(){
+                      promises.push(sendAttachment(itemId,this,data[0].d.GetContextWebInformation.FormDigestValue));
+                    });
+                    $.when.apply($, promises).then(function(e){
+                      console.log("Created new list item ");
+                      showThankYou(itemId,typeofRequest);
+                    },function(data){
+                      console.log(data);
+                        throw new Error("There was an error in attaching the file to the sharepoint list");
                     });
                   }
                   //if there is no attachment alert that a new item has been created
@@ -269,6 +253,32 @@
             success: function(data){
               console.log("Obtained list type");
             }
+          });
+        }
+
+        //sends a file or files to a sharepoint list item as an attchment of that list item
+        //itemId => the id of the sharepoint list item you want to attach the file to
+        //attachment => and array of objects where each object is an attached file containing the name of the file and the file data
+        //digest => the form digest value for the api call
+        function sendAttachment(itemId,attachment,digest){
+          return $.ajax({
+              url: siteUrl + "/_api/web/lists/getbytitle('NewIntakeFormTest')/items("+itemId+")/AttachmentFiles/add(FileName='"+attachment.fileName+"')",
+              type: "POST",
+              data: attachment.fileString,
+              processData: false,
+              headers: {
+                  "Accept": "application/json;odata=verbose",
+                  "content-type": "application/json; odata=verbose",
+                  "X-RequestDigest":  digest,
+              },
+              success: function (data) {
+                console.log("Attached file to list item");
+              },
+              error: function (data) {
+                console.log(data);
+                  throw new Error("There was an error in attaching the file to the sharepoint list");
+
+              }
           });
         }
 
@@ -380,6 +390,7 @@
         // itemId => the id of the item just created
         // requestType => the text of the type of request just submitted
         function showThankYou(itemId,requestType){
+            attachmentFiles = [];
             //fill in the item id and the type of request
             $("#intakeFormThankYou #requestType").html(requestType);
             $("#intakeFormThankYou #itemId").html("Item ID #"+itemId);
@@ -400,6 +411,8 @@
           $(".formInput[type='text']").val("");
           //reset the date picker to the default value
           $("#publishDateInput").val("");
+          //reset the product group
+          $("#productGroupInput").val("");
           //reset the drop down boxes to the first option
           $("select").first().addClass("selected");
           //reset the attachment input
@@ -442,26 +455,42 @@
           //if the file is not undefined set up callbacks and begin reading the file
           if(typeof file !== "undefined"){
             var reader = new FileReader();
-            reader.onload = function(evt){
-              onSuccess(evt);
+            reader.onload = function(data){
+              //pass the file data and the name of the file to the success callback
+              onSuccess(data,file.name);
               deferred.resolve("file read sucessfully");
             };
-            reader.onerror = function(e){onFail(e); deferred.resolve("file read failed");};
+            reader.onerror = function(data){onFail(data); deferred.resolve("file read failed");};
             //begin reading the file
             reader.readAsArrayBuffer(file);
-            //set a timer so that if the file being read is taking longer then 5 seconds a loading image is shown
-            loadingTimer = setTimeout(function(){
-                $("#attachmentLoadingImage").removeClass("hidden");
-            },5000);
           }
           //otherwise since the file is undefined or empty just resolve the promise
           else{
             deferred.resolve("No file to read");
           }
 
-
-            return deferred.promise();
+          return deferred.promise();
         }
+
+        //callback functions for when a file read succeeds or fails
+        function fileReadSucess(fileArray,fileName){
+          //if the read operation completes
+          //create and object containing the file array and the file name
+          //then add that object to the attachedFileData array
+          var fileData = {
+            fileString:fileArray.target.result,
+            fileName: fileName
+          }
+          attachedFileData.push(fileData);
+          console.log(attachedFileData);
+          // add valid
+          $("#attachmentInput").addClass("valid");
+        }
+        function fileReadFail(){
+          //add invalid
+          $("#attachmentInput").addClass("invalid");
+        }
+
 
 
         //attachs all necessary event handlers
@@ -469,6 +498,8 @@
           //event handler for the add list item button
           //creaes a new list item based on form information
           $("#addBtn").on("click",function(){
+            //emtpy the attachedFileData array
+            attachedFileData = [];
             //only gather the data and create the list once the form has been validated
             $.when(validateForm()).then(function(msg){
               var itemData = gatherFormData();
@@ -747,7 +778,7 @@
           <div class="intakeFormSection Form1 Form2 Form4 Form5">
             <div class="formSectionTitle">Attachments</div>
             <div class="formSectionInput">
-              <input id="attachmentInput" class="formInput" data-property="Attachments" type="file" placeholder=""></input>
+              <input id="attachmentInput" class="formInput" data-property="Attachments" type="file" placeholder="" multiple></input>
               <img id="attachmentLoadingImage" src="https://microsoft.sharepoint.com/teams/Infopedia_Team_Site/Projects%20Folder/Trey%20Test%20Stuff/loading.gif" class="loadingImg hidden"/>
             </div>
           </div>
