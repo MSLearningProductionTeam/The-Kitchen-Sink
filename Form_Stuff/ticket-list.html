@@ -43,6 +43,7 @@
               .loadingImg{width: 20px; height: 20px; margin: 0px auto;}
               #submitLoadingText{margin:5px; text-align: center;}
               #addBtn{width:200px; font-size: 20px;margin: 0px auto; margin-bottom: 5px; margin-top: 5px;}
+              #cancelBtn{width:200px; font-size: 20px;margin: 0px auto; margin-bottom: 5px; margin-top: 5px;}
     </style>
     <script
       src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -112,9 +113,7 @@
               submitChangeRequest();
             });
             $("#cancelBtn").on("click",function(){
-              $(".formInput").val("");
-              $("#formView").addClass("hidden");
-              $("listView").removeClass("hidden");
+              closeForm();
             });
         }
 
@@ -151,10 +150,106 @@
         }
 
         function submitChangeRequest(){
+            $.when(
+              validation(),
+              getFormDigest(),
+              getListType()
+            ).then(function(validation,digest,listType){
+              var formData = gatherFormData();
+              $.ajax({
+                  url: siteUrl + "/_api/web/lists/getbytitle('WDGIntakeForm')/items",
+                  type: "POST",
+                  contentType: "application/json;odata=verbose",
+                  data: JSON.stringify(formData),
+                  headers: {
+                      "Accept": "application/json;odata=verbose",
+                      "X-RequestDigest": digest[0].d.GetContextWebInformation.FormDigestValue
+                  },
+                  success: function (successData) {
+                    alert(" Your request was sucessfully submitted");
+                    closeForm();
+                  },
+                  error: function (data) {
+                    alert("There was an issue submitting your request");
+                    console.log(data);
+                    closeForm();
+                  }
+              });
 
+            });
         }
 
+        function validation(){
+          var promise = $.Deferred();
+            $(".requiredInput").each(function(){
+              if($(this).val() == "" || $(this).val() == null){
+                $(this).addClass('invalid');
+                $(this).addClass('incorrect_color');
+                $(this).removeClass("valid");
+              }
+              else{
+                $(this).addClass("valid");
+                $(this).removeClass('incorrect_color');
+                $(this).removeClass("invalid");
+              }
+            });
+            if($(".requiredInput").hasClass("invalid")){
+              alert("Please fill in all required fields");
+              promise.reject("All required fields were not filled in");
+            }
+            else{
+              promise.resolve("All fields filled in");
+            }
+
+          return promise.promise();
+        }
+
+      //get a new digest value for the Form
+      //the digest value prevents the same form submission from being applied multiple times
+      function getFormDigest() {
+          return $.ajax({
+              url: siteUrl + "/_api/contextinfo",
+              method: "POST",
+              headers: { "Accept": "application/json; odata=verbose" },
+              success: function(data){
+                console.log("Obtained new form digest " +data.d.GetContextWebInformation.FormDigestValue);
+              }
+          });
       }
+
+      //gets the SP list type
+      //used when making an api request
+      function getListType(){
+        return $.ajax({
+          url: siteUrl + "/_api/web/lists/getbytitle('WDGIntakeForm')/items",
+          Type:'GET',
+          headers: {
+            accept: "application/json;odata=verbose"
+          },
+          success: function(data){
+            console.log("Obtained list type: "+data);
+          }
+        });
+      }
+
+      function gatherFormData(){
+        var itemData = {
+          '__metadata': {'type': "SP.Data.WDGIntakeFormListItem"}
+        };
+        $(".formInput.valid").each(function(){
+            itemData[$(this).attr("data-property")] = $(this).val();
+        });
+        return itemData;
+      }
+
+      function closeForm(){
+        $(".formInput").val("");
+        $(".formInput").removeClass("valid invalid incorrect_color");
+        $("#formView").addClass("hidden");
+        $("#listView").removeClass("hidden");
+      }
+
+    }
     </script>
     <body>
       <div id="contentContainer">
@@ -174,19 +269,19 @@
             <div class="intakeFormSection Form1 Form2 Form3 Form4 Form5">
               <div class="formSectionTitle">Product Group*</div>
               <div class="formSectionInput">
-                <input id="productGroupInput" class="requiredInput formInput" data-property="PageURL" type="text" autocomplete="off" placeholder="" disabled></input>
+                <input id="productGroupInput" class="formInput" data-property="PageURL" type="text" autocomplete="off" placeholder="" disabled></input>
               </div>
             </div>
             <div class="intakeFormSection Form3">
               <div class="formSectionTitle">Doc ID or Page/Card URL*</div>
               <div class="formSectionInput">
-                <input id="docIdInput" class="requiredInput formInput fillContentArea" data-property="PageURL" type="text" autocomplete="off" placeholder="" disabled></input>
+                <input id="docIdInput" class=" formInput fillContentArea" data-property="PageURL" type="text" autocomplete="off" placeholder="" disabled></input>
               </div>
             </div>
             <div class="intakeFormSection Form4">
               <div class="formSectionTitle">Request Overview*</div>
               <div class="formSectionInput">
-                <textarea id="requestOverviewInput" class="requiredInput formInput fillContentArea" data-property="ShortDescription" type="text" autocomplete="off" placeholder="" rows="4" cols="50" disabled></textarea>
+                <textarea id="requestOverviewInput" class=" formInput fillContentArea" data-property="ShortDescription" type="text" autocomplete="off" placeholder="" rows="4" cols="50" disabled></textarea>
               </div>
             </div>
             <div class="intakeFormSection Form4">
@@ -213,19 +308,19 @@
                 </ul>
               </div>
               <div class="formSectionInput">
-                <textarea id="requestDetailsInput" class="requiredInput formInput fillContentArea" data-property="RequestDetails" type="text" autocomplete="off" placeholder="" rows="20" cols="50" disabled></textarea>
+                <textarea id="requestDetailsInput" class=" formInput fillContentArea" data-property="RequestDetails" type="text" autocomplete="off" placeholder="" rows="20" cols="50" disabled></textarea>
               </div>
             </div>
             <div class="intakeFormSection Form5">
               <div class="formSectionTitle">Details</div>
               <div class="formSectionInput">
-                <textarea id="detailsInput" class="optionalInput formInput fillContentArea" data-property="ShortDescription" type="text" autocomplete="off" placeholder="" rows="4" cols="50" disabled></textarea>
+                <textarea id="detailsInput" class=" formInput fillContentArea" data-property="ShortDescription" type="text" autocomplete="off" placeholder="" rows="4" cols="50" disabled></textarea>
               </div>
             </div>
             <div class="intakeFormSection Form1 Form2 Form4">
               <div class="formSectionTitle">Source File Location</div>
               <div class="formSectionInput">
-                <input id="sourceFileLocationInput" class="optionalInput formInput fillContentArea" data-property="SourceFileLocation" type="text" autocomplete="off" placeholder="" disabled></input>
+                <input id="sourceFileLocationInput" class=" formInput fillContentArea" data-property="SourceFileLocation" type="text" autocomplete="off" placeholder="" disabled></input>
               </div>
             </div>
             <div class="intakeFormSection Form1 Form2 Form4 Form5">
@@ -237,25 +332,25 @@
             <div class="intakeFormSection Form1 Form2 Form3">
               <div class="formSectionTitle">File Name*</div>
               <div class="formSectionInput">
-                <input id="fileNameInput" class="requiredInput formInput fillContentArea" data-property="FileName" type="text" autocomplete="off" placeholder="" disabled></input>
+                <input id="fileNameInput" class=" formInput fillContentArea" data-property="FileName" type="text" autocomplete="off" placeholder="" disabled></input>
               </div>
             </div>
             <div class="intakeFormSection Form1 Form2">
               <div class="formSectionTitle">Document Title to Display*</div>
               <div class="formSectionInput">
-                <input id="documentTitleInput" class="requiredInput formInput fillContentArea" data-property="DocumentTitle" type="text" autocomplete="off" placeholder="" disabled></input>
+                <input id="documentTitleInput" class=" formInput fillContentArea" data-property="DocumentTitle" type="text" autocomplete="off" placeholder="" disabled></input>
               </div>
             </div>
             <div class="intakeFormSection Form1 Form2">
               <div class="formSectionTitle">Document Description</div>
               <div class="formSectionInput">
-                <textarea id="documentDescriptionInput" class="optionalInput formInput fillContentArea" data-property="ShortDescription" placeholder="" rows="4" cols="50" disabled></textarea>
+                <textarea id="documentDescriptionInput" class=" formInput fillContentArea" data-property="ShortDescription" placeholder="" rows="4" cols="50" disabled></textarea>
               </div>
             </div>
             <div class="intakeFormSection Form1 Form2">
               <div class="formSectionTitle">Maximum Reach (confidentiality)*</div>
               <div class="formSectionInput">
-                <input id="maximumReachInput" class="requiredInput formInput fillContentArea" data-property="DocumentTitle" type="text" autocomplete="off" placeholder="" disabled></input>
+                <input id="maximumReachInput" class=" formInput fillContentArea" data-property="DocumentTitle" type="text" autocomplete="off" placeholder="" disabled></input>
               </div>
             </div>
             <div class="intakeFormSection Form1 Form2 Form4">
@@ -267,42 +362,42 @@
                   <div class="subText" style="float:left; width:320px;">
                     Co-Owner Alias (Optional)
                   </div>
-                    <input id="ownerInput" class=" requiredInput formInput" data-property="Owner" type="text" autocomplete="off" disabled></input>
+                    <input id="ownerInput" class="  formInput" data-property="Owner" type="text" autocomplete="off" disabled></input>
                     <div id="autocomplete" class="hidden"></div>
-                    <input id="coownerInput" class="optionalInput formInput" data-property="CoOwner" type="text" autocomplete="off" disabled></input>
+                    <input id="coownerInput" class=" formInput" data-property="CoOwner" type="text" autocomplete="off" disabled></input>
                 </div>
             </div>
             <div class="intakeFormSection Form1">
               <div class="formSectionTitle">Page URL</div>
               <div class="formSectionInput">
-                <input id="pageUrlInput" class="optionalInput formInput fillContentArea" data-property="PageURL" type="text" autocomplete="off"  placeholder="" disabled></input>
+                <input id="pageUrlInput" class=" formInput fillContentArea" data-property="PageURL" type="text" autocomplete="off"  placeholder="" disabled></input>
               </div>
             </div>
             <div class="intakeFormSection Form1 Form2 Form4">
               <div class="formSectionTitle">Requested Publish Date</div>
               <div class="formSectionInput">
-                <input type="text" id="publishDateInput" class="optionalInput formInput" data-property="PublishDate" style="width:180px" disabled/>
+                <input type="text" id="publishDateInput" class=" formInput" data-property="PublishDate" style="width:180px" disabled/>
               </div>
             </div>
             <div class="intakeFormSection Form1 Form2 Form3">
               <div class="formSectionTitle">Additional Details</div>
               <div class="formSectionInput">
-                <textarea id="additionalDetailsInput" class="optionalInput formInput fillContentArea" data-property="Details" placeholder="" rows="4" cols="50" disabled></textarea>
+                <textarea id="additionalDetailsInput" class=" formInput fillContentArea" data-property="Details" placeholder="" rows="4" cols="50" disabled></textarea>
               </div>
             </div>
             <div class="intakeFormSection Form1 Form2 Form3 Form4 Form5">
-              <div class="formSectionTitle">Change Reason</div>
+              <div class="formSectionTitle">Change Reason*</div>
               <div class="formSectionInput">
-                <textarea id="changeReasonInput" class="optionalInput formInput fillContentArea" data-property="ChangeReason" placeholder="" rows="8" cols="50"></textarea>
+                <textarea id="changeReasonInput" class="requiredInput formInput fillContentArea" data-property="ChangeReason" placeholder="" rows="8" cols="50"></textarea>
                 <div class="subText">
                   What is the reason you would like to make a change to the ticket?
                 </div>
               </div>
             </div>
             <div class="intakeFormSection Form1 Form2 Form3 Form4 Form5">
-              <div class="formSectionTitle">Change Request</div>
+              <div class="formSectionTitle">Change Request*</div>
               <div class="formSectionInput">
-                <textarea id="changeRequestInput" class="optionalInput formInput fillContentArea" data-property="ChangeRequest" placeholder="" rows="8" cols="50"></textarea>
+                <textarea id="changeRequestInput" class="requiredInput formInput fillContentArea" data-property="ChangeRequest" placeholder="" rows="8" cols="50"></textarea>
                 <div class="subText">
                   What is the specific change you would like to make.
                 </div>
