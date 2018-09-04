@@ -17,20 +17,21 @@
     #ninjaCat{width: 200px; position: absolute; z-index: 3;}
 
     #intakeFormContentContainer{position: relative; left: 50%; transform: translateX(-50%); width: 910px; background: white; padding-bottom: 1px;}
-      #intakeFormContentContainer p {margin:10px; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif; font-size: 17px;}
+      #intakeFormContentContainer p {margin:10px; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif; font-size: 14px;}
       #intakeFormThankYou{text-align: center; margin-bottom: 10px;}
         #intakeFormThankYou h1, #intakeFormThankYou h3 {color:#243b56;}
-      .intakeFormBanner{background:#243b56; padding:5px 15px 5px 15px; color:white; font-size: 17px; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif; height:36px; display: flex; justify-content: space-between;}
+      .intakeFormBanner{background:#243b56; padding:20px 5px 5px 15px; color:white; font-size: 14px; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif; height: 40px; display: flex; justify-content: space-between;}
         #formDateTime{float:right; font-size: 14px !important; width:450px; text-align: right;}
       #formselectionContainer{margin:15px;}
         #selectionLinks {float:right;}
         #formselectionContainer .flexibleDisplay p{font-size:14px !important;}
-        #formSelectionItem{background:#e7ffe7; width: 225px; margin-top:5px; margin-left: 10px; border-radius:10px;}
+        #formSelectionItem{background:#e7ffe7; width: 225px; margin-top:5px; margin-left: 10px; border-radius:7px;}
           #formSelectionItem .typeOfRequest{padding:5px; cursor:pointer;}
-          #formSelectionItem .typeOfRequest:hover{background:rgb(172, 177, 170); border-radius: 10px;}
-          #formSelectionItem .typeOfRequest.selected{background:rgb(172, 177, 170); color:white; border-radius: 10px;}
+          #formSelectionItem .typeOfRequest:hover{background:rgb(172, 177, 170); border-radius: 7px;}
+          #formSelectionItem .typeOfRequest:hover{background:rgb(172, 177, 170); border-radius: 7px;}
+          #formSelectionItem .typeOfRequest.selected{background:rgb(172, 177, 170); color:white; border-radius: 7px;}
       #intakeFormContainer{position: relative; /*left:-1000px;*/ width: 864px; left: 50%; transform: translate3d(-50%,0,0); margin-top:10px; margin-bottom:10px;}
-        .intakeFormSection{border: 1px solid rgb(228, 233, 246); display: flex; font-size:17px; margin:-1px;}
+        .intakeFormSection{border: 1px solid rgb(228, 233, 246); display: flex; font-size:14px; margin:-1px;}
           .formSectionTitle{padding:10px; width: 185px; min-width: 185px; border-right: 1px solid rgb(228, 233, 246); text-align: right; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;}
             .formSectionTitle ul li{list-style-type: none; font-size:12px; }
           .formSectionInput{margin:10px; flex-grow: 1; align-self: center;}
@@ -43,7 +44,7 @@
             #datePicker{position: relative;; z-index: 1; top:-100px; left:180px;}
               .ui-datepicker-inline{background:white; border: 1px solid lightgray; padding:5px; position: absolute;}
                 .ui-widget-header{border: none !important; background:#243b56 !important;}
-                .ui-state-default, .ui-widget-content .ui-state-default{border: 1px solid lightgrey !important; background: lightgrey !important; font-weight: normal !important; color: black !important;}
+                .ui-state-default, .ui-widget-content .ui-state-default{border: 1px solid lightgrey !important; background: lightgrey !important; font-weight: normal !important; color: white !important;}
                 .ui-state-active, .ui-widget-content .ui-state-active {border: 1px solid #243b56 !important; background: #243b56 !important; font-weight: normal !important; color: #ffffff !important;}
                 .ui-datepicker-next-hover, .ui-state-hover{border:none !important; background: none !important;}
                 .ui-widget-content{color:black !important; cursor: pointer !important; text-align: center !important;}
@@ -55,7 +56,7 @@
           .inputBtn{cursor: pointer; background:#243b56; padding:10px; margin-right:10px; color:white; text-align: center;}
           .loadingImg{width: 20px; height: 20px; margin: 0px auto;}
           #submitLoadingText{margin:5px; text-align: center;}
-          #addBtn{width:200px; font-size: 20px;margin: 0px auto; margin-bottom: 5px; margin-top: 5px;}
+          #addBtn{width:200px; font-size: 14px;margin: 0px auto; margin-bottom: 5px; margin-top: 5px; border-radius:6px;}
           .thankYouBtn{width: 140px; margin-bottom: 10px !important; margin:0px auto;}
     </style>
     <script
@@ -730,7 +731,7 @@
   </head>
     <body>
       <div id="intakeFormContentContainer">
-        <div id="intakeFormHeader" class="intakeFormBanner"><div>Virtual Help Desk   |  Windows Ready/Devices Group</div><div id="formDateTime"></div></div>
+          <div id="intakeFormHeader" class="intakeFormBanner"><div>Virtual Help Desk   |  Windows Ready/Devices Group</div><div id="formDateTime"></div></div>
         <div id="intakeFormThankYou" class="hidden">
           <h1>Thank you for your request!</h1><br/>
           <h1 id="requestType"></h1><br/>
@@ -741,7 +742,7 @@
           <div id="newBtn" class="inputBtn thankYouBtn">Open a new form</div>
           <div> Email us at  <a href="mailto:WDGPublishing@microsoft.com" class="hyperLinkBlue">WDGPublishing@microsoft.com</a> for more help</div>
         </div>
-        <div id="formselectionContainer" class="hidden">
+        <div id="formselectionContainer" class="hidden"> <!---->
           <!--
           <div id="ninjaTile"></div>
           <img id="ninjaButton" src="https://microsoft.sharepoint.com/teams/Infopedia_Team_Site/Projects%20Folder/Trey%20Test%20Stuff/red-button.png"></img>
@@ -764,7 +765,7 @@
           </div>
         </div>
         <div id="intakeFormFooter" class="intakeFormBanner"><div></div></div>
-        <div id="intakeFormContainer" class="hidden">
+        <div id="intakeFormContainer" class="hidden"> <!---->
           <div class="intakeFormSection Form1">
             <p>Use this form to add new content</p>
           </div>
