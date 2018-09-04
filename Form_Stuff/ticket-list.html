@@ -86,7 +86,7 @@
 
         function getUserListItems(userId){
           $.ajax({
-              url: siteUrl + "/_api/web/lists/GetByTitle('WDGIntakeForm')/items"+queryString+"&$filter=AuthorId eq "+userId,
+              url: siteUrl + "/_api/web/lists/GetByTitle('WDGIntakeForm')/items"+queryString+"&$filter=AuthorId eq "+userId+"&RequestType1 ne Update Existing Ticket",
               Type:'GET',
               headers: {
                 accept: "application/json;odata=verbose"
@@ -234,7 +234,8 @@
 
       function gatherFormData(){
         var itemData = {
-          '__metadata': {'type': "SP.Data.WDGIntakeFormListItem"}
+          '__metadata': {'type': "SP.Data.WDGIntakeFormListItem"},
+          'RequestType1': "Update Existing Ticket"
         };
         $(".formInput.valid").each(function(){
             itemData[$(this).attr("data-property")] = $(this).val();
