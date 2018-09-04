@@ -11,10 +11,11 @@
       .hyperLinkBlue{color:#0061A7 !important;}
       body{background:#E6E6E6!important;}
       textarea{resize: none;}
+      .page-title{display:none !important;}
 
-      #contentContainer{position: relative; left: 50%; transform: translateX(-50%); width: 910px; background: white;}
+      #contentContainer{position: relative; left: 50%; transform: translateX(-50%); width: 910px; background: white; border-radius: 6px;}
         #listView{}
-          #columnHeaders{display: flex; font-size: 17px; margin-bottom: 15px; padding: 5px; color:white; background: #243b56;}
+          #columnHeaders{display: flex; font-size: 17px; margin-bottom: 15px; padding: 7px; color:white; background: #243b56; border-radius: 6px;}
             #columnHeaders div:nth-child(1){width:102px;}
             #columnHeaders div:nth-child(2){width:66px;}
             #columnHeaders div:nth-child(3){width:154px;}
@@ -29,9 +30,9 @@
               .ticket div:nth-child(3){width:154px;}
               .ticket div:nth-child(4){width:450px;}
               .ticket div:nth-child(5){width:138px;}
-          .intakeFormBanner{background:#243b56; padding:5px 15px 5px 15px; color:white; font-size: 17px; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif; height:36px; display: flex; justify-content: space-between;}
+          .intakeFormBanner{background:#243b56; padding:10px 15px 5px 15px; color:white; font-size: 14px; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif; height:40px; display: flex; justify-content: space-between; border-radius: 6px}
           #intakeFormContainer{position: relative; /*left:-1000px;*/ width: 864px; left: 50%; transform: translate3d(-50%,0,0); margin-top:10px; margin-bottom:10px;}
-            .intakeFormSection{border: 1px solid rgb(228, 233, 246); display: flex; font-size:17px; margin:-1px;}
+            .intakeFormSection{border: 1px solid rgb(228, 233, 246); display: flex; font-size:14px; margin:-1px;}
               .formSectionTitle{padding:10px; width: 185px; min-width: 185px; border-right: 1px solid rgb(228, 233, 246); text-align: right; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;}
                 .formSectionTitle ul li{list-style-type: none; font-size:12px; }
               .formSectionInput{margin:10px; flex-grow: 1; align-self: center;}
@@ -42,8 +43,8 @@
               .inputBtn{cursor: pointer; background:#243b56; padding:10px; margin-right:10px; color:white; text-align: center;}
               .loadingImg{width: 20px; height: 20px; margin: 0px auto;}
               #submitLoadingText{margin:5px; text-align: center;}
-              #addBtn{width:200px; font-size: 20px;margin: 0px auto; margin-bottom: 5px; margin-top: 5px;}
-              #cancelBtn{width:200px; font-size: 20px;margin: 0px auto; margin-bottom: 5px; margin-top: 5px;}
+              #addBtn{width:200px; font-size: 14px;margin: 0px auto; margin-bottom: 5px; margin-top: 5px; border-radius: 6px;}
+              #cancelBtn{width:130px; font-size: 12px;margin: 0px auto; margin-bottom: 5px; margin-top: 5px; cursor:pointer; text-align: center;}
     </style>
     <script
       src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -93,14 +94,21 @@
               }
           }).done(function(data){
             console.log(data);
-            $.each(data.d.results,function(i,val){
-              //add each list item to the global object
-              listItems.push(this);
-              //add each list item to the screen
-              var htmlString = "<div class='ticket' data-ticketNum='"+i+"' data-requestType='"+this.RequestType1+"'><div><div class='editBtn'>...</div></div><div>"+this.ID+"</div><div>"+this.RequestType1+"</div><div>"+this.Title+"</div><div>"+this.Created.substring(0,10)+"</div>";
+            if(data.d.results.length <= 0){
+              var htmlString = "<div style='text-align:center;'>You have no open tickets</div>";
               $("#ticketList").append(htmlString);
-            });
-            attachEvents();
+            }
+            else{
+              $.each(data.d.results,function(i,val){
+                //add each list item to the global object
+                listItems.push(this);
+                //add each list item to the screen
+                var htmlString = "<div class='ticket' data-ticketNum='"+i+"' data-requestType='"+this.RequestType1+"'><div><div class='editBtn'>...</div></div><div>"+this.ID+"</div><div>"+this.RequestType1+"</div><div>"+this.Title+"</div><div>"+this.Created.substring(0,10)+"</div>";
+                $("#ticketList").append(htmlString);
+              });
+              attachEvents();
+
+            }
           });
         }
 
@@ -408,7 +416,7 @@
               <div id="addBtn" class="inputBtn">Submit This Request</div>
               <img id="submitLoadingImage" src="https://microsoft.sharepoint.com/teams/Infopedia_Team_Site/Projects%20Folder/Trey%20Test%20Stuff/loading.gif" class="loadingImg hidden"/>
               <div id="submitLoadingText" class="hidden">Please wait while the form is validated and submitted</div>
-              <div id="cancelBtn" class="inputBtn">Cancel This Request</div>
+              <div id="cancelBtn" class="">Go Back</div>
               </div>
             </div>
           </div>
