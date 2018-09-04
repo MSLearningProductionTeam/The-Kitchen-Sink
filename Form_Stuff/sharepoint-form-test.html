@@ -2,26 +2,28 @@
   <head>
     <style>
     /*global styles*/
-    .correct_color{background-color: green !important;}
+    .correct_color{background-color: rgb(28, 203, 33) !important;}
     .incorrect_color{background-color: rgb(251, 51, 51) !important;}
     .hidden{display:none !important;}
     .flexibleDisplay{display: flex;}
     .fillContentArea{min-width: 100%; max-width: 100%;}
     .subText{font-size: 12px; margin: 5px 0 5px 0;}
-    .loadingImg{width: 20px; height: 20px;}
     .hyperLinkBlue{color:#0061A7 !important;}
     body{background:#E6E6E6!important;}
+    textarea{resize: none;}
 
     #ninjaTile{width: 100px; height: 100px; position: absolute; left: 795px; top:50px; background: white; z-index: 2;}
     #ninjaButton{width: 90px; position: absolute; left: 795px; top: 50px; z-index: 1;}
     #ninjaCat{width: 200px; position: absolute; z-index: 3;}
 
-    #intakeFormContentContainer{position: relative; left: 50%; transform: translateX(-50%); width: 910px; background: white; padding-bottom: 1px; overflow:hidden;}
+    #intakeFormContentContainer{position: relative; left: 50%; transform: translateX(-50%); width: 910px; background: white; padding-bottom: 1px;}
       #intakeFormContentContainer p {margin:10px; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif; font-size: 17px;}
       #intakeFormThankYou{text-align: center; margin-bottom: 10px;}
         #intakeFormThankYou h1, #intakeFormThankYou h3 {color:#243b56;}
-      .intakeFormBanner{background:#243b56; padding:5px 5px 5px 15px; color:white; font-size: 18px; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif; height:36px;}
+      .intakeFormBanner{background:#243b56; padding:5px 15px 5px 15px; color:white; font-size: 17px; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif; height:36px; display: flex; justify-content: space-between;}
+        #formDateTime{float:right; font-size: 14px !important; width:450px; text-align: right;}
       #formselectionContainer{margin:15px;}
+        #selectionLinks {float:right;}
         #formselectionContainer .flexibleDisplay p{font-size:14px !important;}
         #formSelectionItem{background:#e7ffe7; width: 225px; margin-top:5px; margin-left: 10px; border-radius:10px;}
           #formSelectionItem .typeOfRequest{padding:5px; cursor:pointer;}
@@ -31,20 +33,29 @@
         .intakeFormSection{border: 1px solid rgb(228, 233, 246); display: flex; font-size:17px; margin:-1px;}
           .formSectionTitle{padding:10px; width: 185px; min-width: 185px; border-right: 1px solid rgb(228, 233, 246); text-align: right; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;}
             .formSectionTitle ul li{list-style-type: none; font-size:12px; }
-          .formSectionInput{margin:10px; flex-grow: 1; align-self: center; overflow: hidden;}
+          .formSectionInput{margin:10px; flex-grow: 1; align-self: center;}
             #ownerInput{width: 295px;}
             #coownerInput{width: 295px;}
             #attachmentInput{color:black !important;}
             #autocomplete{width: 295px; background: white; border: 1px solid lightgray; border-top: none; position: absolute;}
               #autocomplete div{padding: 5px; cursor: pointer;}
               #autocomplete div:hover{background: lightgray;}
+            #datePicker{position: relative;; z-index: 1; top:-100px; left:180px;}
+              .ui-datepicker-inline{background:white; border: 1px solid lightgray; padding:5px; position: absolute;}
+                .ui-widget-header{border: none !important; background:#243b56 !important;}
+                .ui-state-default, .ui-widget-content .ui-state-default{border: 1px solid lightgrey !important; background: lightgrey !important; font-weight: normal !important; color: black !important;}
+                .ui-state-active, .ui-widget-content .ui-state-active {border: 1px solid #243b56 !important; background: #243b56 !important; font-weight: normal !important; color: #ffffff !important;}
+                .ui-datepicker-next-hover, .ui-state-hover{border:none !important; background: none !important;}
+                .ui-widget-content{color:black !important; cursor: pointer !important; text-align: center !important;}
           .seeExampleButton{background:rgb(237, 235, 235); border:1px solid rgb(213, 217, 211);  width: 20px; height: 20px; margin: 10px 10px 10px 5px;}
           .seeExampleButton:hover{background: rgb(109, 112, 109);}
           .seeExampleButton.selected{background: rgb(109, 112, 109);}
-          .seeExampleImage{margin:0 0 0 10px;}
-        #buttonContainer{display:flex; margin:10px 0 0 0; justify-content: center; position: relative; left: 50%; transform: translateX(-50%);}
+          .seeExampleImage{margin:0 0 0 0px;}
+        #buttonContainer{display:flex; flex-direction: column;}
           .inputBtn{cursor: pointer; background:#243b56; padding:10px; margin-right:10px; color:white; text-align: center;}
-          #addBtn{width:200px; font-size: 20px;}
+          .loadingImg{width: 20px; height: 20px; margin: 0px auto;}
+          #submitLoadingText{margin:5px; text-align: center;}
+          #addBtn{width:200px; font-size: 20px;margin: 0px auto; margin-bottom: 5px; margin-top: 5px;}
           .thankYouBtn{width: 140px; margin-bottom: 10px !important; margin:0px auto;}
     </style>
     <script
@@ -68,6 +79,10 @@
       var attachedFileData;
       //the attached files in the file input
       var attachmentFiles;
+      //array of the days of the week
+      var daysOfTheWeek;
+      //array of the months in the year
+      var monthsOfTheYear;
 
 
       init();
@@ -75,18 +90,39 @@
       function init(){
         //initalize variables
         attachedFileData = [];
+        daysOfTheWeek = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturdate"];
+        monthsOfTheYear = ["January","February","March","April","May","June","July","August","September","October","November","December"];
         //define the siteUrl variable if the _spPageContextInfo object exists
         if(typeof _spPageContextInfo !== 'undefined'){siteUrl = _spPageContextInfo.webAbsoluteUrl;}
-        //set greeting name
-        setGreetingName();
-        //attach the events to the controls
-        attachEvents();
+
+        //initalize the date picker element
+        //this is a jquery ui widget
+        $("#datePicker").datepicker({
+          //when a user selects a date update the publishDateInput with the selected value and close the date picker
+          onSelect: function(date,instance){
+            $("#publishDateInput").val(date);
+            $("#datePicker").addClass("hidden");
+          },
+        });
+        //append a close button to the date picker
+        $(".ui-datepicker-inline").append("<div id='datePickerClose'>Close</div>");
+
+        //before doing anything else make a request for the user information to set the greeting
+        // and to set the top right banner information
+        setGreetingName().then(function(){
+          //once the request has completed show the selection container and add the events to the form
+          //this prevents the user from trying to make a form selection before the greeting has been set and the events have been attached
+          $("#formselectionContainer").removeClass("hidden");
+          //attach the events to the controls
+          attachEvents();
+        });
 
       }
 
       //checks that all inputs that are going to be submited are valid
       function validateForm(){
         //initalize the deferred object
+        //will resolve if all inputs are valid, reject if any of the inputs are invalid
         var validationDeferred = $.Deferred();
         //get the files to read
         attachmentFiles = typeof $("#attachmentInput:visible")[0] !== "undefined" ? $("#attachmentInput:visible")[0].files : undefined;
@@ -134,25 +170,18 @@
         $.each(attachmentFiles,function(){
           promises.push(readFile(this,fileReadSucess,fileReadFail));
         });
-        //set a timer so that if the files being read takes longer then 5 seconds a loading icon is displayed
-        loadingTimer = setTimeout(function(){
-            $("#attachmentLoadingImage").removeClass("hidden");
-        },5000);
         //read the file in the file input before checking for final validation
         $.when.apply($, promises).then(function(e){
-          //stop the loading timer and hide the image
-          clearTimeout(loadingTimer);
-          $("#attachmentLoadingImage").addClass("hidden");
           console.log("all files read");
           //if any of the visible inputs is invalid or not marked as valid reject the promise
           if($("#intakeFormContainer .intakeFormSection:visible .formInput").hasClass("invalid") || !$("#intakeFormContainer .intakeFormSection:visible .formInput").hasClass("valid")){
-            alert("plase fill in all fields with the correct information");
+            alert("Please fill in all fields with the correct information");
             //reject the promise
             validationDeferred.reject("All fields were not filled in properly");
           }
           //otherwise all information provided is valid and resolve the promise
           else{
-            validationDeferred.resolve("All fields were valided");
+            validationDeferred.resolve("All fields contain vailid data");
           }
         });
 
@@ -163,9 +192,13 @@
 
       //the object that is used to make the new sp list item
       function gatherFormData(){
+        var requestType = $(".typeOfRequest.selected").html();
+        var title = "Windows Devices Group - Publishing Request ("+requestType+")";
         //object containing the data to send to sharepoint
         var itemData = {
-          '__metadata': {'type': "SP.Data.NewIntakeFormTestListItem"},
+          '__metadata': {'type': "SP.Data.WDGIntakeFormListItem"},
+          'RequestType1': requestType,
+          'Title': title
         };
         //add all visible and valid input values to the object
         $("#intakeFormContainer .intakeFormSection:visible .formInput.valid").each(function(){
@@ -189,7 +222,7 @@
             getListType()
           ).then(function(data){
             $.ajax({
-                url: siteUrl + "/_api/web/lists/getbytitle('NewIntakeFormTest')/items",
+                url: siteUrl + "/_api/web/lists/getbytitle('WDGIntakeForm')/items",
                 type: "POST",
                 contentType: "application/json;odata=verbose",
                 data: JSON.stringify(itemProperties),
@@ -203,25 +236,47 @@
                   //check if there is an attachment
                   //if there is send all the attached file to the newly created sharepoint list item
                   if(typeof attachmentFiles !== "undefined"){
-                    var promises = [];
-                    $.each(attachment,function(){
-                      promises.push(sendAttachment(itemId,this,data[0].d.GetContextWebInformation.FormDigestValue));
-                    });
-                    $.when.apply($, promises).then(function(e){
+                    var promise = $.Deferred();
+                    promise.promise();
+                    sendAttachments(itemId,attachment,promise);
+                    //when the promise passed to sendAttachments resolves show the thank you screen or show the error
+                    $.when(promise).then(function(e){
+                      //stop the loading timer and hide the image
+                      clearTimeout(loadingTimer);
+                      $("#submitLoadingImage").addClass("hidden");
+                      $("#submitLoadingText").addClass("hidden");
                       console.log("Created new list item ");
+                      $("#addBtn").removeClass("disabled");
                       showThankYou(itemId,typeofRequest);
                     },function(data){
+                      //stop the loading timer and hide the image
+                      clearTimeout(loadingTimer);
+                      $("#submitLoadingImage").addClass("hidden");
+                      $("#submitLoadingText").addClass("hidden");
+                      alert("There was an error with the attached file.");
+                      $("#addBtn").removeClass("disabled");
                       console.log(data);
                         throw new Error("There was an error in attaching the file to the sharepoint list");
                     });
                   }
                   //if there is no attachment alert that a new item has been created
                   else{
+                    //stop the loading timer and hide the image
+                    clearTimeout(loadingTimer);
+                    $("#submitLoadingImage").addClass("hidden");
+                    $("#submitLoadingText").addClass("hidden");
                     console.log("Created new list item ");
+                    $("#addBtn").removeClass("disabled");
                     showThankYou(itemId,typeofRequest);
                   }
                 },
                 error: function (data) {
+                  //stop the loading timer and hide the image
+                  clearTimeout(loadingTimer);
+                  $("#submitLoadingImage").addClass("hidden");
+                  $("#submitLoadingText").addClass("hidden");
+                  alert("There was an error with writing to the sharepoint list");
+                  $("#addBtn").removeClass("disabled");
                   console.log(data);
                   throw new Error("There was an error in writing to the sharepoint list");
                 }
@@ -245,41 +300,51 @@
         //used when making an api request
         function getListType(){
           return $.ajax({
-            url: siteUrl + "/_api/web/lists/getbytitle('NewIntakeFormTest')/items",
+            url: siteUrl + "/_api/web/lists/getbytitle('WDGIntakeForm')/items",
             Type:'GET',
             headers: {
               accept: "application/json;odata=verbose"
             },
             success: function(data){
-              console.log("Obtained list type");
+              console.log("Obtained list type: "+data);
             }
           });
         }
 
+
         //sends a file or files to a sharepoint list item as an attchment of that list item
         //itemId => the id of the sharepoint list item you want to attach the file to
         //attachment => and array of objects where each object is an attached file containing the name of the file and the file data
-        //digest => the form digest value for the api call
-        function sendAttachment(itemId,attachment,digest){
-          return $.ajax({
-              url: siteUrl + "/_api/web/lists/getbytitle('NewIntakeFormTest')/items("+itemId+")/AttachmentFiles/add(FileName='"+attachment.fileName+"')",
-              type: "POST",
-              data: attachment.fileString,
-              processData: false,
-              headers: {
-                  "Accept": "application/json;odata=verbose",
-                  "content-type": "application/json; odata=verbose",
-                  "X-RequestDigest":  digest,
-              },
-              success: function (data) {
-                console.log("Attached file to list item");
-              },
-              error: function (data) {
-                console.log(data);
-                  throw new Error("There was an error in attaching the file to the sharepoint list");
-
-              }
-          });
+        //deferedPromise => a promise passed to the function wich will resolve when all files have been sent
+        function sendAttachments(itemId,attachmentArray,deferredPromise){
+          if(attachmentArray.length <= 0){
+            deferredPromise.resolve("All attachments sent");
+            return;
+          }
+          else{
+            $.when(getFormDigest()).then(function(data){
+              $.ajax({
+                url: siteUrl + "/_api/web/lists/getbytitle('WDGIntakeForm')/items("+itemId+")/AttachmentFiles/add(FileName='"+attachmentArray[0].fileName+"')",
+                type: "POST",
+                data: attachmentArray[0].fileString,
+                processData: false,
+                headers: {
+                    "Accept": "application/json;odata=verbose",
+                    "content-type": "application/json; odata=verbose",
+                    "X-RequestDigest":  data.d.GetContextWebInformation.FormDigestValue
+                },
+                success: function (data) {
+                  console.log("Attached file to list item");
+                  attachmentArray.shift();
+                  sendAttachments(itemId,attachmentArray,deferredPromise);
+                },
+                error: function (data) {
+                  console.log(data);
+                  deferredPromise.reject("there was an error with one or more of the attachments");
+                }
+              });
+            });
+          }
         }
 
 
@@ -409,16 +474,18 @@
         function resetForm(){
           //reset text fields with a blank value
           $(".formInput[type='text']").val("");
+          //reset the textareas
+          $("textarea").val("");
           //reset the date picker to the default value
           $("#publishDateInput").val("");
           //reset the product group
           $("#productGroupInput").val("");
           //reset the drop down boxes to the first option
-          $("select").first().addClass("selected");
+          $("select").val("");
           //reset the attachment input
           $("#attachmentInput").val(null);
           //remove all valid, invalid, correct, and incorrect classes from all inputs
-          $(".formInput").removeClass("valid invalid incorrect_response correct_response incorrect_color");
+          $(".formInput").removeClass("valid invalid incorrect_response correct_response correct_color incorrect_color");
           //hide the thank you buttonContainer
           $("#intakeFormThankYou").addClass("hidden");
           //hide the form container
@@ -433,15 +500,30 @@
 
 
         //sets the greeting at the top of the form to be the current users first name
+        //as well we the name, date, and time in the top banner
         function setGreetingName(){
-          $.ajax({
+          return $.ajax({
               url: siteUrl + "/_api/web/currentUser",
               Type:'GET',
               headers: {
                 accept: "application/json;odata=verbose"
               }
             }).done(function(data){
+                //set the greeting to be the first name of the returned user
                 $("#formGreeting").html("Hi, "+ data.d.Title.substring(0,data.d.Title.indexOf(" ")));
+                //set th date and time text in the top banner
+                var date = new Date();
+                var weekDay = daysOfTheWeek[date.getDay()];
+                var month = monthsOfTheYear[date.getMonth()];
+                var day = date.getDate();
+                var year = date.getFullYear();
+                var minute = date.getMinutes() < 10 ? "0"+date.getMinutes() : date.getMinutes();
+                var second = date.getSeconds() < 10 ? "0"+date.getSeconds() : date.getSeconds();
+                var time = date.getHours() >= 0 && date.getHours() <= 11 ?
+                 ((date.getHours() + 11) % 12 + 1 )+":"+minute+":"+second+" AM" : ((date.getHours() + 11) % 12 + 1 )+":"+minute+":"+second+" PM" ;
+                var name = data.d.Title;
+                var dateTimeString = weekDay + ", " + month + " " + day + ", " + year + " | " + time + " " +  name
+                $("#formDateTime").html(dateTimeString);
             });
         }
 
@@ -450,10 +532,21 @@
         //onSuccess => function to run if the read operation completes
         //onFail => function to run if the read operation fails
         function readFile(file,onSuccess,onFail){
+          var fileType = file.name.substr(file.name.indexOf("."));
+          var videoExtentions = [".mp4",".avi", ".mov", ".wmv"];
           //deferred object to resolve or reject after the file is read
           var deferred = $.Deferred();
-          //if the file is not undefined set up callbacks and begin reading the file
-          if(typeof file !== "undefined"){
+          //if the file being read is a video throw and error and alert the user that videos cannot be attached
+          if(videoExtentions.indexOf(fileType) != -1){
+            alert("video files cannot be attached");
+            throw new Error("Cannot read video files");
+          }
+          //if the file is undefined there is not file to read so resolve the promise
+          else if(typeof file == "undefined"){
+            deferred.resolve("No file to read");
+          }
+          //if the file is not undefined and not a video set up callbacks and begin reading the file
+          else{
             var reader = new FileReader();
             reader.onload = function(data){
               //pass the file data and the name of the file to the success callback
@@ -463,10 +556,6 @@
             reader.onerror = function(data){onFail(data); deferred.resolve("file read failed");};
             //begin reading the file
             reader.readAsArrayBuffer(file);
-          }
-          //otherwise since the file is undefined or empty just resolve the promise
-          else{
-            deferred.resolve("No file to read");
           }
 
           return deferred.promise();
@@ -498,16 +587,32 @@
           //event handler for the add list item button
           //creaes a new list item based on form information
           $("#addBtn").on("click",function(){
-            //emtpy the attachedFileData array
-            attachedFileData = [];
-            //only gather the data and create the list once the form has been validated
-            $.when(validateForm()).then(function(msg){
-              var itemData = gatherFormData();
-              createListItem(itemData,attachedFileData);
-            },function(msg){
-              //if the form was not validated show why
-              console.log(msg);
-            });
+            //check if the submit button is disabled
+            //this will prevent multiple multiple submissions being made at the same time
+            if(!$("#addBtn").hasClass("disabled")){
+              //if the button wasn't disabled, disable it
+              $("#addBtn").addClass("disabled");
+
+              //set a timer to display a loading icon if the submission is taking longer then 1 second
+              loadingTimer = setTimeout(function(){
+                  $("#submitLoadingImage").removeClass("hidden");
+                  $("#submitLoadingText").removeClass("hidden");
+              },1000);
+
+              //emtpy the attachedFileData array
+              attachedFileData = [];
+              //only gather the data and create the list once the form has been validated
+              $.when(validateForm()).then(function(msg){
+                var itemData = gatherFormData();
+                createListItem(itemData,attachedFileData);
+              },function(msg){
+                //if the form was not validated show why
+                console.log(msg);
+                //unlock the submit button
+                //if the button wasn't disabled, disable it
+                $("#addBtn").removeClass("disabled");
+              });
+            }
           });
 
 
@@ -562,18 +667,22 @@
           // events for the thank you screen button
           //hides the thank you screen and shows the form exactly as it was before submitting
           $("#editBtn").on("click",function(){
-            //show the form selection, form footer, and form buttonContainer
-            $("#formselectionContainer, #intakeFormFooter, #intakeFormContainer").removeClass("hidden");
-            //hide the thank you buttonContainer
-            $("#intakeFormThankYou").addClass("hidden");
+            window.location = "https://microsoft.sharepoint.com/sites/Infopedia_G02/Pages/NewIntakeFormDash.aspx";
           });
           //resets the form view to be exactly as it was when the page loaded
           $("#newBtn").on("click",function(){
             resetForm();
           });
+          //shows the date picker
+          $("#publishDateInput").on("click",function(){
+            $("#datePicker").removeClass("hidden");
+          });
+          $("#datePickerClose").on("click",function(){
+              $("#datePicker").addClass("hidden");
+          });
 
 
-
+          /*
           $("#ninjaTile").draggable();
 
           $('#ninjaButton').on("click",function(){
@@ -589,7 +698,7 @@
                   $("#ninjaCat").addClass("hidden");
                 });
               });
-            });
+            }); */
 
           //event for the display list items button, displays all list items
           //used just for testing purposes, will be removed later
@@ -621,7 +730,7 @@
   </head>
     <body>
       <div id="intakeFormContentContainer">
-        <div id="intakeFormHeader" class="intakeFormBanner">Virtual Help Desk   |  Windows Ready/Devices Group</div>
+        <div id="intakeFormHeader" class="intakeFormBanner"><div>Virtual Help Desk   |  Windows Ready/Devices Group</div><div id="formDateTime"></div></div>
         <div id="intakeFormThankYou" class="hidden">
           <h1>Thank you for your request!</h1><br/>
           <h1 id="requestType"></h1><br/>
@@ -632,10 +741,15 @@
           <div id="newBtn" class="inputBtn thankYouBtn">Open a new form</div>
           <div> Email us at  <a href="mailto:WDGPublishing@microsoft.com" class="hyperLinkBlue">WDGPublishing@microsoft.com</a> for more help</div>
         </div>
-        <div id="formselectionContainer">
+        <div id="formselectionContainer" class="hidden">
+          <!--
           <div id="ninjaTile"></div>
           <img id="ninjaButton" src="https://microsoft.sharepoint.com/teams/Infopedia_Team_Site/Projects%20Folder/Trey%20Test%20Stuff/red-button.png"></img>
-          <img id="ninjaCat" class="hidden" src="https://microsoft.sharepoint.com/teams/Infopedia_Team_Site/Projects%20Folder/Trey%20Test%20Stuff/ninja_cat.gif"></img>
+          <img id="ninjaCat" class="hidden" src="https://microsoft.sharepoint.com/teams/Infopedia_Team_Site/Projects%20Folder/Trey%20Test%20Stuff/ninja_cat.gif"></img>-->
+          <div id="selectionLinks">
+            <a href="https://microsoft.sharepoint.com/sites/Infopedia_G02/Pages/WindowsReadyProductionDashboard.aspx">View My Requests</a> |
+            <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR-eo3tun4ppHoGXuly7ZAKtUNEFEUDJKNFM0TllDN05LT0NCSFJIQjI5Qi4u">Give Feedback</a>
+          </div>
           <p id="formGreeting">Hi,</p>
           <p>What would you like assistance with today?</p>
           <div class="flexibleDisplay">
@@ -649,7 +763,7 @@
             </div>
           </div>
         </div>
-        <div id="intakeFormFooter" class="intakeFormBanner"></div>
+        <div id="intakeFormFooter" class="intakeFormBanner"><div></div></div>
         <div id="intakeFormContainer" class="hidden">
           <div class="intakeFormSection Form1">
             <p>Use this form to add new content</p>
@@ -669,22 +783,22 @@
           <div class="intakeFormSection Form1 Form2">
             <P>See example</p>
             <div class="seeExampleButton"></div>
-            <img src="https://microsoft.sharepoint.com/teams/Infopedia_Team_Site/Projects%20Folder/Trey%20Test%20Stuff/FormResource.png" class="hidden seeExampleImage"/>
+            <img src="https://microsoft.sharepoint.com/teams/Infopedia_Team_Site/Projects%20Folder/Trey%20Test%20Stuff/examples/FormResource.png" class="hidden seeExampleImage"/>
           </div>
           <div class="intakeFormSection  Form3">
             <P>See example</p>
             <div class="seeExampleButton"></div>
-            <img src="https://microsoft.sharepoint.com/teams/Infopedia_Team_Site/Projects%20Folder/Trey%20Test%20Stuff/FormResource2.png" class="hidden seeExampleImage"/>
+            <img src="https://microsoft.sharepoint.com/teams/Infopedia_Team_Site/Projects%20Folder/Trey%20Test%20Stuff/examples/FormResource2.png" class="hidden seeExampleImage"/>
           </div>
           <div class="intakeFormSection Form4">
             <P>See example</p>
             <div class="seeExampleButton"></div>
-            <img src="https://microsoft.sharepoint.com/teams/Infopedia_Team_Site/Projects%20Folder/Trey%20Test%20Stuff/FormResource3.png" class="hidden seeExampleImage"/>
+            <img src="https://microsoft.sharepoint.com/teams/Infopedia_Team_Site/Projects%20Folder/Trey%20Test%20Stuff/examples/FormResource3.png" class="hidden seeExampleImage"/>
           </div>
           <div class="intakeFormSection Form5">
             <P>See example</p>
             <div class="seeExampleButton"></div>
-            <img src="https://microsoft.sharepoint.com/teams/Infopedia_Team_Site/Projects%20Folder/Trey%20Test%20Stuff/FormResource4.png" class="hidden seeExampleImage"/>
+            <img src="https://microsoft.sharepoint.com/teams/Infopedia_Team_Site/Projects%20Folder/Trey%20Test%20Stuff/examples/FormResource4.png" class="hidden seeExampleImage"/>
           </div>
           <div class="intakeFormSection Form1 Form2 Form3 Form4 Form5">
             <div class="formSectionTitle">Product Group*</div>
@@ -699,7 +813,7 @@
           <div class="intakeFormSection Form3">
             <div class="formSectionTitle">Doc ID or Page/Card URL*</div>
             <div class="formSectionInput">
-              <input id="docIdInput" class="requiredInput formInput fillContentArea" data-property="DocumentID" type="text" autocomplete="off" placeholder=""></input>
+              <input id="docIdInput" class="requiredInput formInput fillContentArea" data-property="PageURL" type="text" autocomplete="off" placeholder=""></input>
               <div class="subText">
                 Please give page URL or Doc ID of asset to be removed
               </div>
@@ -708,7 +822,7 @@
           <div class="intakeFormSection Form4">
             <div class="formSectionTitle">Request Overview*</div>
             <div class="formSectionInput">
-              <textarea id="requestOverviewInput" class="requiredInput formInput fillContentArea" data-property="RequestOverview" type="text" autocomplete="off" placeholder="" rows="4" cols="50"></textarea>
+              <textarea id="requestOverviewInput" class="requiredInput formInput fillContentArea" data-property="ShortDescription" type="text" autocomplete="off" placeholder="" rows="4" cols="50"></textarea>
               <div class="subText">
                 Please provide a brief overview/summary of your request.(e.g. update page, with cards, featuring new items and tags)
               </div>
@@ -760,7 +874,7 @@
           <div class="intakeFormSection Form5">
             <div class="formSectionTitle">Details</div>
             <div class="formSectionInput">
-              <textarea id="detailsInput" class="optionalInput formInput fillContentArea" data-property="Details" type="text" autocomplete="off" placeholder="" rows="4" cols="50"></textarea>
+              <textarea id="detailsInput" class="optionalInput formInput fillContentArea" data-property="ShortDescription" type="text" autocomplete="off" placeholder="" rows="4" cols="50"></textarea>
               <div class="subText">
                 Please provide all required information or attach detailed instructions.
               </div>
@@ -779,7 +893,6 @@
             <div class="formSectionTitle">Attachments</div>
             <div class="formSectionInput">
               <input id="attachmentInput" class="formInput" data-property="Attachments" type="file" placeholder="" multiple></input>
-              <img id="attachmentLoadingImage" src="https://microsoft.sharepoint.com/teams/Infopedia_Team_Site/Projects%20Folder/Trey%20Test%20Stuff/loading.gif" class="loadingImg hidden"/>
             </div>
           </div>
           <div class="intakeFormSection Form1 Form2 Form3">
@@ -797,7 +910,7 @@
           <div class="intakeFormSection Form1 Form2">
             <div class="formSectionTitle">Document Description</div>
             <div class="formSectionInput">
-              <textarea id="documentDescriptionInput" class="optionalInput formInput fillContentArea" data-property="DocumentDescription" placeholder="" rows="4" cols="50"></textarea>
+              <textarea id="documentDescriptionInput" class="optionalInput formInput fillContentArea" data-property="ShortDescription" placeholder="" rows="4" cols="50"></textarea>
               <div class="subText">
                 Needs to be short and useful for the field. Use key search terms where possible and include enough context so the item makes sense when returned individually in all-Microsoft search results. 225 chars or less.
               </div>
@@ -806,7 +919,7 @@
           <div class="intakeFormSection Form1 Form2">
             <div class="formSectionTitle">Maximum Reach (confidentiality)*</div>
             <div class="formSectionInput">
-              <select id="maximumReachInput" class="requiredInput formInput" data-property="MaximumReach">
+              <select id="maximumReachInput" class="requiredInput formInput" data-property="Confidentiality">
                 <option disabled selected value> -- select an option -- </option>
                 <option value="Internal Users (Default - MS Confidental)">Internal Users (Default - MS Confidental)</option>
                 <option value="Customer Ready">Customer Ready</option>
@@ -827,13 +940,16 @@
                   <input id="ownerInput" class=" requiredInput formInput" data-property="Owner" type="text" autocomplete="off"></input>
                   <div id="autocomplete" class="hidden"></div>
                   <input id="coownerInput" class="optionalInput formInput" data-property="CoOwner" type="text" autocomplete="off"></input>
+                  <div class="subText">
+                    Note: Search for the user's alias if their name is not returning the correct result
+                  </div>
                   <div id="autocomplete" class="hidden" style="left:494px;"></div>
               </div>
           </div>
           <div class="intakeFormSection Form1">
             <div class="formSectionTitle">Page URL</div>
             <div class="formSectionInput">
-              <input id="pageUrlInput" class="optionalInput formInput fillContentArea" data-property="PageURL" type="text" autocomplete="off"  placeholder="On which page(s) and card(s) does this asset belong (URLs)?"></input>
+              <input id="pageUrlInput" class="optionalInput formInput fillContentArea" data-property="PageURL" type="text" autocomplete="off"  placeholder=""></input>
               <div class="subText">
                 On which page(s) and card(s) does this asset belong (URLs)?
               </div>
@@ -842,9 +958,10 @@
           <div class="intakeFormSection Form1 Form2 Form4">
             <div class="formSectionTitle">Requested Publish Date</div>
             <div class="formSectionInput">
-              <input type="date" id="publishDateInput" class="optionalInput formInput" data-property="PublishDate" value="" min="2018-01-01" max="2018-12-31" />
+              <input type="text" id="publishDateInput" class="optionalInput formInput" data-property="PublishDate" style="width:180px"/>
+              <div id="datePicker" class="hidden"></div>
               <div class="subText">
-                Note: that there’s a 3-business day SLA for publishing. We always aim for earlier completion but for a specific date (for example a planned comm or embargoed content)
+                Note: that there is a 3-business day SLA for publishing. We always aim for earlier completion but for a specific date (for example a planned comm or embargoed content)
                 please share that requirement with the WindowsReady Submission alias in advance to accommodate pre-existing deliverables. More advanced notice is always better for us
                 to create a workback plan with you.
               </div>
@@ -853,14 +970,13 @@
           <div class="intakeFormSection Form1 Form2 Form3">
             <div class="formSectionTitle">Additional Details</div>
             <div class="formSectionInput">
-              <textarea id="additionalDetailsInput" class="optionalInput formInput fillContentArea" data-property="AdditionalDetails" placeholder="" rows="4" cols="50"></textarea>
+              <textarea id="additionalDetailsInput" class="optionalInput formInput fillContentArea" data-property="Details" placeholder="" rows="4" cols="50"></textarea>
             </div>
           </div>
           <div id="buttonContainer" class="">
             <div id="addBtn" class="inputBtn">Submit This Request</div>
             <img id="submitLoadingImage" src="https://microsoft.sharepoint.com/teams/Infopedia_Team_Site/Projects%20Folder/Trey%20Test%20Stuff/loading.gif" class="loadingImg hidden"/>
-          <!--  <div id="displayBtn" class="inputBtn">Display list items</div>
-            <div id="listItemContainer">-->
+            <div id="submitLoadingText" class="hidden">Please wait while the form is validated and submitted</div>
               <ul>
               </ul>
             </div>
