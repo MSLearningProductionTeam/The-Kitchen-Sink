@@ -14,14 +14,15 @@
       .page-title{display:none !important;}
 
       #contentContainer{position: relative; left: 50%; transform: translateX(-50%); width: 910px; background: white; border-radius: 6px;}
-        #listView{}
-          #columnHeaders{display: flex; font-size: 17px; margin-bottom: 15px; padding: 7px; color:white; background: #243b56; border-radius: 6px;}
+        #listView{width: 895px; margin:0px auto;}
+          #intakeFormHeader{margin-bottom: 65px;}
+          #columnHeaders{display: flex; font-size: 12px; margin-bottom: 15px; padding: 7px 7px 7px 15px; color:white; background: #243b56; border-radius: 6px;}
             #columnHeaders div:nth-child(1){width:102px;}
             #columnHeaders div:nth-child(2){width:66px;}
             #columnHeaders div:nth-child(3){width:154px;}
             #columnHeaders div:nth-child(4){width:450px;}
             #columnHeaders div:nth-child(5){width:138px;}
-          #ticketList{padding:5px;}
+          #ticketList{padding:7px 7px 7px 11px;}
             .ticket{display:flex; margin-bottom: 10px; font-size: 13px;}
               .ticket div{padding-right: 10px;}
               .ticket div:nth-child(1){width:102px;}
@@ -30,7 +31,11 @@
               .ticket div:nth-child(3){width:154px;}
               .ticket div:nth-child(4){width:450px;}
               .ticket div:nth-child(5){width:138px;}
+            #addNewRequest{display: flex; padding: 7px 7px 7px 11px}
+              #addNewRequest div:nth-child(2){line-height: 27px;}
+              #newRequestBtn{background: #243b56; cursor: pointer; color: white; font-size: 27px; width: 30px; height: 30px; border-radius: 6px; text-align: center; font-weight: bold; margin-right: 10px; line-height: 25px;}
           .intakeFormBanner{background:#243b56; padding:10px 15px 5px 15px; color:white; font-size: 14px; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif; height:40px; display: flex; justify-content: space-between; border-radius: 6px}
+          #formDateTime{float:right; font-size: 14px !important; width:450px; text-align: right;}
           #intakeFormContainer{position: relative; /*left:-1000px;*/ width: 864px; left: 50%; transform: translate3d(-50%,0,0); margin-top:10px; margin-bottom:10px;}
             .intakeFormSection{border: 1px solid rgb(228, 233, 246); display: flex; font-size:14px; margin:-1px;}
               .formSectionTitle{padding:10px; width: 185px; min-width: 185px; border-right: 1px solid rgb(228, 233, 246); text-align: right; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;}
@@ -58,6 +63,8 @@
         var queryString = "?$select=ID,RequestType1,Title,Created,TimeStamp,RequestDetails,Attachments,SourceFileLocation,ShortDescription,Confidentiality,ProductGroup,Comments,Details,DocumentTitle,FileName,PageTitle,RequestTypeTitle,Owner,CoOwner,PublishDate,PageURL&$orderby=ID%20desc";
         var listItems = [];
         var properties = ["Attachments","CoOwner","Comments","Confidentiality","Details","DocumentTitle","FileName","Owner","PageTitle","PageURL","ProductGroup","PublishDate","RequestDetails","ShortDescription","SourceFileLocation",];
+        var daysOfTheWeek = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturdate"];
+        var monthsOfTheYear = ["January","February","March","April","May","June","July","August","September","October","November","December"];
         //loop through the properties array and use each property to get the correct property from the listItem object
         //if the value is null there was no input value so nothing should be done
         //if the value is not null use the property name to update the data-property of the input with the value
@@ -81,6 +88,7 @@
               }
           }).done(function(data){
             console.log(data);
+            setDateAndTime(data.d.Title);
             getUserListItems(data.d.Id);
           });
         }
@@ -122,6 +130,9 @@
             });
             $("#cancelBtn").on("click",function(){
               closeForm();
+            });
+            $("#newRequestBtn").on("click",function(){
+              window.location = "https://microsoft.sharepoint.com/sites/Infopedia_G02/Pages/WDG-Intake-Form-POC.aspx";
             });
         }
 
@@ -258,10 +269,26 @@
         $("#listView").removeClass("hidden");
       }
 
+      function setDateAndTime(userName){
+        //set th date and time text in the top banner
+        var date = new Date();
+        var weekDay = daysOfTheWeek[date.getDay()];
+        var month = monthsOfTheYear[date.getMonth()];
+        var day = date.getDate();
+        var year = date.getFullYear();
+        var minute = date.getMinutes() < 10 ? "0"+date.getMinutes() : date.getMinutes();
+        var second = date.getSeconds() < 10 ? "0"+date.getSeconds() : date.getSeconds();
+        var time = date.getHours() >= 0 && date.getHours() <= 11 ?
+         ((date.getHours() + 11) % 12 + 1 )+":"+minute+":"+second+" AM" : ((date.getHours() + 11) % 12 + 1 )+":"+minute+":"+second+" PM" ;
+        var dateTimeString = weekDay + ", " + month + " " + day + ", " + year + " | " + time + " " +  userName
+        $("#formDateTime").html(dateTimeString);
+      }
+
     }
     </script>
     <body>
       <div id="contentContainer">
+        <div id="intakeFormHeader" class="intakeFormBanner"><div>Virtual Help Desk   |  Windows Ready/Devices Group - My Requests</div><div id="formDateTime"></div></div>
         <div id="listView">
           <div id="columnHeaders">
             <div id="editColumn">Edit</div>
@@ -271,6 +298,7 @@
             <div id="createdColumn">Created</div>
           </div>
           <div id="ticketList"></div>
+          <div id="addNewRequest"><div id="newRequestBtn">+</div><div>Add New Request</div></div>
           </div>
         <div id="formView" class="hidden">
           <div id="intakeFormFooter" class="intakeFormBanner"><div></div></div>
@@ -278,7 +306,7 @@
             <div class="intakeFormSection Form1 Form2 Form3 Form4 Form5">
               <div class="formSectionTitle">Product Group*</div>
               <div class="formSectionInput">
-                <input id="productGroupInput" class="formInput" data-property="PageURL" type="text" autocomplete="off" placeholder="" disabled></input>
+                <input id="productGroupInput" class="formInput" data-property="ProductGroup" type="text" autocomplete="off" placeholder="" disabled></input>
               </div>
             </div>
             <div class="intakeFormSection Form3">
@@ -359,7 +387,7 @@
             <div class="intakeFormSection Form1 Form2">
               <div class="formSectionTitle">Maximum Reach (confidentiality)*</div>
               <div class="formSectionInput">
-                <input id="maximumReachInput" class=" formInput fillContentArea" data-property="DocumentTitle" type="text" autocomplete="off" placeholder="" disabled></input>
+                <input id="maximumReachInput" class=" formInput fillContentArea" data-property="Confidentiality" type="text" autocomplete="off" placeholder="" disabled></input>
               </div>
             </div>
             <div class="intakeFormSection Form1 Form2 Form4">

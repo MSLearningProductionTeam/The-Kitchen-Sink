@@ -75,7 +75,7 @@
       //timer for the people search function
       var peoplePickerTimer;
       //timer to show and hide the attachment loading circle
-      var loadingTimer;
+      var timer;
       //array of object containing the data on all attached files
       var attachedFileData;
       //the attached files in the file input
@@ -93,6 +93,7 @@
         attachedFileData = [];
         daysOfTheWeek = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturdate"];
         monthsOfTheYear = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+        timer = new Timer("submitLoadingImage","submitLoadingText",1000);
         //define the siteUrl variable if the _spPageContextInfo object exists
         if(typeof _spPageContextInfo !== 'undefined'){siteUrl = _spPageContextInfo.webAbsoluteUrl;}
 
@@ -243,17 +244,13 @@
                     //when the promise passed to sendAttachments resolves show the thank you screen or show the error
                     $.when(promise).then(function(e){
                       //stop the loading timer and hide the image
-                      clearTimeout(loadingTimer);
-                      $("#submitLoadingImage").addClass("hidden");
-                      $("#submitLoadingText").addClass("hidden");
+                      timer.stopTimer();
                       console.log("Created new list item ");
                       $("#addBtn").removeClass("disabled");
                       showThankYou(itemId,typeofRequest);
                     },function(data){
                       //stop the loading timer and hide the image
-                      clearTimeout(loadingTimer);
-                      $("#submitLoadingImage").addClass("hidden");
-                      $("#submitLoadingText").addClass("hidden");
+                      timer.stopTimer();
                       alert("There was an error with the attached file.");
                       $("#addBtn").removeClass("disabled");
                       console.log(data);
@@ -263,9 +260,7 @@
                   //if there is no attachment alert that a new item has been created
                   else{
                     //stop the loading timer and hide the image
-                    clearTimeout(loadingTimer);
-                    $("#submitLoadingImage").addClass("hidden");
-                    $("#submitLoadingText").addClass("hidden");
+                    timer.stopTimer();
                     console.log("Created new list item ");
                     $("#addBtn").removeClass("disabled");
                     showThankYou(itemId,typeofRequest);
@@ -273,9 +268,7 @@
                 },
                 error: function (data) {
                   //stop the loading timer and hide the image
-                  clearTimeout(loadingTimer);
-                  $("#submitLoadingImage").addClass("hidden");
-                  $("#submitLoadingText").addClass("hidden");
+                  timer.stopTimer()
                   alert("There was an error with writing to the sharepoint list");
                   $("#addBtn").removeClass("disabled");
                   console.log(data);
@@ -533,14 +526,22 @@
         //onSuccess => function to run if the read operation completes
         //onFail => function to run if the read operation fails
         function readFile(file,onSuccess,onFail){
+          //what type of file is being read
           var fileType = file.name.substr(file.name.indexOf("."));
+          //an array of common video extentions to check against
           var videoExtentions = [".mp4",".avi", ".mov", ".wmv"];
+          //the size of the file being read in mb
+          var fileSize = (file.size / 1024) / 2024;
           //deferred object to resolve or reject after the file is read
           var deferred = $.Deferred();
           //if the file being read is a video throw and error and alert the user that videos cannot be attached
           if(videoExtentions.indexOf(fileType) != -1){
             alert("video files cannot be attached");
             throw new Error("Cannot read video files");
+          }
+          else if (fileSize > 100){
+            alert("One or more of the attached files is too large");
+            throw new Error("A file is too large to send");
           }
           //if the file is undefined there is not file to read so resolve the promise
           else if(typeof file == "undefined"){
@@ -581,7 +582,23 @@
           $("#attachmentInput").addClass("invalid");
         }
 
-
+        function Timer(imgId,textId,timing){
+          var that = this;
+          this.imgId = imgId;
+          this.textId = textId;
+          this.timing = timing;
+          this.startTimer = function(){
+            this.intervalTimer = setTimeout(function(){
+              $("#"+that.imgId).removeClass("hidden");
+              $("#"+that.textId).removeClass("hidden");
+            },that.timing);
+          }
+          this.stopTimer = function(){
+            clearTimeout(this.intervalTimer);
+            $("#"+this.imgId).addClass("hidden");
+            $("#"+this.textId).addClass("hidden");
+          }
+        }
 
         //attachs all necessary event handlers
         function attachEvents(){
@@ -595,10 +612,7 @@
               $("#addBtn").addClass("disabled");
 
               //set a timer to display a loading icon if the submission is taking longer then 1 second
-              loadingTimer = setTimeout(function(){
-                  $("#submitLoadingImage").removeClass("hidden");
-                  $("#submitLoadingText").removeClass("hidden");
-              },1000);
+              timer.startTimer();
 
               //emtpy the attachedFileData array
               attachedFileData = [];
@@ -612,6 +626,8 @@
                 //unlock the submit button
                 //if the button wasn't disabled, disable it
                 $("#addBtn").removeClass("disabled");
+                //stop the timer
+                timer.stopTimer();
               });
             }
           });
@@ -624,7 +640,6 @@
             var typedVal = $(this).val();
             var inputId = $(this).attr("id");
 
-
             if(typedVal !== ""){
               //if the user stops typing for 1 second check if the value they have
               //input is a valid user
@@ -636,12 +651,19 @@
             else{
               $(this).removeClass("incorrect_color");
               $(this).removeClass("incorrect_response");
+              $(this).removeClass("correct_color");
+              $(this).removeClass("correct_response");
             }
           });
           //clears the people search timer when the user resumes typing
           $("#ownerInput, #coownerInput").on("keydown",function(){
             //stop showing the loading icon
             clearTimeout(peoplePickerTimer);
+          });
+          //on all inputs other then owner and co owner remove the incorrect_color class if the value changes
+          //owner and coowner are excluded as they have a separate event that handles this functionality
+          $(".optionalInput:not(#coownerInput), .requiredInput:not(#ownerInput)").on("input",function(){
+            $(this).removeClass("incorrect_color")
           });
 
 
@@ -722,8 +744,6 @@
               });
             });
           });*/
-
-
 
         }
     }
