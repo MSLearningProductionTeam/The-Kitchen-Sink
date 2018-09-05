@@ -111,7 +111,7 @@
             setDateAndTime(data.d.Title);
             //get user list items
             //the query string to specify what items are returned for the user's list items
-            var query = "?$select=ID,RequestType1,Title,Created,TimeStamp,RequestDetails,Attachments,SourceFileLocation,ShortDescription,Confidentiality,ProductGroup,Comments,Details,DocumentTitle,FileName,PageTitle,RequestTypeTitle,Owner,CoOwner,PublishDate,PageURL&$orderby=ID%20desc&$filter=RequestType1 ne 'Update Existing Ticket'";
+            var query = "?$select=ID,RequestType1,Title,Created,TimeStamp,RequestDetails,Attachments,SourceFileLocation,ShortDescription,Confidentiality,ProductGroup,Comments,Details,DocumentTitle,FileName,PageTitle,RequestTypeTitle,Owner,CoOwner,PublishDate,PageURL&$orderby=ID%20desc&$filter=RequestType1 ne 'Update Existing Ticket' and Request_x0020_State ne 'Completed' and Request_x0020_State ne 'Rejected'";
             getUserListItems(data.d.Id,query);
           });
         }
@@ -351,7 +351,7 @@
         //get the minute
         //if the minute returned is less then 10 add a 0 to it so that it maintains the double digit format
         var minute = date.getMinutes() < 10 ? "0"+date.getMinutes() : date.getMinutes();
-        //get the second 
+        //get the second
         var second = date.getSeconds() < 10 ? "0"+date.getSeconds() : date.getSeconds();
         //get the hour
         //since the hour is returned in 24 format, reformat the time
