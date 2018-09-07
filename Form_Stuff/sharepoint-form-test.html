@@ -41,6 +41,7 @@
             #autocomplete{width: 295px; background: white; border: 1px solid lightgray; border-top: none; position: absolute;}
               #autocomplete div{padding: 5px; cursor: pointer;}
               #autocomplete div:hover{background: lightgray;}
+            #screenOverlay{position: absolute; width: 106%; height: 138%; top: -327px; left: -23px;}
             #datePicker{position: relative;; z-index: 1; top:-100px; left:180px;}
               .ui-datepicker-inline{background:white; border: 1px solid lightgray; padding:5px; position: absolute;}
                 .ui-widget-header{border: none !important; background:#243b56 !important;}
@@ -69,13 +70,13 @@
   crossorigin="anonymous"></script>
     <script>
     window.onload = function(){
-      //globals
-      //absolute url path to sp list
+      //global variables
+      //absolute url path to site collection
       var siteUrl;
       //timer for the people search function
       var peoplePickerTimer;
-      //timer to show and hide the attachment loading circle
-      var timer;
+      //timer to show and hide the loading circle
+      var loadingTimer;
       //array of object containing the data on all attached files
       var attachedFileData;
       //the attached files in the file input
@@ -93,7 +94,16 @@
         attachedFileData = [];
         daysOfTheWeek = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturdate"];
         monthsOfTheYear = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-        timer = new Timer("submitLoadingImage","submitLoadingText",1000);
+        loadingTimer = new Timer(1000,function(){
+          $("#submitLoadingImage").removeClass("hidden");
+          $("#submitLoadingText").removeClass("hidden");
+        },function(){
+          $("#submitLoadingImage").addClass("hidden");
+          $("#submitLoadingText").addClass("hidden");
+        });
+        peoplePickerTimer = new Timer(750,function(typedVal,inputId){
+            searchForUser(typedVal,inputId);
+        });
         //define the siteUrl variable if the _spPageContextInfo object exists
         if(typeof _spPageContextInfo !== 'undefined'){siteUrl = _spPageContextInfo.webAbsoluteUrl;}
 
@@ -107,10 +117,10 @@
           },
         });
         //append a close button to the date picker
-        $(".ui-datepicker-inline").append("<div id='datePickerClose'>Close</div>");
+      //  $(".ui-datepicker-inline").append("<div id='datePickerClose'>Close</div>");
 
         //before doing anything else make a request for the user information to set the greeting
-        // and to set the top right banner information
+        // and to set the date and time info in the top right banner
         setGreetingName().then(function(){
           //once the request has completed show the selection container and add the events to the form
           //this prevents the user from trying to make a form selection before the greeting has been set and the events have been attached
@@ -121,61 +131,67 @@
 
       }
 
-      //checks that all inputs that are going to be submited are valid
+      //checks that all inputs that are going to be submitted are valid
       function validateForm(){
         //initalize the deferred object
         //will resolve if all inputs are valid, reject if any of the inputs are invalid
         var validationDeferred = $.Deferred();
         //get the files to read
+        //if the attachment input is empty set the attachmentFiles variable to undefined, otherwise set it to the attached files
         attachmentFiles = typeof $("#attachmentInput:visible")[0] !== "undefined" ? $("#attachmentInput:visible")[0].files : undefined;
-
-
-        //check that all required inputs are filled in and valid
-        $("#intakeFormContainer .intakeFormSection:visible .requiredInput").each(function(){
-          //if the input is blank or null or is invalid mark the input invalid and turn it red
-          if(($(this).val() == "" || $(this).val() == null)){
-            $(this).addClass("invalid");
-            $(this).addClass("incorrect_color");
-            $(this).removeClass("valid");
-          }
-          //if the input is not blank but has already been determined incorrect set it as invalid
-          //Note: this is only used for the owner and co-owner fields at the moment
-          else if($(this).hasClass("#incorrect_response")){
-            $(this).addClass("invalid");
-            $(this).removeClass("valid");
-          }
-          //otherwise validate the input
-          else{
-            $(this).addClass("valid");
-            $(this).removeClass("incorrect_color");
-            $(this).removeClass("invalid");
-          }
-        });
-        //check all optionl inputs
-        $("#intakeFormContainer .intakeFormSection:visible .optionalInput").each(function(){
-          //if the input is not blank and the value is not null and the value has not been marked as inccorect
-          // or if the value is blank mark the input as valid
-          if(($(this).val() !== "" && $(this).val() !== null && !$(this).hasClass("incorrect_response")) || ($(this).val() == "")){
-            $(this).addClass("valid");
-            $(this).removeClass("incorrect_color");
-            $(this).removeClass("invalid");
-          }
-          //otherwise mark the input as invalid and make it red
-          else{
-            $(this).addClass("invalid");
-            $(this).addClass("incorrect_color");
-            $(this).removeClass("valid");
-          }
-        });
+        //an array from promises returned from the readFile function
+        //once all fileRead promises have been resolved the validation process can continue
         var promises = [];
         //loop through all attachments and add a promise to the promise array
         $.each(attachmentFiles,function(){
           promises.push(readFile(this,fileReadSucess,fileReadFail));
         });
-        //read the file in the file input before checking for final validation
+        //rvalidation process should only continue once all files have been read
         $.when.apply($, promises).then(function(e){
-          console.log("all files read");
-          //if any of the visible inputs is invalid or not marked as valid reject the promise
+          //once all files have been processed sucessfully, mark the attachmentinput as valid and continue with the rest of the form validation
+          $("#attachmentInput").addClass("valid");
+          $("#attachmentInput").removeClass("invalid");
+
+          //check all required inputs
+          $("#intakeFormContainer .intakeFormSection:visible .requiredInput").each(function(){
+            //if the input is blank or null mark the input invalid and turn it red
+            if(($(this).val() == "" || $(this).val() == null)){
+              $(this).addClass("invalid");
+              $(this).addClass("incorrect_color");
+              $(this).removeClass("valid");
+            }
+            //if the input is not blank but has already been determined incorrect set it as invalid
+            //Note: at the moment the only inputs that are determined incorrect or correct is the owner and co-owner fields
+            else if($(this).hasClass("incorrect_response")){
+              $(this).addClass("invalid");
+              $(this).removeClass("valid");
+            }
+            //If none of the above conditions are true, the input is valid
+            else{
+              $(this).addClass("valid");
+              $(this).removeClass("incorrect_color");
+              $(this).removeClass("invalid");
+            }
+          });
+          //check all optionl inputs
+          $("#intakeFormContainer .intakeFormSection:visible .optionalInput").each(function(){
+            //if the input is not blank and the value is not null and the value has not been marked as inccorect the input is valid
+            // or if the value is blank the input is also considered valid
+            if(($(this).val() !== "" && $(this).val() !== null && !$(this).hasClass("incorrect_response")) || ($(this).val() == "")){
+              $(this).addClass("valid");
+              $(this).removeClass("incorrect_color");
+              $(this).removeClass("invalid");
+            }
+            //if the the above conditions failed, the input is invalid
+            else{
+              $(this).addClass("invalid");
+              $(this).addClass("incorrect_color");
+              $(this).removeClass("valid");
+            }
+          });
+
+          //check the validity of all visible inputs
+          //if any input is marked as invalid or has not been made valid alert the user that provided information is incorrect and reject the promise
           if($("#intakeFormContainer .intakeFormSection:visible .formInput").hasClass("invalid") || !$("#intakeFormContainer .intakeFormSection:visible .formInput").hasClass("valid")){
             alert("Please fill in all fields with the correct information");
             //reject the promise
@@ -185,6 +201,12 @@
           else{
             validationDeferred.resolve("All fields contain vailid data");
           }
+        },function(rejectMessage){
+          //if any of the attached files are rejected mark the attachment input as invalid and tell the user why their attached file was rejected
+          $("#attachmentInput").addClass("invalid");
+          $("#attachmentInput").removeClass("valid");
+          alert(rejectMessage);
+          validationDeferred.reject(rejectMessage);
         });
 
         return validationDeferred.promise();
@@ -192,9 +214,11 @@
       }
 
 
-      //the object that is used to make the new sp list item
+      //returns the object containing all the information that will be sent to sharepoint to generate a new list item
       function gatherFormData(){
+        //the type of request the form submission is
         var requestType = $(".typeOfRequest.selected").html();
+        //the title of the sharepoint list item
         var title = "Windows Devices Group - Publishing Request ("+requestType+")";
         //object containing the data to send to sharepoint
         var itemData = {
@@ -204,8 +228,13 @@
         };
         //add all visible and valid input values to the object
         $("#intakeFormContainer .intakeFormSection:visible .formInput.valid").each(function(){
-          //ignore the attachements input for now and do not add it as there is no sharepoint list column to accept it
+          //ignore the attachements input and do not add it to the item object
+          //due to how the api works, the attachemtns are sent to sharepoint AFTER the initial list item is created
+          //because of this the attachemnts cannot be sent along with the rest of the data or sharepoint will throw an error
           if($(this).attr("data-property")!== "Attachments"){
+            //use the data-property attribute to set the correct property name in the itemData object
+            //this property name cooresponds to which sharepoint list column the data should be added to
+            //EX: data-property = Details means that input's data will be placed in the Details column on sharepoint
             itemData[$(this).attr("data-property")] = $(this).val();
           }
         });
@@ -215,7 +244,7 @@
 
 
         //creates a new SP list item
-        //itemProperties => an object containing all the properties of the new list item you want to create EX. Title, description, etc.
+        //itemProperties => the object containing all the data for the new list item you want to create EX. Title, description, etc.
         //attachment => the object containing all attachment data, if there is any
         function createListItem(itemProperties,attachment){
           //before the request make sure you obtain a new form digest value and the list type
@@ -233,42 +262,55 @@
                     "X-RequestDigest": data[0].d.GetContextWebInformation.FormDigestValue
                 },
                 success: function (successData) {
+                  //the id of the list item that was just created
                   var itemId = successData.d.Id;
+                  //text value of the footer at the time the submission succeeded
+                  //used as part of the thank you screen text
                   var typeofRequest = $(".typeOfRequest.selected").attr("data-footerVal");
                   //check if there is an attachment
                   //if there is send all the attached file to the newly created sharepoint list item
                   if(typeof attachmentFiles !== "undefined"){
+                    //a promise to pass to the sendAttachments function
+                    //will be resolved if all attachments are successfully attached
+                    //and will be rejected if one of the attachments fail to be sent properly
                     var promise = $.Deferred();
                     promise.promise();
                     sendAttachments(itemId,attachment,promise);
-                    //when the promise passed to sendAttachments resolves show the thank you screen or show the error
+                    //when the promise passed to sendAttachments resolves, show the thank you screen
+                    // or if the promise is rejected show the error
                     $.when(promise).then(function(e){
                       //stop the loading timer and hide the image
-                      timer.stopTimer();
+                      loadingTimer.stopTimer();
                       console.log("Created new list item ");
+                      //enable the submit button
                       $("#addBtn").removeClass("disabled");
+                      //show the thank you screen
                       showThankYou(itemId,typeofRequest);
+                      //trigger the flow
+                      triggerFlow(itemId);
                     },function(data){
                       //stop the loading timer and hide the image
-                      timer.stopTimer();
+                      loadingTimer.stopTimer();
                       alert("There was an error with the attached file.");
+                      //enable the submit button
                       $("#addBtn").removeClass("disabled");
                       console.log(data);
-                        throw new Error("There was an error in attaching the file to the sharepoint list");
+                      throw new Error("There was an error in attaching the file to the sharepoint list");
                     });
                   }
                   //if there is no attachment alert that a new item has been created
                   else{
                     //stop the loading timer and hide the image
-                    timer.stopTimer();
+                    loadingTimer.stopTimer();
                     console.log("Created new list item ");
                     $("#addBtn").removeClass("disabled");
                     showThankYou(itemId,typeofRequest);
+                    triggerFlow(itemId);
                   }
                 },
                 error: function (data) {
                   //stop the loading timer and hide the image
-                  timer.stopTimer()
+                  loadingTimer.stopTimer();
                   alert("There was an error with writing to the sharepoint list");
                   $("#addBtn").removeClass("disabled");
                   console.log(data);
@@ -279,7 +321,7 @@
         }
 
         //get a new digest value for the Form
-        //the digest value prevents the same form submission from being applied multiple times
+        //the digest value prevents the same submission from being applied multiple times
         function getFormDigest() {
             return $.ajax({
                 url: siteUrl + "/_api/contextinfo",
@@ -307,14 +349,18 @@
 
 
         //sends a file or files to a sharepoint list item as an attchment of that list item
+        //sends each attachment one after the other to avoid any save conflicts should two or more attachments try to attach at the same time
         //itemId => the id of the sharepoint list item you want to attach the file to
         //attachment => and array of objects where each object is an attached file containing the name of the file and the file data
         //deferedPromise => a promise passed to the function wich will resolve when all files have been sent
         function sendAttachments(itemId,attachmentArray,deferredPromise){
+          //if the arrachment array length is 0 all attachemtns have been send
+          //resolve the promise and return out of the function
           if(attachmentArray.length <= 0){
             deferredPromise.resolve("All attachments sent");
             return;
           }
+          //if the attachemnt array is not empty send the next attachment to sharepoint
           else{
             $.when(getFormDigest()).then(function(data){
               $.ajax({
@@ -329,11 +375,14 @@
                 },
                 success: function (data) {
                   console.log("Attached file to list item");
+                  //remove the attachment that was just sent to sharepoint from the array
                   attachmentArray.shift();
+                  //call the function again
                   sendAttachments(itemId,attachmentArray,deferredPromise);
                 },
                 error: function (data) {
                   console.log(data);
+                  //reject the promise as the attachment failed to be sent
                   deferredPromise.reject("there was an error with one or more of the attachments");
                 }
               });
@@ -342,9 +391,9 @@
         }
 
 
-        //checks sharepoint for a valid user
-        // user => the user to query for
-        // inputField => the input box the user is typing into
+        //checks sharepoint if a provided user value is a valid sharepoint user
+        // user => the user to query sharepoint for
+        // inputField => the input box the user is typing into, used to change the input based on the query results
         function searchForUser(user,inputField){
           $.when(
             getFormDigest()
@@ -373,18 +422,22 @@
                   "X-RequestDigest": data.d.GetContextWebInformation.FormDigestValue
               },
               success: function (data) {
+                //parse the returned string of user into an object
                 var results = JSON.parse(data.d.ClientPeoplePickerSearchUser);
-                console.log(results);
-                //if the object returns more then 1 result display the suggestion box with all returned people
+                //if the results returned contains more then 1 user show the returned users in the suggetion box
                 if(results.length >= 2){
                     var suggestions = "";
+                    //loop through the results and add each username to the suggestions string
                     $.each(results,function(i,val){
                       suggestions += "<div>"+this.DisplayText+"</div>";
                     });
 
-
+                      //add the suggestions to the autocomplete div under the input field that the user was typing in
                       $("#"+inputField).next().html(suggestions);
+                      //show the autocomplete div
                       $("#"+inputField).next().removeClass("hidden");
+                      //show the screen overlay div, used to close the suggestion box if the user clicks anywhere other then a suggestion
+                      $("#screenOverlay").removeClass("hidden");
 
                       //add the click event to the newly created suggestion elements
                       $("#"+inputField).next().children().on("click",function(){
@@ -400,6 +453,7 @@
                       });
 
                       //remove the correct and incorrect classes
+                      //the user has not yet made a selection so the input is neither correct or incorrect yet
                       $("#"+inputField).removeClass('correct_response');
                       $("#"+inputField).removeClass('correct_color');
                       $("#"+inputField).removeClass('incorrect_response');
@@ -411,6 +465,7 @@
                   $("#"+inputField).addClass('incorrect_color');
                   $("#"+inputField).removeClass('correct_response');
                   $("#"+inputField).removeClass('correct_color');
+                  //make sure the suggestion box is hidden
                   $("#"+inputField).next().addClass("hidden");
                 }
                 //if the search returns a single result consider it valid and update the text in the input box
@@ -445,10 +500,25 @@
           $("#intakeFormFooter").html(footer);
         }
 
+        //sends a http request to trigger the flow
+        //itemId => the id of the sharepoint item you want to send in the flow email
+        function triggerFlow(itemId){
+          $.ajax({
+              url: "https://prod-22.westus.logic.azure.com:443/workflows/531f6351cfe444dc8fc5b06467738320/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=cvtZhEM-fX6CAULFhyTX7UvxkctYzeiAyhuIHiGlxpk",
+              type: "POST",
+              contentType: "application/json;odata=verbose",
+              data: JSON.stringify({"ID":itemId}),
+              headers: {
+                  "Accept": "application/json;odata=verbose",
+              },
+          });
+        }
+
         //shows the submission successful thank you view
         // itemId => the id of the item just created
         // requestType => the text of the type of request just submitted
         function showThankYou(itemId,requestType){
+          //empty the attachmentFiles array as the attachments are no longer being used and it will clear up browswer memory
             attachmentFiles = [];
             //fill in the item id and the type of request
             $("#intakeFormThankYou #requestType").html(requestType);
@@ -458,7 +528,7 @@
             $("#formselectionContainer, #intakeFormFooter, #intakeFormContainer").addClass("hidden");
             //show the thank you buttonContainer
             $("#intakeFormThankYou").removeClass("hidden");
-            //scroll the page up
+            //scroll the page up to make sure the thankyou screen is in for for the user
             $('html, body').animate({
                 scrollTop: ($('#intakeFormContentContainer').offset().top)
             },500);
@@ -521,7 +591,7 @@
             });
         }
 
-        //reads the file provided as a url data url stringify
+        //reads the file provided and outputs it as an array buffer
         //file => the file to read, needs to be a blob or file object
         //onSuccess => function to run if the read operation completes
         //onFail => function to run if the read operation fails
@@ -535,27 +605,29 @@
           //deferred object to resolve or reject after the file is read
           var deferred = $.Deferred();
           //if the file being read is a video throw and error and alert the user that videos cannot be attached
+          //currently trying to send video files causes the browser to crash
           if(videoExtentions.indexOf(fileType) != -1){
-            alert("video files cannot be attached");
-            throw new Error("Cannot read video files");
+            deferred.reject("Cannot attach video files");
           }
+          //currently sending too large a file also causes the browser to crash
           else if (fileSize > 100){
-            alert("One or more of the attached files is too large");
-            throw new Error("A file is too large to send");
+          deferred.reject("Attached File is too large");
           }
           //if the file is undefined there is not file to read so resolve the promise
           else if(typeof file == "undefined"){
             deferred.resolve("No file to read");
           }
-          //if the file is not undefined and not a video set up callbacks and begin reading the file
+          //otherwise set up callbacks and begin reading the file
           else{
             var reader = new FileReader();
+            //called when the reader has finished reading the file
             reader.onload = function(data){
               //pass the file data and the name of the file to the success callback
               onSuccess(data,file.name);
-              deferred.resolve("file read sucessfully");
+              deferred.resolve("File Read Sucessful");
             };
-            reader.onerror = function(data){onFail(data); deferred.resolve("file read failed");};
+            //called if the reader errors out
+            reader.onerror = function(data){onFail(data); deferred.reject("Could not read file " + file.name);};
             //begin reading the file
             reader.readAsArrayBuffer(file);
           }
@@ -563,7 +635,7 @@
           return deferred.promise();
         }
 
-        //callback functions for when a file read succeeds or fails
+        //callback function for when a file read succeeds
         function fileReadSucess(fileArray,fileName){
           //if the read operation completes
           //create and object containing the file array and the file name
@@ -574,29 +646,37 @@
           }
           attachedFileData.push(fileData);
           console.log(attachedFileData);
-          // add valid
-          $("#attachmentInput").addClass("valid");
         }
-        function fileReadFail(){
-          //add invalid
-          $("#attachmentInput").addClass("invalid");
+        //callback function for when a file read fails
+        function fileReadFail(data){
+          console.log(data);
         }
 
-        function Timer(imgId,textId,timing){
+        //a timer class that sets up a timer that will call a function after a specified time
+        //timing => the amount of time that should pass before the timer goes off
+        //startCallback => a function to call when the timer goes off
+        //stopCallback => a function to call when the timer is stopped, optional parameter
+        function Timer(timing,startCallback,stopCallback){
           var that = this;
-          this.imgId = imgId;
-          this.textId = textId;
           this.timing = timing;
-          this.startTimer = function(){
+          this.startCallback = startCallback;
+          this.stopCallback = stopCallback;
+          //startTimer and stopTimer optionally take an array of parameters that will be called on their callback functions
+          //starts the count down until the timer goes off
+          this.startTimer = function(parameters){
+            this.params = parameters;
             this.intervalTimer = setTimeout(function(){
-              $("#"+that.imgId).removeClass("hidden");
-              $("#"+that.textId).removeClass("hidden");
+              that.startCallback.apply(null,that.params);
             },that.timing);
           }
-          this.stopTimer = function(){
+          //stops the timer before it goes off
+          this.stopTimer = function(parameters){
+            this.params = parameters;
             clearTimeout(this.intervalTimer);
-            $("#"+this.imgId).addClass("hidden");
-            $("#"+this.textId).addClass("hidden");
+            //only call the function if is it not undefined
+            if(typeof stopCallback !== "undefined"){
+              that.stopCallback.apply(null,that.params);
+            }
           }
         }
 
@@ -608,13 +688,13 @@
             //check if the submit button is disabled
             //this will prevent multiple multiple submissions being made at the same time
             if(!$("#addBtn").hasClass("disabled")){
-              //if the button wasn't disabled, disable it
+              //disable the submit button, prevents the user from making the same submission multiple times
               $("#addBtn").addClass("disabled");
 
-              //set a timer to display a loading icon if the submission is taking longer then 1 second
-              timer.startTimer();
+              //start the loading image timer
+              loadingTimer.startTimer();
 
-              //emtpy the attachedFileData array
+              //emtpy the attachedFileData array, this data will be after the form ahs been validated
               attachedFileData = [];
               //only gather the data and create the list once the form has been validated
               $.when(validateForm()).then(function(msg){
@@ -624,10 +704,9 @@
                 //if the form was not validated show why
                 console.log(msg);
                 //unlock the submit button
-                //if the button wasn't disabled, disable it
                 $("#addBtn").removeClass("disabled");
                 //stop the timer
-                timer.stopTimer();
+                loadingTimer.stopTimer();
               });
             }
           });
@@ -640,14 +719,14 @@
             var typedVal = $(this).val();
             var inputId = $(this).attr("id");
 
+            //only run the people search if the value in the input field is not empty
             if(typedVal !== ""){
-              //if the user stops typing for 1 second check if the value they have
-              //input is a valid user
-              clearTimeout(peoplePickerTimer);
-              peoplePickerTimer = setTimeout(function(){
-                  searchForUser(typedVal,inputId);
-              },750);
+              //stop the peoplePickerTimer in case it was alreay going
+              peoplePickerTimer.stopTimer();
+              //start the timer
+              peoplePickerTimer.startTimer([typedVal,inputId]);
             }
+            //if the input value is emtpy remove incorrect and correct classes as a blank value is considered neither
             else{
               $(this).removeClass("incorrect_color");
               $(this).removeClass("incorrect_response");
@@ -658,12 +737,23 @@
           //clears the people search timer when the user resumes typing
           $("#ownerInput, #coownerInput").on("keydown",function(){
             //stop showing the loading icon
-            clearTimeout(peoplePickerTimer);
+            peoplePickerTimer.stopTimer();
           });
           //on all inputs other then owner and co owner remove the incorrect_color class if the value changes
+          //this is to remove the red color from an inccorect input field after validation
           //owner and coowner are excluded as they have a separate event that handles this functionality
           $(".optionalInput:not(#coownerInput), .requiredInput:not(#ownerInput)").on("input",function(){
-            $(this).removeClass("incorrect_color")
+            $(this).removeClass("incorrect_color");
+          });
+          //event for the screenOverlay
+          //ths screenOverlay is used to close the suggestion box/datePicker when the user does not click on a suggestion and instead clicks off of the suggestion box
+          $("#screenOverlay").on("click",function(){
+            //hide the suggestion box
+            $("#autocomplete").addClass("hidden");
+            //hide the suggestion box
+            $("#datePicker").addClass("hidden");
+            //hide the overlay
+            $("#screenOverlay").addClass("hidden");
           });
 
 
@@ -677,18 +767,21 @@
             }
           });
 
-          //swaps the form content on the page
+          //click event on the form selection box options that will change what field values are shown in the form based on which slection is clicked
           $('#formSelectionItem .typeOfRequest').on("click",function(){
+            //remove the selected class from all the selection options
             $('.typeOfRequest').removeClass("selected");
+            //add selected to the selection that was clicked
             $(this).addClass("selected");
             var selectedForm = $(this).attr("data-form");
             var footer = $(this).attr("data-footerVal");
+            //show the correct form input fields
             swapFormContent(selectedForm,footer);
 
           });
 
           // events for the thank you screen button
-          //hides the thank you screen and shows the form exactly as it was before submitting
+          //takes the user to the edit ticket page
           $("#editBtn").on("click",function(){
             window.location = "https://microsoft.sharepoint.com/sites/Infopedia_G02/Pages/WDG-Open-Tickets-POC.aspx";
           });
@@ -696,10 +789,13 @@
           $("#newBtn").on("click",function(){
             resetForm();
           });
+
           //shows the date picker
           $("#publishDateInput").on("click",function(){
             $("#datePicker").removeClass("hidden");
+            $("#screenOverlay").removeClass("hidden");
           });
+          //closes the date picker
           $("#datePickerClose").on("click",function(){
               $("#datePicker").addClass("hidden");
           });
@@ -722,28 +818,6 @@
                 });
               });
             }); */
-
-          //event for the display list items button, displays all list items
-          //used just for testing purposes, will be removed later
-          /*$("#displayContainer #displayBtn").on("click",function(){
-            $.ajax({
-              url: siteUrl + "/_api/web/lists/getbytitle('New Intake Form Test')/items",
-              Type:'GET',
-              headers: {
-                accept: "application/json;odata=verbose"
-              }
-            }).done(function(data){
-              var allListItems = [];
-              data.d.results.forEach(function(val,i){
-                allListItems.push("<li>"+val.Title+"</li>");
-                console.log(data);
-              });
-              console.log(allListItems);
-              allListItems.forEach(function(val,i){
-                $("#listItemContainer ul").html(val);
-              });
-            });
-          });*/
 
         }
     }
@@ -768,7 +842,7 @@
           <img id="ninjaButton" src="https://microsoft.sharepoint.com/teams/Infopedia_Team_Site/Projects%20Folder/Trey%20Test%20Stuff/red-button.png"></img>
           <img id="ninjaCat" class="hidden" src="https://microsoft.sharepoint.com/teams/Infopedia_Team_Site/Projects%20Folder/Trey%20Test%20Stuff/ninja_cat.gif"></img>-->
           <div id="selectionLinks">
-            <a href="https://microsoft.sharepoint.com/sites/Infopedia_G02/Pages/WindowsReadyProductionDashboard.aspx">View My Requests</a> |
+            <a href="https://microsoft.sharepoint.com/sites/Infopedia_G02/Pages/WDG-Open-Tickets-POC.aspx">View My Requests</a> |
             <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR-eo3tun4ppHoGXuly7ZAKtUNEFEUDJKNFM0TllDN05LT0NCSFJIQjI5Qi4u">Give Feedback</a>
           </div>
           <p id="formGreeting">Hi,</p>
@@ -961,13 +1035,14 @@
                 <div class="subText" style="float:left; width:320px;">
                   Co-Owner Alias (Optional)
                 </div>
+                  <div id="screenOverlay" class="hidden"></div>
                   <input id="ownerInput" class=" requiredInput formInput" data-property="Owner" type="text" autocomplete="off"></input>
                   <div id="autocomplete" class="hidden"></div>
                   <input id="coownerInput" class="optionalInput formInput" data-property="CoOwner" type="text" autocomplete="off"></input>
+                  <div id="autocomplete" class="hidden" style="left:494px;"></div>
                   <div class="subText">
                     Note: Search for the user's alias if their name is not returning the correct result
                   </div>
-                  <div id="autocomplete" class="hidden" style="left:494px;"></div>
               </div>
           </div>
           <div class="intakeFormSection Form1">
