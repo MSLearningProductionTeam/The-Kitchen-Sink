@@ -42,7 +42,7 @@ window.onload = function(){
   //gets the current user's sharepoint profile info
   function getUser(){
     $.ajax({
-        url: siteUrl + "/_api/web/currentUser",
+        url: "https://microsoft.sharepoint.com/sites/Infopedia_G02" + "/_api/web/currentUser",
         Type:'GET',
         headers: {
           accept: "application/json;odata=verbose"
@@ -62,7 +62,7 @@ window.onload = function(){
   //queryString => string that specifies the parameters of the search for the users list items
   function getUserListItems(userId,queryString){
     $.ajax({
-        url: siteUrl + "/_api/web/lists/GetByTitle('WDGIntakeForm')/items"+queryString+" and AuthorId eq "+userId+"",
+        url: "https://microsoft.sharepoint.com/sites/Infopedia_G02" + "/_api/web/lists/GetByTitle('WDGIntakeForm')/items"+queryString+" and AuthorId eq "+userId+"",
         Type:'GET',
         headers: {
           accept: "application/json;odata=verbose"
@@ -113,7 +113,7 @@ window.onload = function(){
       //new request click event
       $("#newRequestBtn").on("click",function(){
         //redirects back to the intake form page
-        window.location = "https://microsoft.sharepoint.com/sites/Infopedia_G02/Pages/WDG-Intake-Form-POC.aspx";
+        window.location = "https://microsoft.sharepoint.com/sites/Infopedia_G02Pages/WDG-Intake-Form-POC.aspx";
       });
   }
   //shows the list item edit view
@@ -173,7 +173,7 @@ window.onload = function(){
         //gather the data to send
         var formData = gatherFormData();
         $.ajax({
-            url: siteUrl + "/_api/web/lists/getbytitle('WDGIntakeForm')/items("+itemId+")",
+            url: "https://microsoft.sharepoint.com/sites/Infopedia_G02" + "/_api/web/lists/getbytitle('WDGIntakeForm')/items("+itemId+")",
             type: "POST",
             contentType: "application/json;odata=verbose",
             data: JSON.stringify(formData),
@@ -232,7 +232,7 @@ window.onload = function(){
   //the digest value prevents the same form submission from being applied multiple times
   function getFormDigest() {
       return $.ajax({
-          url: siteUrl + "/_api/contextinfo",
+          url: "https://microsoft.sharepoint.com/sites/Infopedia_G02" + "/_api/contextinfo",
           method: "POST",
           headers: { "Accept": "application/json; odata=verbose" },
           success: function(data){
@@ -245,7 +245,7 @@ window.onload = function(){
   //used when making an api request
   function getListType(){
     return $.ajax({
-      url: siteUrl + "/_api/web/lists/getbytitle('WDGIntakeForm')/items",
+      url: "https://microsoft.sharepoint.com/sites/Infopedia_G02" + "/_api/web/lists/getbytitle('WDGIntakeForm')/items",
       Type:'GET',
       headers: {
         accept: "application/json;odata=verbose"

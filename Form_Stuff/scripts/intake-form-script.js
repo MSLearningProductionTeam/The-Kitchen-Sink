@@ -181,7 +181,7 @@ window.onload = function(){
         getListType()
       ).then(function(data){
         $.ajax({
-            url: siteUrl + "/_api/web/lists/getbytitle('WDGIntakeForm')/items",
+            url: "https://microsoft.sharepoint.com/sites/Infopedia_G02" + "/_api/web/lists/getbytitle('WDGIntakeForm')/items",
             type: "POST",
             contentType: "application/json;odata=verbose",
             data: JSON.stringify(itemProperties),
@@ -252,7 +252,7 @@ window.onload = function(){
     //the digest value prevents the same submission from being applied multiple times
     function getFormDigest() {
         return $.ajax({
-            url: siteUrl + "/_api/contextinfo",
+            url: "https://microsoft.sharepoint.com/sites/Infopedia_G02" + "/_api/contextinfo",
             method: "POST",
             headers: { "Accept": "application/json; odata=verbose" },
             success: function(data){
@@ -264,7 +264,7 @@ window.onload = function(){
     //used when making an api request
     function getListType(){
       return $.ajax({
-        url: siteUrl + "/_api/web/lists/getbytitle('WDGIntakeForm')/items",
+        url: "https://microsoft.sharepoint.com/sites/Infopedia_G02" + "/_api/web/lists/getbytitle('WDGIntakeForm')/items",
         Type:'GET',
         headers: {
           accept: "application/json;odata=verbose"
@@ -292,7 +292,7 @@ window.onload = function(){
       else{
         $.when(getFormDigest()).then(function(data){
           $.ajax({
-            url: siteUrl + "/_api/web/lists/getbytitle('WDGIntakeForm')/items("+itemId+")/AttachmentFiles/add(FileName='"+attachmentArray[0].fileName+"')",
+            url: "https://microsoft.sharepoint.com/sites/Infopedia_G02" + "/_api/web/lists/getbytitle('WDGIntakeForm')/items("+itemId+")/AttachmentFiles/add(FileName='"+attachmentArray[0].fileName+"')",
             type: "POST",
             data: attachmentArray[0].fileString,
             processData: false,
@@ -327,7 +327,7 @@ window.onload = function(){
         getFormDigest()
       ).then(function(data){
       $.ajax({
-          url: siteUrl + "/_api/SP.UI.ApplicationPages.ClientPeoplePickerWebServiceInterface.clientPeoplePickerSearchUser",
+          url: "https://microsoft.sharepoint.com/sites/Infopedia_G02" + "/_api/SP.UI.ApplicationPages.ClientPeoplePickerWebServiceInterface.clientPeoplePickerSearchUser",
           type: "POST",
           data:JSON.stringify({
               'queryParams':{
@@ -495,10 +495,10 @@ window.onload = function(){
     //as well we the name, date, and time in the top banner
     function setGreetingName(){
       return $.ajax({
-          url: siteUrl + "/_api/web/currentUser",
+          url: "https://microsoft.sharepoint.com/sites/Infopedia_G02" + "/_api/web/currentUser",
           Type:'GET',
           headers: {
-            accept: "application/json;odata=verbose"
+            //accept: "application/json;odata=verbose"
           }
         }).done(function(data){
             //set the greeting to be the first name of the returned user
