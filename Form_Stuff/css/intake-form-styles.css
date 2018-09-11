@@ -1,0 +1,75 @@
+/*generic styles*/
+.correct_color{background-color: rgb(28, 203, 33) !important;}
+.incorrect_color{background-color: rgb(251, 51, 51) !important;}
+.hidden{display:none !important;}
+.flexibleDisplay{display: flex;}
+.fillContentArea{min-width: 100%; max-width: 100%;}
+.subText{font-size: 12px; margin: 5px 0 5px 0;}
+.hyperLinkBlue{color:#0061A7 !important;}
+body{background:#E6E6E6!important;}
+textarea{resize: none;}
+.ms-webpart-titleText{display: none;}
+
+/*styles for the entire content container*/
+#intakeFormContentContainer{position: relative; left: 50%; transform: translateX(-50%); width: 910px; background: white; border-radius: 4px;}
+  #intakeFormContentContainer p {margin:10px; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif; font-size: 14px;}
+  /*Thank you screen styles*/
+  #intakeFormThankYou{text-align: center; padding: 15px 15px 15px 15px; }
+    #intakeFormThankYou h1, #intakeFormThankYou h3 {color:#243b56;}
+  /*header/footer banner styles*/
+  #intakeFormHeader{padding:10px 15px 5px 15px; font-size: 14px; height: 40px; display: flex; justify-content: space-between;}
+  .intakeFormBanner{background:#243b56; color:white; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif; border-radius: 4px;}
+    #formDateTime{float:right; font-size: 14px !important; width:450px; text-align: right;}
+  #intakeFormFooter{padding: 7px 7px 7px 15px; font-size: 12px; height: 30px; width: 895px; margin: 0px auto; margin-bottom: 15px;}
+  /*form selection container styles*/
+  #formselectionContainer{margin:15px 15px 25px 15px;}
+    #selectionLinks {float:right;}
+    #formselectionContainer .flexibleDisplay p{font-size:14px !important;}
+    #formSelectionItem{background:#e7ffe7; width: 225px; margin-top:5px; margin-left: 10px; border-radius:4px;}
+      #formSelectionItem .typeOfRequest{padding:5px; cursor:pointer;}
+      #formSelectionItem .typeOfRequest:hover{background:rgb(172, 177, 170); border-radius: 4px;}
+      #formSelectionItem .typeOfRequest:hover{background:rgb(172, 177, 170); border-radius: 4px;}
+      #formSelectionItem .typeOfRequest.selected{background:rgb(172, 177, 170); color:white; border-radius: 4px;}
+  /*form container styles*/
+  #intakeFormContainer{position: relative; /*left:-1000px;*/ width: 864px; left: 50%; transform: translate3d(-50%,0,0); margin-top:10px; margin-bottom:10px;}
+    /*form section styles*/
+    .intakeFormSection{border: 1px solid rgb(228, 233, 246); display: flex; font-size:14px; margin:-1px;}
+      .formSectionTitle{padding:10px; width: 185px; min-width: 185px; border-right: 1px solid rgb(228, 233, 246); text-align: right; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;}
+        .formSectionTitle ul li{list-style-type: none; font-size:12px; }
+        /*form section input styles*/
+      .formSectionInput{margin:10px; flex-grow: 1; align-self: center;}
+        .formInput{border-radius: 4px !important;}
+        .formInput:focus{outline: none; box-shadow: 0px 0px 1px 1px #243b56;}
+        .formInput:hover{outline: none !important; border-color:#243b56 !important;}
+        #ownerInput{width: 295px;}
+        #coownerInput{width: 295px;}
+        #attachmentInput{color:black !important;}
+        #autocomplete{width: 295px; background: white; border: 1px solid lightgray; border-top: none; position: absolute;}
+          #autocomplete div{padding: 5px; cursor: pointer;}
+          #autocomplete div:hover{background: lightgray;}
+        #screenOverlay{position: absolute; width: 106%; height: 138%; top: -327px; left: -23px;}
+        /*date picker input styles*/
+        #datePicker{position: relative;; z-index: 1; top:-100px; left:180px;}
+          .ui-datepicker-inline{background:white; border: 1px solid lightgray; padding:5px; position: absolute;}
+            .ui-widget-header{border: none !important; background:#243b56 !important;}
+            .ui-state-default, .ui-widget-content .ui-state-default{border: 1px solid lightgrey !important; background: lightgrey !important; font-weight: normal !important; color: white !important;}
+            .ui-state-active, .ui-widget-content .ui-state-active {border: 1px solid #243b56 !important; background: #243b56 !important; font-weight: normal !important; color: #ffffff !important;}
+            .ui-datepicker-next-hover, .ui-state-hover{border:none !important; background: none !important;}
+            .ui-widget-content{color:black !important; cursor: pointer !important; text-align: center !important;}
+      /*see example button styles*/
+      .seeExampleButton{background:rgb(237, 235, 235); border:1px solid rgb(213, 217, 211);  width: 20px; height: 20px; margin: 10px 10px 10px 5px; border-radius: 4px;}
+      .seeExampleButton:hover{background: rgb(109, 112, 109);}
+      .seeExampleButton.selected{background: rgb(109, 112, 109);}
+      .seeExampleImage{margin:0 0 0 0px;}
+    /*button styles*/
+    #buttonContainer{display:flex; flex-direction: column;}
+      .inputBtn{cursor: pointer; background:#243b56; padding:10px; color:white; text-align: center; border-radius:4px;}
+      #addBtn{width:200px; font-size: 14px; margin: 0px auto; margin-top: 10px; margin-bottom: 10px;}
+      .thankYouBtn{width: 140px; margin-bottom: 10px !important; margin:0px auto;}
+      .loadingImg{width: 20px; height: 20px; margin: 0px auto;}
+      #submitLoadingText{margin:5px; text-align: center;}
+
+  /*
+  #ninjaTile{width: 100px; height: 100px; position: absolute; left: 795px; top:50px; background: white; z-index: 2;}
+  #ninjaButton{width: 90px; position: absolute; left: 795px; top: 50px; z-index: 1;}
+  #ninjaCat{width: 200px; position: absolute; z-index: 3;}*/
