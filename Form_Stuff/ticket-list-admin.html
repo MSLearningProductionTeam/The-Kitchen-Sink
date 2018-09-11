@@ -14,7 +14,7 @@
       .page-title{display:none !important;}
 
       #contentContainer{position: relative; left: 50%; transform: translateX(-50%); width: 910px; background: white; border-radius: 6px;}
-        #listView{width: 895px; margin:0px auto;}
+        #listView{width: 895px; margin:0px auto; max-height: 400px; overflow: auto;}
           #intakeFormHeader{margin-bottom: 65px;}
           #columnHeaders{display: flex; font-size: 12px; margin-bottom: 15px; padding: 7px 7px 7px 15px; color:white; background: #243b56; border-radius: 6px;}
             #columnHeaders div:nth-child(1){width:102px;}
@@ -31,7 +31,7 @@
               .ticket div:nth-child(3){width:154px;}
               .ticket div:nth-child(4){width:450px;}
               .ticket div:nth-child(5){width:138px;}
-            #addNewRequest{display: flex; padding: 7px 7px 7px 11px}
+            #addNewRequest{display: flex; position: fixed; top: 10%; left:1%; padding: 7px 7px 7px 11px}
               #addNewRequest div:nth-child(2){line-height: 27px;}
               #newRequestBtn{background: #243b56; cursor: pointer; color: white; font-size: 27px; width: 30px; height: 30px; border-radius: 6px; text-align: center; font-weight: bold; margin-right: 10px; line-height: 25px;}
           .intakeFormBanner{background:#243b56; padding:10px 15px 5px 15px; color:white; font-size: 14px; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif; height:40px; display: flex; justify-content: space-between; border-radius: 6px}
