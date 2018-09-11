@@ -147,6 +147,25 @@
           });
         }
 
+        //formats list items
+        var page = 1;
+        $("#wrap > div").slice(0, 7).addClass('page1').css("background", "yellow");
+        $("#wrap > div").slice(7, 14).addClass('page2').css("background", "red").hide();
+        $("#wrap > div").slice(14, 21).addClass('page3').css("background", "blue").hide();
+        var maxPage = 3;
+        $('.next').on('click', function() {
+            if (page < maxPage) {
+                $("#wrap > div:visible").hide();
+                $('.page' + ++page).show();
+            }
+          })
+        $('.prev').on('click', function() {
+            if (page > 1) {
+                $("#wrap > div:visible").hide();
+                    $('.page' + --page).show();
+            }
+        })
+
         //attachs all the events the program needs to function
         function attachEvents(){
             //the click even on each list item edit button
@@ -376,8 +395,10 @@
             <div id="titleColumn">Title</div>
             <div id="createdColumn">Created</div>
           </div>
+        <div id="wrap">
           <div id="ticketList"></div>
           <div id="addNewRequest"><div id="newRequestBtn">+</div><div>Add New Request</div></div>
+        </div>
           </div>
         <div id="formView" class="hidden">
           <div id="intakeFormFooter" class="intakeFormBanner"><div></div></div>
