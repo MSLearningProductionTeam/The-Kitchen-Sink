@@ -9,6 +9,7 @@
 body{background:#E6E6E6!important;}
 textarea{resize: none;}
 .ms-webpart-titleText{display: none;}
+.blackText{color:black !important;}
 
 /*styles for the entire content container*/
 #intakeFormContentContainer{position: relative; left: 50%; transform: translateX(-50%); width: 910px; background: white; border-radius: 4px;}
@@ -43,7 +44,6 @@ textarea{resize: none;}
         .formInput:hover{outline: none !important; border-color:#243b56 !important;}
         #ownerInput{width: 295px;}
         #coownerInput{width: 295px;}
-        #attachmentInput{color:black !important;}
         #autocomplete{width: 295px; background: white; border: 1px solid lightgray; border-top: none; position: absolute;}
           #autocomplete div{padding: 5px; cursor: pointer;}
           #autocomplete div:hover{background: lightgray;}
