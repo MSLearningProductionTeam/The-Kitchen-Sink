@@ -21,4 +21,4 @@
         #newRequestBtn{background: green; cursor: pointer; color: white; font-size: 27px; width: 30px; height: 30px; border-radius: 4px; text-align: center; font-weight: bold; margin-right: 10px; line-height: 25px;}
         #cancelBtn{width:130px; font-size: 12px;margin: 0px auto; margin-bottom: 5px; margin-top: 5px; cursor:pointer; text-align: center;}
   .intakeFormSection.disabled{color:lightgray !important;}
-    .intakeFormSection.disabled .formInput{color:lightgray !important;}
+    .intakeFormSection.disabled .formInput{color:lightgray !important; border-color:lightgray !important;}
