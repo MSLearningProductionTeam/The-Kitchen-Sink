@@ -357,7 +357,7 @@ window.onload = function(){
                 var suggestions = "";
                 //loop through the results and add each username to the suggestions string
                 $.each(results,function(i,val){
-                  suggestions += "<div>"+this.DisplayText+"</div>";
+                  suggestions += "<div>"+this.EntityData.Email+"</div>";
                 });
 
                   //add the suggestions to the autocomplete div under the input field that the user was typing in
@@ -400,7 +400,7 @@ window.onload = function(){
             else if(results.length == 1){
               $("#"+inputField).removeClass('incorrect_response');
               $("#"+inputField).removeClass('incorrect_color');
-              $("#"+inputField).val(results[0].DisplayText);
+              $("#"+inputField).val(results[0].EntityData.Email);
               $("#"+inputField).addClass('correct_response');
               $("#"+inputField).addClass('correct_color');
               $("#"+inputField).next().addClass("hidden");

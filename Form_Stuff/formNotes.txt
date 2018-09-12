@@ -20,3 +20,33 @@ Next Steps:
     -Large files take too long to send to sharepoint, find another way or make the current http request faster
   Spice up the Css
     -Add cool effects/ secondary animation to make the form feel more alive
+  Mobile responsive design
+
+
+see example button should stay selected when clicked
+
+example image
+  -Make the text larger, move it further to the left
+  -add padding for top and bottom of the image
+  -use actual filled in examples
+  -roughly 25% larger image
+
+owner/coowner
+-show alias instead of name
+
+datePicker
+-shrink text box
+-put place holder date XX/XX/XXXX
+-calender button that opens the calender
+-inactive date boxes should be white, active box should be blue
+
+remove content field
+-add attachment field
+-remove file name
+
+attachment field
+-update the input text field to show the number of attachments
+-add subtext to explain how to attach multiple files
+
+submit button
+-add top and bottom margin about 15px
