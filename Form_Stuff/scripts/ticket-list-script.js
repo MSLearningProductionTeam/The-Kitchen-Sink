@@ -259,6 +259,7 @@ window.onload = function(){
   function gatherFormData(){
     var itemData = {
       '__metadata': {'type': "SP.Data.WDGIntakeFormListItem"},
+      'ChangeValue': true
     };
     //add each valid input to the item data object
     $(".formInput.valid").each(function(){

@@ -17,8 +17,8 @@
 <link rel="stylesheet" type="text/css" href="/sites/Infopedia_G02/PublishingImages/Domains/Intake_Form/css/intake-form-styles.css" />
 <script type="text/javascript" src="/sites/Infopedia_G02/PublishingImages/Domains/Intake_Form/scripts/intake-form-script.js"></script>
 
-<!--<link rel="stylesheet" type="text/css" href="../css/intake-form-styles.css" />
-<script type="text/javascript" src="../scripts/intake-form-script.js"></script>-->
+<link rel="stylesheet" type="text/css" href="../css/intake-form-styles.css" />
+<script type="text/javascript" src="../scripts/intake-form-script.js"></script>
 </head>
 
 <body>
@@ -235,9 +235,9 @@
                 </div>
                   <div id="screenOverlay" class="hidden"></div>
                   <input id="ownerInput" class=" requiredInput formInput" data-property="Owner" type="text" autocomplete="off"></input>
-                  <div id="autocomplete" class="hidden"></div>
+                  <div class=" autocomplete hidden"></div>
                   <input id="coownerInput" class="optionalInput formInput" data-property="CoOwner" type="text" autocomplete="off"></input>
-                  <div id="autocomplete" class="hidden" style="left:494px;"></div>
+                  <div class="hidden autocomplete" style="left:494px;"></div>
                   <div class="subText">
                     Note: Search for the user's alias if their name is not returning the correct result
                   </div>
@@ -255,7 +255,8 @@
           <div class="intakeFormSection Form1 Form2 Form4">
             <div class="formSectionTitle">Requested Publish Date</div>
             <div class="formSectionInput">
-              <input type="text" id="publishDateInput" class="optionalInput formInput" data-property="PublishDate" style="width:180px"/>
+              <input type="text" id="publishDateInput" class="optionalInput formInput" placeholder="XX/XX/XXXX" data-property="PublishDate" style="width:95px; text-align:center;"/>
+              <img id="calendarImg" src="https://microsoft.sharepoint.com/sites/Infopedia_G02/PublishingImages/Domains/Intake_Form/Images/calendar.png"/>
               <div id="datePicker" class="hidden"></div>
               <div class="subText">
                 Note: that there is a 3-business day SLA for publishing. We always aim for earlier completion but for a specific date (for example a planned comm or embargoed content)

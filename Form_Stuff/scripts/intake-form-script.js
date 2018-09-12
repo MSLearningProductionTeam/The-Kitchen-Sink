@@ -677,7 +677,7 @@ window.onload = function(){
       //ths screenOverlay is used to close the suggestion box/datePicker when the user does not click on a suggestion and instead clicks off of the suggestion box
       $("#screenOverlay").on("click",function(){
         //hide the suggestion box
-        $("#autocomplete").addClass("hidden");
+        $(".autocomplete").addClass("hidden");
         //hide the suggestion box
         $("#datePicker").addClass("hidden");
         //hide the overlay
@@ -689,9 +689,11 @@ window.onload = function(){
       $(".seeExampleButton").on("click", function(){
         if($(this).next().hasClass("hidden")){
           $(this).next().removeClass("hidden");
+          $(this).addClass("selected");
         }
         else{
             $(this).next().addClass("hidden");
+            $(this).removeClass("selected");
         }
       });
 
@@ -719,13 +721,9 @@ window.onload = function(){
       });
 
       //shows the date picker
-      $("#publishDateInput").on("click",function(){
+      $("#publishDateInput, #calendarImg").on("click",function(){
         $("#datePicker").removeClass("hidden");
         $("#screenOverlay").removeClass("hidden");
-      });
-      //closes the date picker
-      $("#datePickerClose").on("click",function(){
-          $("#datePicker").addClass("hidden");
       });
 
 

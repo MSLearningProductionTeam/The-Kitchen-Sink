@@ -23,16 +23,8 @@ Next Steps:
   Mobile responsive design
 
 
+
 see example button should stay selected when clicked
-
-example image
-  -Make the text larger, move it further to the left
-  -add padding for top and bottom of the image
-  -use actual filled in examples
-  -roughly 25% larger image
-
-owner/coowner
--show alias instead of name
 
 datePicker
 -shrink text box
@@ -43,6 +35,7 @@ datePicker
 remove content field
 -add attachment field
 -remove file name
+-add true/false checkbox for delete content
 
 attachment field
 -update the input text field to show the number of attachments
@@ -50,3 +43,6 @@ attachment field
 
 submit button
 -add top and bottom margin about 15px
+
+edit ticket page
+-when a user submits and edit, set the ChangeValue field to true
