@@ -14,11 +14,11 @@
 </xml><![endif]-->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
-<link rel="stylesheet" type="text/css" href="/sites/Infopedia_G02/PublishingImages/Domains/Intake_Form/css/intake-form-styles.css" />
-<script type="text/javascript" src="/sites/Infopedia_G02/PublishingImages/Domains/Intake_Form/scripts/intake-form-script.js"></script>
+<link rel="stylesheet" type="text/css" href="/sites/Infopedia_G02/PublishingImages/Domains/Intake_Form/Form/css/intake-form-styles.css" />
+<script type="text/javascript" src="/sites/Infopedia_G02/PublishingImages/Domains/Intake_Form/Form/scripts/intake-form-script.js"></script>
 
-<link rel="stylesheet" type="text/css" href="../css/intake-form-styles.css" />
-<script type="text/javascript" src="../scripts/intake-form-script.js"></script>
+<!--<link rel="stylesheet" type="text/css" href="../css/intake-form-styles.css" />
+<script type="text/javascript" src="../scripts/intake-form-script.js"></script>-->
 </head>
 
 <body>
@@ -112,6 +112,15 @@
               </div>
             </div>
           </div>
+          <div class="intakeFormSection Form3">
+            <div class="formSectionTitle">Delete Content</div>
+            <div class="formSectionInput">
+              <div id="deleteContentInput" class="optionalInput formInput fakeCheckbox" data-property="deleteContent"><div id="checkmarkTop" class="hidden"></div><div id="checkmarkBottom" class="hidden"></div></div>
+              <div class="subText">
+                Should this content be deleted from learning completely?
+              </div>
+            </div>
+          </div>
           <div class="intakeFormSection Form4">
             <div class="formSectionTitle">Request Overview*</div>
             <div class="formSectionInput">
@@ -182,16 +191,22 @@
               </div>
             </div>
           </div>
-          <div class="intakeFormSection Form1 Form2 Form4 Form5">
+          <div class="intakeFormSection Form1 Form2 Form3 Form4 Form5">
             <div class="formSectionTitle">Attachments</div>
             <div class="formSectionInput">
-              <input id="attachmentInput" class="formInput blackText" data-property="Attachments" type="file" placeholder="" multiple></input>
+              <div class="flexibleDisplay">
+                <input id="attachmentInput" class="formInput" data-property="Attachments" style="color:white; width:110px;" type="file" placeholder="" multiple></input>
+                <div id="attachmentInputText" class="blackText" style="align-self:center; margin-left:10px;">No Files Selected</div>
+              </div>
               <div class="subText">
                 100 MB file size limit
               </div>
+              <div class="subText">
+                Note: To select multiple files press ctrl and click on each file that should be added or click and drag to hihglight each file.
+              </div>
             </div>
           </div>
-          <div class="intakeFormSection Form1 Form2 Form3">
+          <div class="intakeFormSection Form1 Form2">
             <div class="formSectionTitle">File Name*</div>
             <div class="formSectionInput">
               <input id="fileNameInput" class="requiredInput formInput fillContentArea" data-property="FileName" type="text" autocomplete="off" placeholder=""></input>

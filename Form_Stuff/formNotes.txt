@@ -21,28 +21,3 @@ Next Steps:
   Spice up the Css
     -Add cool effects/ secondary animation to make the form feel more alive
   Mobile responsive design
-
-
-
-see example button should stay selected when clicked
-
-datePicker
--shrink text box
--put place holder date XX/XX/XXXX
--calender button that opens the calender
--inactive date boxes should be white, active box should be blue
-
-remove content field
--add attachment field
--remove file name
--add true/false checkbox for delete content
-
-attachment field
--update the input text field to show the number of attachments
--add subtext to explain how to attach multiple files
-
-submit button
--add top and bottom margin about 15px
-
-edit ticket page
--when a user submits and edit, set the ChangeValue field to true

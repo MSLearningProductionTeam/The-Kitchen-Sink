@@ -74,7 +74,7 @@ window.onload = function(){
     $.each(attachmentFiles,function(){
       promises.push(readFile(this,fileReadSucess,fileReadFail));
     });
-    //rvalidation process should only continue once all files have been read
+    //validation process should only continue once all files have been read
     $.when.apply($, promises).then(function(e){
       //once all files have been processed sucessfully, mark the attachmentinput as valid and continue with the rest of the form validation
       $("#attachmentInput").addClass("valid");
@@ -474,6 +474,9 @@ window.onload = function(){
       $("#productGroupInput").val("");
       //reset the drop down boxes to the first option
       $("select").val("");
+      //reset checkboxes
+      $(".fakeCheckbox").val("");
+      $(".fakeCheckbox").children().addClass("hidden");
       //reset the attachment input
       $("#attachmentInput").val(null);
       //remove all valid, invalid, correct, and incorrect classes from all inputs
@@ -707,7 +710,6 @@ window.onload = function(){
         var footer = $(this).attr("data-footerVal");
         //show the correct form input fields
         swapFormContent(selectedForm,footer);
-
       });
 
       // events for the thank you screen button
@@ -725,6 +727,30 @@ window.onload = function(){
         $("#datePicker").removeClass("hidden");
         $("#screenOverlay").removeClass("hidden");
       });
+
+      //toggles the value of a fake checkbox between true and ""
+      //we do not use true and false as we do not want to send any value to sharepoint if the value is false, this is for flow reasons
+      $(".fakeCheckbox").on("click",function(){
+        //if is not already set to true, set it
+        if(!$(this).val()){
+          $(this).val("true");
+          //show the checkmark lines
+          $(this).children().removeClass("hidden");
+        }
+        //otherwise set it to be blank
+        else{
+            $(this).val("");
+            $(this).children().addClass("hidden");
+        }
+      });
+
+      //event for when the user selects or deselects attachment files
+      $("#attachmentInput").on("change",function(){
+        var plural = this.files.length <= 1 ? "file" : "files";
+        //update the attachment input text div with the number of files selected
+        $("#attachmentInputText").text(this.files.length + " " + plural);
+      });
+
 
 
       /*
