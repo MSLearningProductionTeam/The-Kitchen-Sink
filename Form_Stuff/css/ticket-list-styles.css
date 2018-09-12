@@ -1,3 +1,4 @@
+.page-title{display:none;}
 #contentContainer{position: relative; left: 50%; transform: translateX(-50%); width: 910px; background: white; border-radius: 4px;}
   #listView{width: 895px; margin:0px auto;}
     #intakeFormHeader{margin-bottom: 65px;}

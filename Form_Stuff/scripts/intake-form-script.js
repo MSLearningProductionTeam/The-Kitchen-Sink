@@ -497,9 +497,6 @@ window.onload = function(){
       return $.ajax({
           url: siteUrl + "/_api/web/currentUser",
           Type:'GET',
-          crossDomain: true,
-          dataType: "jsonp",
-          contentType: "application/json",
           headers: {
             accept: "application/json;odata=verbose"
           }

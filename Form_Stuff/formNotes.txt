@@ -1,2 +1,22 @@
-Form can be found here: https://microsoft.sharepoint.com/sites/Infopedia_G05/Pages/tab-flat-page.aspx
-Test list for the form can be found here: https://microsoft.sharepoint.com/sites/Infopedia_G05/Lists/New%20Intake%20Form%20Test/AllItems.aspx?InitialTabId=Ribbon%2EList&VisibilityContext=WSSTabPersistence#InplviewHashcf923b9f-44a2-454e-bb98-b277de97cd21=InitialTabId%3DRibbon%252EList-VisibilityContext%3DWSSTabPersistence-SortField%3DDocumentID-SortDir%3DDesc
+list list poc:
+
+create an admin view
+
+
+form poc:
+
+need onboarding for attaching multiple files at once as this is not obvious how to do
+
+fix attaching video files so that attaching and sending a video does not crash the browser
+
+allow large file attachments to be sent to sharepoint, files will need to be broken up and sent in smaller parts
+
+
+Next Steps:
+  A way to add additional content to the same list item:
+    -User clicks add more content, new and blank input fields replace the old ones and the user fills out more information
+    -This additional information would be submitted to the same list item as the original information, it would just be separated in the sharepoint list by a comma or something like that
+  A way to add larger file attachments to sharepoint faster
+    -Large files take too long to send to sharepoint, find another way or make the current http request faster
+  Spice up the Css
+    -Add cool effects/ secondary animation to make the form feel more alive
