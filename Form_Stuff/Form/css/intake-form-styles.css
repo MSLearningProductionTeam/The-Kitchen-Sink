@@ -47,7 +47,7 @@ textarea{resize: none;}
         .autocomplete{width: 295px; background: white; border: 1px solid lightgray; border-top: none; position: absolute;}
           .autocomplete div{padding: 5px; cursor: pointer;}
           .autocomplete div:hover{background: lightgray;}
-        #deleteContentInput{height: 20px; width: 20px; background: rgb(237, 235, 235);border: 1px solid #ababab;}
+        .fakeCheckbox{height: 20px; width: 20px; background: rgb(237, 235, 235);border: 1px solid #ababab;}
           #checkmarkTop{width: 16px; height: 2px; position: relative;background: #243b56; transform: rotate(-55deg); top: 8px; left: 4px;}
           #checkmarkBottom{width: 9px; height: 2px; position: relative; background: #243b56; transform: rotate(-139deg); top: 10px; left: 0px;}
         #screenOverlay{position: absolute; width: 106%; height: 138%; top: -327px; left: -23px;}
