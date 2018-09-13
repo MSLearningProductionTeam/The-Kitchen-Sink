@@ -728,18 +728,17 @@ window.onload = function(){
         $("#screenOverlay").removeClass("hidden");
       });
 
-      //toggles the value of a fake checkbox between true and ""
-      //we do not use true and false as we do not want to send any value to sharepoint if the value is false, this is for flow reasons
+      //toggles the value of a fake checkbox between Yes and No
       $(".fakeCheckbox").on("click",function(){
-        //if is not already set to true, set it
+        //if is not already set to yes, set it
         if(!$(this).val()){
-          $(this).val("true");
+          $(this).val("Yes");
           //show the checkmark lines
           $(this).children().removeClass("hidden");
         }
-        //otherwise set it to be blank
+        //otherwise set it to be No
         else{
-            $(this).val("");
+            $(this).val("No");
             $(this).children().addClass("hidden");
         }
       });

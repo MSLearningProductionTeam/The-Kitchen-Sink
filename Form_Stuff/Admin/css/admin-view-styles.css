@@ -1,4 +1,4 @@
-.page-title{display:none;}
+.page-title{display:none !important;}
 #adminColumnHeaders{display: flex; font-size: 12px; margin-bottom: 15px; padding: 7px 7px 7px 15px; color:white; background: #243b56; border-radius: 4px;}
   #adminColumnHeaders div:nth-child(1){width:5%;}
   #adminColumnHeaders div:nth-child(2){width:5%;}
