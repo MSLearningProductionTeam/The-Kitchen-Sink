@@ -25,7 +25,7 @@ window.onload = function(){
     //define the global variables
     if(typeof _spPageContextInfo !== 'undefined'){siteUrl = _spPageContextInfo.webAbsoluteUrl;}
     listItems = [];
-    properties = ["Attachments","CoOwner","Comments","Confidentiality","Details","DocumentTitle","FileName","Owner","PageTitle","PageURL","ProductGroup","PublishDate","RequestDetails","ShortDescription","SourceFileLocation"];
+    properties = ["Attachments","CoOwner","Comments","Confidentiality","Details","DocumentTitle","FileName","Owner","PageTitle","PageURL","ProductGroup","PublishDate","RequestDetails","ShortDescription","SourceFileLocation","deleteContent"];
     daysOfTheWeek = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturdate"];
     monthsOfTheYear = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     footerValues = [

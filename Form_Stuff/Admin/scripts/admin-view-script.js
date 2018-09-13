@@ -25,7 +25,7 @@ window.onload = function(){
     //define the global variables
     if(typeof _spPageContextInfo !== 'undefined'){siteUrl = _spPageContextInfo.webAbsoluteUrl;}
     listItems = [];
-    properties = ["Attachments","CoOwner","Comments","Confidentiality","Details","DocumentTitle","FileName","Owner","PageTitle","PageURL","ProductGroup","PublishDate","RequestDetails","ShortDescription","SourceFileLocation"];
+    properties = ["Attachments","CoOwner","Comments","Confidentiality","Details","DocumentTitle","FileName","Owner","PageTitle","PageURL","ProductGroup","PublishDate","RequestDetails","ShortDescription","SourceFileLocation","deleteContent"];
     daysOfTheWeek = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturdate"];
     monthsOfTheYear = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     footerValues = [
@@ -52,7 +52,7 @@ window.onload = function(){
       setDateAndTime(data.d.Title);
       //get user list items
       //the query string to specify what items are returned for the user's list items
-      var query = "?$select=ID,RequestType1,Title,Created,TimeStamp,RequestDetails,Attachments,SourceFileLocation,ShortDescription,Confidentiality,ProductGroup,Comments,Details,DocumentTitle,FileName,PageTitle,RequestTypeTitle,Owner,CoOwner,PublishDate,PageURL&$orderby=ID%20desc&$filter=RequestType1 ne 'Update Existing Ticket' and Request_x0020_State ne 'Completed' and Request_x0020_State ne 'Rejected'";
+      var query = "?$select=ID,RequestType1,Title,Created,TimeStamp,RequestDetails,Attachments,SourceFileLocation,ShortDescription,Confidentiality,ProductGroup,Comments,Details,DocumentTitle,FileName,PageTitle,RequestTypeTitle,Owner,CoOwner,PublishDate,PageURL,Request_x0020_State,deleteContent,VSO_ID&$orderby=ID%20desc";
       getUserListItems(data.d.Id,query);
     });
   }
@@ -68,6 +68,7 @@ window.onload = function(){
           accept: "application/json;odata=verbose"
         }
     }).done(function(data){
+      console.log(data);
       //if no items were returned add text to the list that says the user has no items
       if(data.d.results.length <= 0){
         var htmlString = "<div style='text-align:center;'>You have no open tickets</div>";
@@ -78,34 +79,21 @@ window.onload = function(){
         $.each(data.d.results,function(i,val){
           //add each list item to the global object
           listItems.push(this);
+          //calculate which page class the list item should get
+          //the number of list items that should be displayed on each page
+          var numPerPage = 10;
+          var pageNum = Math.floor(1+(i * (1/numPerPage)));
           //add each list item to the screen
-          var htmlString = "<div class='ticket' data-ticketNum='"+i+"' data-requestType='"+this.RequestType1+"' data-listId='"+this.ID+"'><div><div class='editBtn'>...</div></div><div>"+this.ID+"</div><div>"+this.RequestType1+"</div><div>"+this.Title+"</div><div>"+this.Created.substring(0,10)+"</div>";
-          $("#ticketList").append(htmlString);
+          var htmlString = "<div class='ticket hidden' data-pageNum='"+pageNum+"' data-ticketNum='"+i+"' data-requestType='"+this.RequestType1+"' data-listId='"+this.ID+"'><div><div class='editBtn'>...</div></div><div>"+this.ID+"</div><div>"+this.VSO_ID+"</div><div>"+this.RequestType1+"</div><div>"+this.Created.substring(0,10)+"</div><div>"+this.Request_x0020_State+"</div><div>"+this.Comments+"</div>";
+          $("#adminTicketList").append(htmlString);
         });
+        //show the first page of results
+        $(".ticket[data-pageNum='1']").removeClass('hidden');
         //attach the needed events
         attachEvents();
       }
     });
   }
-
-  //formats list items
-  var page = 1;
-  $("#wrap > div").slice(0, 7).addClass('page1').css("background", "yellow");
-  $("#wrap > div").slice(7, 14).addClass('page2').css("background", "red").hide();
-  $("#wrap > div").slice(14, 21).addClass('page3').css("background", "blue").hide();
-  var maxPage = 3;
-  $('.next').on('click', function() {
-      if (page < maxPage) {
-          $("#wrap > div:visible").hide();
-          $('.page' + ++page).show();
-      }
-    })
-  $('.prev').on('click', function() {
-      if (page > 1) {
-          $("#wrap > div:visible").hide();
-              $('.page' + --page).show();
-      }
-  })
 
   //attachs all the events the program needs to function
   function attachEvents(){
@@ -133,6 +121,26 @@ window.onload = function(){
       $("#newRequestBtn").on("click",function(){
         //redirects back to the intake form page
         window.location = "https://microsoft.sharepoint.com/sites/Infopedia_G02/Pages/WDG-Intake-Form-POC.aspx";
+      });
+
+      $("#nextPageBtn").on("click",function(){
+        //get the current page being displayed
+        var currPageNum = parseInt( $(".ticket:visible").attr("data-pageNum"));
+        //if the next page of results is not empty, show that page
+        if($(".ticket[data-pageNum='"+(currPageNum+1)+"'").length !== 0){
+          $(".ticket").addClass("hidden");
+          $(".ticket[data-pageNum='"+(currPageNum+1)+"'").removeClass("hidden");
+        }
+      });
+
+      $("#prevPageBtn").on("click",function(){
+        //get the current page being displayed
+        var currPageNum = parseInt( $(".ticket:visible").attr("data-pageNum"));
+        //if the current page is not the first, show the previous page
+        if(currPageNum !== 1){
+          $(".ticket").addClass("hidden");
+          $(".ticket[data-pageNum='"+(currPageNum-1)+"'").removeClass("hidden");
+        }
       });
   }
   //shows the list item edit view

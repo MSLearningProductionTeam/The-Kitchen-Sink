@@ -16,6 +16,7 @@
 <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" href="/sites/Infopedia_G02/PublishingImages/Domains/Intake_Form/Form/css/intake-form-styles.css" />
 <link rel="stylesheet" type="text/css" href="/sites/Infopedia_G02/PublishingImages/Domains/Intake_Form/Tickets/css/ticket-list-styles.css" />
+<link rel="stylesheet" type="text/css" href="/sites/Infopedia_G02/PublishingImages/Domains/Intake_Form/Admin/css/admin-view-styles.css" />
 <script type="text/javascript" src="/sites/Infopedia_G02/PublishingImages/Domains/Intake_Form/Admin/scripts/admin-view-script.js"></script>
 </head>
 
@@ -23,42 +24,53 @@
 	<div id="contentContainer">
         <div id="intakeFormHeader" class="intakeFormBanner"><div>Virtual Help Desk   |  Windows Ready/Devices Group - My Requests</div><div id="formDateTime"></div></div>
         <div id="listView">
-          <div id="addNewRequest"><div id="newRequestBtn">+</div><a href="https://microsoft.sharepoint.com/sites/Infopedia_G02/Pages/WDG-Intake-Form-POC.aspx">Add New Request</a></div>
-          <div id="columnHeaders">
+					<div id="addNewRequest"><div id="newRequestBtn">+</div><a href="https://microsoft.sharepoint.com/sites/Infopedia_G02/Pages/WDG-Intake-Form-POC.aspx">Add New Request</a></div>
+          <div id="pageNavBtnContainer">
+            <div id="prevPageBtn" class="pageNavBtn">Prev</div>
+            <div id="nextPageBtn" class="pageNavBtn">Next</div>
+          </div>
+          <div id="adminColumnHeaders">
             <div id="editColumn">Edit</div>
             <div id="idColumn">ID</div>
+            <div id="vsoIdColumn">VOS ID</div>
             <div id="requestTypeColumn">Request Type</div>
-            <div id="titleColumn">Title</div>
             <div id="createdColumn">Created</div>
+            <div id="stateColumn">State</div>
+            <div id="commentsColumn">Comments</div>
           </div>
-        <div id="wrap">
-          <div id="ticketList"></div>
-            <div class="next">Next</div>
-            <div class="prev">Prev</div>
-        </div>
+          <div id="adminTicketList"></div>
           </div>
         <div id="formView" class="hidden">
           <div id="intakeFormFooter" class="intakeFormBanner"><div></div></div>
           <div id="intakeFormContainer">
-            <div class="intakeFormSection Form1 Form2 Form3 Form4 Form5">
+            <div class="intakeFormSection disabled  Form1 Form2 Form3 Form4 Form5">
               <div class="formSectionTitle">Product Group*</div>
               <div class="formSectionInput">
                 <input id="productGroupInput" class="formInput" data-property="ProductGroup" type="text" autocomplete="off" placeholder="" disabled></input>
               </div>
             </div>
-            <div class="intakeFormSection Form3">
+            <div class="intakeFormSection disabled  Form3">
               <div class="formSectionTitle">Doc ID or Page/Card URL*</div>
               <div class="formSectionInput">
                 <input id="docIdInput" class=" formInput fillContentArea" data-property="PageURL" type="text" autocomplete="off" placeholder="" disabled></input>
               </div>
             </div>
-            <div class="intakeFormSection Form4">
+            <div class="intakeFormSection disabled  Form3">
+              <div class="formSectionTitle">Delete Content</div>
+              <div class="formSectionInput">
+                <input id="deleteContentInput" class="optionalInput formInput" data-property="deleteContent" disabled></input>
+                <div class="subText">
+                  Should this content be deleted from learning completely?
+                </div>
+              </div>
+            </div>
+            <div class="intakeFormSection disabled  Form4">
               <div class="formSectionTitle">Request Overview*</div>
               <div class="formSectionInput">
                 <textarea id="requestOverviewInput" class=" formInput fillContentArea" data-property="ShortDescription" type="text" autocomplete="off" placeholder="" rows="4" cols="50" disabled></textarea>
               </div>
             </div>
-            <div class="intakeFormSection Form4">
+            <div class="intakeFormSection disabled  Form4">
               <div class="formSectionTitle">
                 Request Details*
                 <div>(Example)</div>
@@ -85,49 +97,49 @@
                 <textarea id="requestDetailsInput" class=" formInput fillContentArea" data-property="RequestDetails" type="text" autocomplete="off" placeholder="" rows="20" cols="50" disabled></textarea>
               </div>
             </div>
-            <div class="intakeFormSection Form5">
+            <div class="intakeFormSection disabled  Form5">
               <div class="formSectionTitle">Details</div>
               <div class="formSectionInput">
                 <textarea id="detailsInput" class=" formInput fillContentArea" data-property="ShortDescription" type="text" autocomplete="off" placeholder="" rows="4" cols="50" disabled></textarea>
               </div>
             </div>
-            <div class="intakeFormSection Form1 Form2 Form4">
+            <div class="intakeFormSection disabled  Form1 Form2 Form4">
               <div class="formSectionTitle">Source File Location</div>
               <div class="formSectionInput">
                 <input id="sourceFileLocationInput" class=" formInput fillContentArea" data-property="SourceFileLocation" type="text" autocomplete="off" placeholder="" disabled></input>
               </div>
             </div>
-            <div class="intakeFormSection Form1 Form2 Form4 Form5">
+            <div class="intakeFormSection disabled  Form1 Form2 Form4 Form5">
               <div class="formSectionTitle">Attachments</div>
               <div class="formSectionInput">
                 <input id="attachmentInput" class="formInput" data-property="Attachments" type="text" placeholder="" multiple disabled></input>
               </div>
             </div>
-            <div class="intakeFormSection Form1 Form2 Form3">
+            <div class="intakeFormSection disabled  Form1 Form2 Form3">
               <div class="formSectionTitle">File Name*</div>
               <div class="formSectionInput">
                 <input id="fileNameInput" class=" formInput fillContentArea" data-property="FileName" type="text" autocomplete="off" placeholder="" disabled></input>
               </div>
             </div>
-            <div class="intakeFormSection Form1 Form2">
+            <div class="intakeFormSection disabled  Form1 Form2">
               <div class="formSectionTitle">Document Title to Display*</div>
               <div class="formSectionInput">
                 <input id="documentTitleInput" class=" formInput fillContentArea" data-property="DocumentTitle" type="text" autocomplete="off" placeholder="" disabled></input>
               </div>
             </div>
-            <div class="intakeFormSection Form1 Form2">
+            <div class="intakeFormSection disabled  Form1 Form2">
               <div class="formSectionTitle">Document Description</div>
               <div class="formSectionInput">
                 <textarea id="documentDescriptionInput" class=" formInput fillContentArea" data-property="ShortDescription" placeholder="" rows="4" cols="50" disabled></textarea>
               </div>
             </div>
-            <div class="intakeFormSection Form1 Form2">
+            <div class="intakeFormSection disabled  Form1 Form2">
               <div class="formSectionTitle">Maximum Reach (confidentiality)*</div>
               <div class="formSectionInput">
                 <input id="maximumReachInput" class=" formInput fillContentArea" data-property="Confidentiality" type="text" autocomplete="off" placeholder="" disabled></input>
               </div>
             </div>
-            <div class="intakeFormSection Form1 Form2 Form4">
+            <div class="intakeFormSection disabled  Form1 Form2 Form4">
                 <div class="formSectionTitle">Content Owner* <div>Must be FTE</div></div>
                 <div class="formSectionInput">
                   <div class="subText" style="float:left; width:315px;">
@@ -141,25 +153,25 @@
                     <input id="coownerInput" class=" formInput" data-property="CoOwner" type="text" autocomplete="off" disabled></input>
                 </div>
             </div>
-            <div class="intakeFormSection Form1">
+            <div class="intakeFormSection disabled  Form1">
               <div class="formSectionTitle">Page URL</div>
               <div class="formSectionInput">
                 <input id="pageUrlInput" class=" formInput fillContentArea" data-property="PageURL" type="text" autocomplete="off"  placeholder="" disabled></input>
               </div>
             </div>
-            <div class="intakeFormSection Form1 Form2 Form4">
+            <div class="intakeFormSection disabled  Form1 Form2 Form4">
               <div class="formSectionTitle">Requested Publish Date</div>
               <div class="formSectionInput">
                 <input type="text" id="publishDateInput" class=" formInput" data-property="PublishDate" style="width:180px" disabled/>
               </div>
             </div>
-            <div class="intakeFormSection Form1 Form2 Form3">
+            <div class="intakeFormSection disabled  Form1 Form2 Form3">
               <div class="formSectionTitle">Additional Details</div>
               <div class="formSectionInput">
                 <textarea id="additionalDetailsInput" class=" formInput fillContentArea" data-property="Details" placeholder="" rows="4" cols="50" disabled></textarea>
               </div>
             </div>
-            <div class="intakeFormSection Form1 Form2 Form3 Form4 Form5">
+            <div class="intakeFormSection  Form1 Form2 Form3 Form4 Form5">
               <div class="formSectionTitle">Change Reason*</div>
               <div class="formSectionInput">
                 <textarea id="changeReasonInput" class="requiredInput formInput fillContentArea" data-property="ChangeReason" placeholder="" rows="8" cols="50"></textarea>
@@ -168,7 +180,7 @@
                 </div>
               </div>
             </div>
-            <div class="intakeFormSection Form1 Form2 Form3 Form4 Form5">
+            <div class="intakeFormSection  Form1 Form2 Form3 Form4 Form5">
               <div class="formSectionTitle">Change Request*</div>
               <div class="formSectionInput">
                 <textarea id="changeRequestInput" class="requiredInput formInput fillContentArea" data-property="ChangeRequest" placeholder="" rows="8" cols="50"></textarea>
