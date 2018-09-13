@@ -2,11 +2,12 @@
 #adminColumnHeaders{display: flex; font-size: 12px; margin-bottom: 15px; padding: 7px 7px 7px 15px; color:white; background: #243b56; border-radius: 4px;}
   #adminColumnHeaders div:nth-child(1){width:5%;}
   #adminColumnHeaders div:nth-child(2){width:5%;}
-  #adminColumnHeaders div:nth-child(3){width:10%;}
+  #adminColumnHeaders div:nth-child(3){width:5%;}
   #adminColumnHeaders div:nth-child(4){width:15%;}
-  #adminColumnHeaders div:nth-child(5){width:15%;}
-  #adminColumnHeaders div:nth-child(6){width:15%;}
-  #adminColumnHeaders div:nth-child(7){width:35%;}
+  #adminColumnHeaders div:nth-child(5){width:10%;}
+  #adminColumnHeaders div:nth-child(6){width:20%;}
+  #adminColumnHeaders div:nth-child(7){width:10%;}
+  #adminColumnHeaders div:nth-child(8){width:30%;}
 #adminTicketList{padding:7px 7px 7px 11px;}
   #adminTicketList .ticket{display:flex; margin-bottom: 10px; font-size: 13px;}
     #adminTicketList .ticket div{padding-right: 10px;}
@@ -14,10 +15,11 @@
       #adminTicketList .ticket .editBtn{width: 30px !important; height: 30px; font-size: 20px; text-align: center; border: 1px solid lightgray; border-radius: 4px; padding:0; line-height: 13px; cursor: pointer;}
     #adminTicketList .ticket div:nth-child(1){width:5%;}
     #adminTicketList .ticket div:nth-child(2){width:5%;}
-    #adminTicketList .ticket div:nth-child(3){width:10%;}
+    #adminTicketList .ticket div:nth-child(3){width:5%;}
     #adminTicketList .ticket div:nth-child(4){width:15%;}
-    #adminTicketList .ticket div:nth-child(5){width:15%;}
-    #adminTicketList .ticket div:nth-child(6){width:15%;}
-    #adminTicketList .ticket div:nth-child(7){width:35%;}
+    #adminTicketList .ticket div:nth-child(5){width:10%;}
+    #adminTicketList .ticket div:nth-child(6){width:20%;}
+    #adminTicketList .ticket div:nth-child(7){width:10%;}
+    #adminTicketList .ticket div:nth-child(8){width:30%;}
 #pageNavBtnContainer{display: flex; margin: 11px;}
   .pageNavBtn{ margin-right: 20px; border: 1px solid #243b56; padding: 4px; border-radius: 4px; cursor: pointer; color: #243b56;}

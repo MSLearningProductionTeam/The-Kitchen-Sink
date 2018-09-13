@@ -52,7 +52,7 @@ window.onload = function(){
       setDateAndTime(data.d.Title);
       //get user list items
       //the query string to specify what items are returned for the user's list items
-      var query = "?$select=ID,RequestType1,Title,Created,TimeStamp,RequestDetails,Attachments,SourceFileLocation,ShortDescription,Confidentiality,ProductGroup,Comments,Details,DocumentTitle,FileName,PageTitle,RequestTypeTitle,Owner,CoOwner,PublishDate,PageURL,Request_x0020_State,deleteContent,VSO_ID&$orderby=ID%20desc";
+      var query = "?$select=ID,RequestType1,Title,Created,TimeStamp,RequestDetails,Attachments,SourceFileLocation,ShortDescription,Confidentiality,ProductGroup,Comments,Details,DocumentTitle,FileName,PageTitle,RequestTypeTitle,Owner,CoOwner,PublishDate,PageURL,Request_x0020_State,deleteContent,VSO_ID,Author/Title&$expand=Author/Title&$orderby=ID%20desc";
       getUserListItems(data.d.Id,query);
     });
   }
@@ -84,7 +84,7 @@ window.onload = function(){
           var numPerPage = 10;
           var pageNum = Math.floor(1+(i * (1/numPerPage)));
           //add each list item to the screen
-          var htmlString = "<div class='ticket hidden' data-pageNum='"+pageNum+"' data-ticketNum='"+i+"' data-requestType='"+this.RequestType1+"' data-listId='"+this.ID+"'><div><div class='editBtn'>...</div></div><div>"+this.ID+"</div><div>"+this.VSO_ID+"</div><div>"+this.RequestType1+"</div><div>"+this.Created.substring(0,10)+"</div><div>"+this.Request_x0020_State+"</div><div>"+this.Comments+"</div>";
+          var htmlString = "<div class='ticket hidden' data-pageNum='"+pageNum+"' data-ticketNum='"+i+"' data-requestType='"+this.RequestType1+"' data-listId='"+this.ID+"'><div><div class='editBtn'>...</div></div><div>"+this.ID+"</div><div>"+this.VSO_ID+"</div><div>"+this.RequestType1+"</div><div>"+this.Created.substring(0,10)+"</div><div>"+this.Author.Title+"</div><div>"+this.Request_x0020_State+"</div><div>"+this.Comments+"</div>";
           $("#adminTicketList").append(htmlString);
         });
         //show the first page of results
