@@ -1,11 +1,7 @@
 list list poc:
 
-create an admin view
-
 
 form poc:
-
-need onboarding for attaching multiple files at once as this is not obvious how to do
 
 fix attaching video files so that attaching and sending a video does not crash the browser
 
@@ -13,11 +9,14 @@ allow large file attachments to be sent to sharepoint, files will need to be bro
 
 
 Next Steps:
-  A way to add additional content to the same list item:
+  1. A way to add additional content to the same list item:
     -User clicks add more content, new and blank input fields replace the old ones and the user fills out more information
     -This additional information would be submitted to the same list item as the original information, it would just be separated in the sharepoint list by a comma or something like that
-  A way to add larger file attachments to sharepoint faster
+  2. A way to add larger file attachments to sharepoint faster
     -Large files take too long to send to sharepoint, find another way or make the current http request faster
-  Spice up the Css
+  3. Spice up the Css
     -Add cool effects/ secondary animation to make the form feel more alive
-  Mobile responsive design
+  4. Mobile responsive design
+  5. Refactor the project file structure
+    -Common css and scripts should be placed in a common css/script directory for all pages to use
+      - This will require the js to be refactored, removing common/generic functionality from the page specific script

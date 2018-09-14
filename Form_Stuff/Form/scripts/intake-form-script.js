@@ -14,6 +14,8 @@ window.onload = function(){
   var daysOfTheWeek;
   //array of the months in the year
   var monthsOfTheYear;
+  //the current users title
+  var currUser;
 
   init();
 
@@ -152,7 +154,8 @@ window.onload = function(){
     var itemData = {
       '__metadata': {'type': "SP.Data.WDGIntakeFormListItem"},
       'RequestType1': requestType,
-      'Title': title
+      'Title': title,
+      'CurrentUser': currUser
     };
     //add all visible and valid input values to the object
     $("#intakeFormContainer .intakeFormSection:visible .formInput.valid").each(function(){
@@ -504,6 +507,7 @@ window.onload = function(){
             accept: "application/json;odata=verbose"
           }
         }).done(function(data){
+            currUser = data.d.Title;
             //set the greeting to be the first name of the returned user
             $("#formGreeting").html("Hi, "+ data.d.Title.substring(0,data.d.Title.indexOf(" ")));
             //set th date and time text in the top banner
