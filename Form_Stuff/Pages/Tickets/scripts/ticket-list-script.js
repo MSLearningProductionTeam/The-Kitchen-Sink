@@ -1,5 +1,5 @@
 //call the initalize function
-window.onload = initEditListView();
+window.onload = initEditListView;
 
 //initialization function
 function initEditListView(){

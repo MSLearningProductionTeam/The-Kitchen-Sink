@@ -1,5 +1,5 @@
 //call the initalize function
-window.onload = initAdminView();
+window.onload = initAdminView;
 
 //initialization function
 function initAdminView(){

@@ -49,7 +49,7 @@ function getListType(){
   });
 }
 
-//sets the dat and time string that is appended to the top banner
+//sets the date and time string that is appended to the top banner
 function setDateAndTime(userName){
   //make a new date object
   var date = new Date();

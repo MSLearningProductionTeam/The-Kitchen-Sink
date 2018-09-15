@@ -53,7 +53,7 @@ textarea{resize: none;}
         #screenOverlay{position: absolute; width: 106%; height: 138%; top: -327px; left: -23px;}
         /*date picker input styles*/
         #datePicker{position: relative;; z-index: 1; top:-100px; left:115px;}
-          #calendarImg{width: 22px; height: auto; position: absolute; cursor:pointer;}
+          #calendarImg{width: 22px; height: auto; position: absolute; cursor:pointer; z-index: -1;}
           .ui-datepicker-inline{background:white; border: 1px solid lightgray; padding:5px; position: absolute;}
             .ui-widget-header{border: none !important; background:#243b56 !important;}
             .ui-state-default, .ui-widget-content .ui-state-default{border: 1px solid white !important; background: white !important; font-weight: normal !important; color: black !important;}
