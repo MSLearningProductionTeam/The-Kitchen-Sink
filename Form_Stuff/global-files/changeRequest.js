@@ -78,7 +78,7 @@ function submitChangeRequest(itemId){
       getListType()
     ).then(function(validation,digest,listType){
       //gather the data to send
-      var formData = gatherFormData();
+      var formData = gatherChangeRequestData();
       $.ajax({
           url: siteUrl + "/_api/web/lists/getbytitle('WDGIntakeForm')/items("+itemId+")",
           type: "POST",
