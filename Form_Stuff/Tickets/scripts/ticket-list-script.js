@@ -16,24 +16,6 @@ function initEditListView(){
     setDateAndTime(data.d.Title);
     //get user list items
     //the query string to specify what items are returned for the user's list items
-    var query = "?$select=ID,RequestType1,Title,Created,TimeStamp,RequestDetails,Attachments,SourceFileLocation,ShortDescription,Confidentiality,ProductGroup,Comments,Details,DocumentTitle,FileName,PageTitle,RequestTypeTitle,Owner,CoOwner,PublishDate,PageURL,deleteContent&$orderby=ID%20desc&$filter=RequestType1 ne 'Update Existing Ticket' and Request_x0020_State ne 'Completed' and Request_x0020_State ne 'Rejected'";
-    getUserListItems(data.d.Id,query);
-  });
-}
-
-//gets the current user's sharepoint profile info
-function getUser(){
-  $.ajax({
-      url: siteUrl + "/_api/web/currentUser",
-      Type:'GET',
-      headers: {
-        accept: "application/json;odata=verbose"
-      }
-  }).done(function(data){
-    //set the date and time in the top banner
-    setDateAndTime(data.d.Title);
-    //get user list items
-    //the query string to specify what items are returned for the user's list items
     var query = "?$select=ID,RequestType1,Title,Created,TimeStamp,RequestDetails,Attachments,SourceFileLocation,ShortDescription,Confidentiality,ProductGroup,Comments,Details,DocumentTitle,FileName,PageTitle,RequestTypeTitle,Owner,CoOwner,PublishDate,PageURL,deleteContent&$orderby=ID%20desc&$filter=RequestType1 ne 'Update Existing Ticket' and Request_x0020_State ne 'Completed' and Request_x0020_State ne 'Rejected'and AuthorId eq "+data.d.Id+"";
     getUserListItems(query).done(function(data){
       //if no items were returned add text to the list that says the user has no items
