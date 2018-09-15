@@ -20,3 +20,27 @@ Next Steps:
   5. Refactor the project file structure
     -Common css and scripts should be placed in a common css/script directory for all pages to use
       - This will require the js to be refactored, removing common/generic functionality from the page specific script
+  6. Admin page, sort by a date range
+
+
+
+
+admin page:
+   -move the id to the edit btn, eliminate the id column
+   - add request publish date as column
+   - increase form width to be 1100px
+   - on hover over edit button, background turns green
+   - increase items per page to 15
+   - add request summary to the page
+   - show only tickets that are new, in progress, and completed
+   - add a toggle button to show  just windows or devices tickets
+   - add toggle button to show new, in progress, Completed
+   - move state column to the second column
+   - add text if the request summary is null
+   - show total in each state
+   - change green button to blue (thank god)
+
+  -restyle attachment input in edge and IE
+
+
+  -rename currentUser to created by in power bi

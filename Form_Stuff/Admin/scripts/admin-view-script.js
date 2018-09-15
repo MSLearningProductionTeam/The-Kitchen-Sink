@@ -29,11 +29,11 @@ window.onload = function(){
     daysOfTheWeek = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturdate"];
     monthsOfTheYear = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     footerValues = [
-      "New /Learning Publishing Request: Windows Devices Group - Publishing Request (add new content)",
-      "New /Learning Publishing Request: Windows Devices Group - Publishing Request (update existing content)",
-      "New /Learning Publishing Request: Windows Devices Group - Publishing Request (remove content)",
-      "New /Learning Publishing Request: Windows Devices Group - Publishing Request (request multiple items)",
-      "New /Learning Publishing Request: Windows Devices Group - Publishing Request (do something not listed here)"
+      "New /Learning Publishing Request: Windows Devices Group - Publishing Request (add new content) (Change Request)",
+      "New /Learning Publishing Request: Windows Devices Group - Publishing Request (update existing content) (Change Request)",
+      "New /Learning Publishing Request: Windows Devices Group - Publishing Request (remove content) (Change Request)",
+      "New /Learning Publishing Request: Windows Devices Group - Publishing Request (request multiple items) (Change Request)",
+      "New /Learning Publishing Request: Windows Devices Group - Publishing Request (do something not listed here) (Change Request)"
     ];
     //start the program by getting the current user
     getUser();

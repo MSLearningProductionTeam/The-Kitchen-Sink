@@ -40,7 +40,7 @@ textarea{resize: none;}
         /*form section input styles*/
       .formSectionInput{margin:10px; flex-grow: 1; align-self: center;}
         .formInput{border-radius: 4px !important;}
-        .formInput:focus{outline: none; box-shadow: 0px 0px 1px 1px #243b56;}
+        .formInput:focus{outline: none !important; box-shadow: 0px 0px 1px 1px #243b56; border-color: #243b56 !important;}
         .formInput:hover{outline: none !important; border-color:#243b56 !important;}
         #ownerInput{width: 295px;}
         #coownerInput{width: 295px;}
