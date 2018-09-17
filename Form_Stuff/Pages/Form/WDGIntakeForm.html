@@ -33,7 +33,7 @@
           <div id="newBtn" class="inputBtn thankYouBtn">Open a new form</div>
           <div> Email us at  <a href="mailto:WDGPublishing@microsoft.com" class="hyperLinkBlue">WDGPublishing@microsoft.com</a> for more help</div>
         </div>
-        <div id="formselectionContainer" class="hidden">
+        <div id="formselectionContainer" class="">
           <!--
           <div id="ninjaTile"></div>
           <img id="ninjaButton" src="https://microsoft.sharepoint.com/teams/Infopedia_Team_Site/Projects%20Folder/Trey%20Test%20Stuff/red-button.png"></img>
@@ -52,6 +52,8 @@
               <div class="typeOfRequest" data-form="Form3" data-footerVal="New /Learning Publishing Request: Windows Devices Group - Publishing Request (remove content) ">remove content</div>
               <div class="typeOfRequest" data-form="Form4" data-footerVal="New /Learning Publishing Request: Windows Devices Group - Publishing Request (request multiple items) ">request multiple items</div>
               <div class="typeOfRequest" data-form="Form5" data-footerVal="New /Learning Publishing Request: Windows Devices Group - Publishing Request (do something not listed here) ">do something not listed here</div>
+              <div id="hoverBar" class="hidden"></div>
+              <div id="selectionBackground"></div>
             </div>
           </div>
         </div>
@@ -74,7 +76,7 @@
           </div>
           <div class="intakeFormSection Form1 Form2">
             <P>See example</p>
-            <div class="seeExampleButton"></div>
+            <div class="seeExampleButton growAndShrink"></div>
             <img src="https://microsoft.sharepoint.com/teams/Infopedia_Team_Site/Projects%20Folder/Trey%20Test%20Stuff/examples/FormResource.png" class="hidden seeExampleImage"/>
           </div>
           <div class="intakeFormSection  Form3">
@@ -270,7 +272,7 @@
             <div class="formSectionTitle">Requested Publish Date</div>
             <div class="formSectionInput">
               <input type="text" id="publishDateInput" class="optionalInput formInput" placeholder="XX/XX/XXXX" data-property="PublishDate" style="width:95px; text-align:center;"/>
-              <img id="calendarImg" src="https://microsoft.sharepoint.com/sites/Infopedia_G02/PublishingImages/Domains/Intake_Form/Images/calendar.png"/>
+              <img id="calendarImg" class="growAndShrink" src="https://microsoft.sharepoint.com/sites/Infopedia_G02/PublishingImages/Domains/Intake_Form/Images/calendar.png"/>
               <div id="datePicker" class="hidden"></div>
               <div class="subText">
                 Note: that there is a 3-business day SLA for publishing. We always aim for earlier completion but for a specific date (for example a planned comm or embargoed content)
@@ -286,7 +288,7 @@
             </div>
           </div>
           <div id="buttonContainer" class="">
-            <div id="addBtn" class="inputBtn">Submit This Request</div>
+            <div id="addBtn" class="inputBtn growAndShrink">Submit This Request</div>
             <img id="submitLoadingImage" src="https://microsoft.sharepoint.com/teams/Infopedia_Team_Site/Projects%20Folder/Trey%20Test%20Stuff/loading.gif" class="loadingImg hidden"/>
             <div id="submitLoadingText" class="hidden">Please wait while the form is validated and submitted</div>
               <ul>

@@ -41,7 +41,9 @@ $("#datePicker").datepicker({
 setGreetingName().then(function(){
   //once the request has completed show the selection container and add the events to the form
   //this prevents the user from trying to make a form selection before the greeting has been set and the events have been attached
-  $("#formselectionContainer").removeClass("hidden");
+  $("#formselectionContainer").animate({
+  	height: "224px"
+  },1000);
   //attach the events to the controls
   attachEvents();
 });
@@ -380,6 +382,26 @@ function searchForUser(user,inputField){
 // form => the class of the form you want to display
 // footer => value of the new footer to display
 function swapFormContent(form,footer){
+  //a variable to animate the container to the correct height
+/*  var containerHeight;
+  switch (form){
+    case "Form1":
+      containerHeight = "1074px";
+      break;
+    case "Form2":
+      containerHeight = "1002px";
+      break;
+    case "Form3":
+      containerHeight = "5424px";
+      break;
+    case "Form4":
+      containerHeight = "1263px";
+      break;
+    case "Form5":
+      containerHeight = "429px";
+      break;
+  }*/
+
   //show the form container since it starts hidden
   $("#intakeFormContainer").removeClass("hidden");
   //hide all forms
@@ -388,6 +410,17 @@ function swapFormContent(form,footer){
   $("."+form).removeClass("hidden");
   //change the footer value
   $("#intakeFormFooter").html(footer);
+
+/*
+  //animate the container
+  $("#intakeFormContainer").animate({
+    //close the container if it is not already closed
+    height:"0px"
+  },1000,function(){
+    $("#intakeFormContainer").animate({
+      height:containerHeight
+    },1000);
+  });*/
 }
 
 //sends a http request to trigger the flow
@@ -661,6 +694,11 @@ function attachEvents(){
     var footer = $(this).attr("data-footerVal");
     //show the correct form input fields
     swapFormContent(selectedForm,footer);
+
+      $("#hoverBar").removeClass("hidden");
+      $("#hoverBar").animate({
+        top:$(this).position().top
+      },500);
   });
 
   // events for the thank you screen button
