@@ -26,19 +26,19 @@ Next Steps:
 
 
 admin page:
-   -move the id to the edit btn, eliminate the id column
-   - add request publish date as column
-   - increase form width to be 1100px
-   - on hover over edit button, background turns green or something
-   - increase items per page to 15
-   - add request summary to the columns
-   - show only tickets that are new, in progress, and completed
-   - add a toggle button to show  just windows or devices tickets
-   - add toggle button or checkboxes to show new, in progress, Completed
-   - move state column to the second column
-   - add text if the request summary is null
-   - show total in each state
-   - change green button to blue (thank god)
+   -move the id to the edit btn, eliminate the id column / (apply to ticket list page)
+   - add request publish date as column \
+   - increase form width to be 1100px \ (apply to form page)
+   - on hover over edit button, background turns green or something / (apply to ticket list page)
+   - increase items per page to 15 (disagree with this one, the page is already long enough with 10 per page) \
+   - add request summary to the columns \
+   - show only tickets that are new, in progress, and completed \
+   - add a toggle button to show  just windows or devices tickets \
+   - add toggle button or checkboxes to show new, in progress, Completed \
+   - move state column to the second column \
+   - add text if the request summary is null (reall necessary?)
+   - show total in each state \
+   - change green button to blue (thank god) \
 
   -restyle attachment input in edge and IE
 

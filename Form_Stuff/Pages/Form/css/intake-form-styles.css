@@ -52,7 +52,7 @@ textarea{resize: none;}
       #selectionBackground{position: absolute; height: 145px; width: 225px; top: 0; background: #e7ffe7; z-index: -2;}
     /*  #formSelectionItem .typeOfRequest.selected{background:rgb(172, 177, 170); color:white; border-radius: 4px;}*/
   /*form container styles*/
-  #intakeFormContainer{position: relative; width: 864px; left: 50%; transform: translate3d(-50%,0,0); margin-top:10px; margin-bottom:10px; height: 0px; overflow: hidden;}
+  #intakeFormContainer{position: relative; width: 864px; left: 50%; transform: translate3d(-50%,0,0); margin-top:10px; margin-bottom:10px; overflow: hidden;}
     /*form section styles*/
     .intakeFormSection{border: 1px solid rgb(228, 233, 246); display: flex; font-size:14px; margin:-1px;}
       .formSectionTitle{padding:10px; width: 185px; min-width: 185px; border-right: 1px solid rgb(228, 233, 246); text-align: right; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;}

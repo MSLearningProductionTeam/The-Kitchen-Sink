@@ -26,20 +26,31 @@
 	<div id="contentContainer">
         <div id="intakeFormHeader" class="intakeFormBanner"><div>Virtual Help Desk   |  Windows Ready/Devices Group - My Requests</div><div id="formDateTime"></div></div>
         <div id="listView">
-					<div id="addNewRequest"><div id="newRequestBtn">+</div><a href="https://microsoft.sharepoint.com/sites/Infopedia_G02/Pages/WDG-Intake-Form-POC.aspx">Add New Request</a></div>
+					<div id="topContainer">
+						<div id="addNewRequest"><div id="newRequestBtn">+</div><a href="https://microsoft.sharepoint.com/sites/Infopedia_G02/Pages/WDG-Intake-Form-POC.aspx">Add New Request</a></div>
+						<div id="statsContainer">
+							<div id="totalItems"></div>
+							<div id="newItems"></div>
+							<div id="inProgressItems"></div>
+							<div id="completedItems"></div>
+						</div>
+					</div>
           <div id="pageNavBtnContainer">
             <div id="prevPageBtn" class="pageNavBtn noselect">Prev</div>
             <div id="nextPageBtn" class="pageNavBtn noselect">Next</div>
+						<div id="navText">Sort By:</div>
+						<div id="productGroupToggle" class="pageNavBtn noselect">Product Group</div>
+						<div id="stateToggle" class="pageNavBtn noselect">State</div>
           </div>
           <div id="adminColumnHeaders">
             <div id="editColumn">Edit</div>
-            <div id="idColumn">ID</div>
+						<div id="stateColumn">State</div>
             <div id="vsoIdColumn">VOS ID</div>
             <div id="requestTypeColumn">Request Type</div>
+						<div id="pubDateColumn">Requested Publish Date</div>
             <div id="createdColumn">Created</div>
             <div id="createdByColumn">Created By</div>
-            <div id="stateColumn">State</div>
-            <div id="commentsColumn">Comments</div>
+            <div id="commentsColumn">Request Summary</div>
           </div>
           <div id="adminTicketList"></div>
           </div>
