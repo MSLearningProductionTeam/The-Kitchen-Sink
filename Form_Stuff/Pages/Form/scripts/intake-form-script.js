@@ -32,7 +32,7 @@ $("#datePicker").datepicker({
   //when a user selects a date update the publishDateInput with the selected value and close the date picker
   onSelect: function(date,instance){
     $("#publishDateInput").val(date);
-    $("#datePicker").addClass("hidden");
+    $("#datePicker").fadeOut(500);
   },
 });
 
@@ -666,7 +666,7 @@ function attachEvents(){
     //hide the suggestion box
     $(".autocomplete").addClass("hidden");
     //hide the suggestion box
-    $("#datePicker").addClass("hidden");
+    $("#datePicker").fadeOut(500);
     //hide the overlay
     $("#screenOverlay").addClass("hidden");
   });
@@ -713,8 +713,8 @@ function attachEvents(){
 
   //shows the date picker
   $("#publishDateInput, #calendarImg").on("click",function(){
-    $("#datePicker").removeClass("hidden");
-    $("#screenOverlay").removeClass("hidden");
+    $("#datePicker").fadeIn(500);
+    $("#screenOverlay").addClass("hidden");
   });
 
   //toggles the value of a fake checkbox between Yes and No

@@ -20,6 +20,16 @@ function initAdminView(){
   productGroupToggleValues =  ["Windows","Devices"];
   stateToggleValues = ["New","In-Progress","Completed"];
   currentPage = 1;
+
+  //initalize the date picker element
+  //this is a jquery ui widget
+  $("#datePicker").datepicker({
+    //when a user selects a date update the publishDateInput with the selected value and close the date picker
+    onSelect: function(date,instance){
+      $("#publishDateInput").val(date);
+      $("#datePicker").fadeOut(500);
+    },
+  });
   //start the program by getting the current user
   getUser().done(function(data){
     //set the date and time in the top banner
@@ -44,7 +54,7 @@ function initAdminView(){
           var numPerPage = 15;
           var pageNum = Math.floor(1+(i * (1/numPerPage)));
           //add each list item to the screen
-          var htmlString = "<div class='ticket hidden filtered' data-group='"+this.ProductGroup+"' data-state='"+this.Request_x0020_State+"' data-ticketNum='"+i+"' data-requestType='"+this.RequestType1+"' data-listId='"+this.ID+"'><div class='ticketCell'><div class='editBtn'>"+this.ID+"</div></div><div class='ticketCell'>"+this.Request_x0020_State+"</div><div class='ticketCell'>"+this.VSO_ID+"</div><div class='ticketCell'>"+this.RequestType1+"</div><div class='ticketCell'>"+this.PublishDate+"</div><div class='ticketCell'>"+this.Created.substring(0,10)+"</div><div class='ticketCell'>"+this.Author.Title+"</div><div class='ticketCell'>"+this.field18+"</div>";
+          var htmlString = "<div class='ticket hidden filtered' data-group='"+this.ProductGroup+"' data-state='"+this.Request_x0020_State+"' data-date='"++this.Created.substring(0,10)+"' data-ticketNum='"+i+"' data-requestType='"+this.RequestType1+"' data-listId='"+this.ID+"'><div class='ticketCell'><div class='editBtn'>"+this.ID+"</div></div><div class='ticketCell'>"+this.Request_x0020_State+"</div><div class='ticketCell'>"+this.VSO_ID+"</div><div class='ticketCell'>"+this.RequestType1+"</div><div class='ticketCell'>"+this.PublishDate+"</div><div class='ticketCell'>"+this.Created.substring(0,10)+"</div><div class='ticketCell'>"+this.Author.Title+"</div><div class='ticketCell'>"+this.field18+"</div>";
           $("#adminTicketList").append(htmlString);
         });
         //show the first page of results
@@ -142,7 +152,7 @@ function rendertListView(){
   //reset the current page
   currentPage = 0;
 }
-
+//gets the total number of items and the total number of items sorted by state and displays it on the page
 function getTotals(){
   var totalItems = $(".ticket").length;
   var newItems = $(".ticket[data-state='New']").length;
@@ -152,4 +162,8 @@ function getTotals(){
   $("#newItems").html("New: "+ newItems);
   $("#inProgressItems").html("In-Progress: "+ progressItems);
   $("#completedItems").html("Completed: "+ completedItems);
+}
+//takes a date string and converts it to a number
+function convertToNumber(dateStr){
+  return Date.parse(dateStr)
 }
