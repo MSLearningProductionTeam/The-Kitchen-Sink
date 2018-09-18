@@ -35,13 +35,6 @@
     .seeExampleButton:hover{background: rgb(109, 112, 109);}
     .seeExampleButton.selected{background: rgb(109, 112, 109);}
     .seeExampleImage{margin:0 0 0 0px; padding: 15px 0 15px 0;}
-  /*button styles*/
-  #buttonContainer{display:flex; flex-direction: column; margin:15px 0 15px 0;}
-    .inputBtn{cursor: pointer; background:#243b56; padding:10px; color:white; text-align: center; border-radius:4px;}
-    #addBtn{width:200px; font-size: 14px; margin: 0px auto; margin-top: 10px; margin-bottom: 10px;}
-    .thankYouBtn{width: 140px; margin-bottom: 10px !important; margin:0px auto;}
-    .loadingImg{width: 20px; height: 20px; margin: 0px auto;}
-    #submitLoadingText{margin:5px; text-align: center;}
 
   /*
   #ninjaTile{width: 100px; height: 100px; position: absolute; left: 795px; top:50px; background: white; z-index: 2;}

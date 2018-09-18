@@ -1,13 +1,13 @@
 #listView{width: 1075px; margin:0px auto; margin-top: 15px;}
-  #columnHeaders{display: flex; font-size: 12px; margin-bottom: 15px; padding: 7px 7px 7px 15px; color:white; background: #243b56; border-radius: 4px;}
+  #columnHeaders{display: flex; font-size: 12px; margin-bottom: 15px; padding: 7px 7px 7px 15px; color:white; background: #243b56; border-radius: 4px; margin-top: 11px;}
     #columnHeaders div:nth-child(1){width:10%;}
     #columnHeaders div:nth-child(2){width:10%;}
-    #columnHeaders div:nth-child(3){width:10%;}
-    #columnHeaders div:nth-child(4){width:60%;}
+    #columnHeaders div:nth-child(3){width:20%;}
+    #columnHeaders div:nth-child(4){width:50%;}
     #columnHeaders div:nth-child(5){width:10%;}
   #ticketList{padding:7px 7px 7px 11px;}
-      #ticketList .ticket div:nth-child(1){width:10%;}
-      #ticketList .ticket div:nth-child(2){width:10%;}
-      #ticketList .ticket div:nth-child(3){width:10%;}
-      #ticketList .ticket div:nth-child(4){width:60%;}
-      #ticketList .ticket div:nth-child(5){width:10%;}
+      #ticketList .ticket .ticketCell:nth-child(1){width:10%;}
+      #ticketList .ticket .ticketCell:nth-child(2){width:10%;}
+      #ticketList .ticket .ticketCell:nth-child(3){width:20%;}
+      #ticketList .ticket .ticketCell:nth-child(4){width:50%;}
+      #ticketList .ticket .ticketCell:nth-child(5){width:10%;}

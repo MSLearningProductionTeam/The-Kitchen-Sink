@@ -2,6 +2,7 @@
 
 #listView{width: 1075px; margin:0px auto; margin-top: 15px;}
   .ticket{display:flex; margin-bottom: 10px; font-size: 13px;}
+    .ticket .ticketCell{padding-right: 10px;}
     .ticket .editBtn{width: 30px !important; height: 30px; font-size: 12px; text-align: center; border: 1px solid lightgray; border-radius: 4px; padding:0; line-height: 28px; cursor: pointer;}
     .ticket .editBtn:hover{background: #243b56; color: white;}
 #addNewRequest{display: flex; padding: 7px 7px 7px 11px}

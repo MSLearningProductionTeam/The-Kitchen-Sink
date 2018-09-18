@@ -29,7 +29,7 @@ function initEditListView(){
           //add each list item to the global object
           listItems.push(this);
           //add each list item to the screen
-          var htmlString = "<div class='ticket' data-ticketNum='"+i+"' data-requestType='"+this.RequestType1+"' data-listId='"+this.ID+"'><div class='ticketCe;;'><div class='editBtn'>"+this.ID+"</div></div><div class='ticketCell'><div>"+this.Request_x0020_State+"</div></div><div class='ticketCell'><div>"+this.RequestType1+"</div></div><div class='ticketCell'><div>"+this.Title+"</div></div><div class='ticketCell'><div>"+this.Created.substring(0,10)+"</div></div>";
+          var htmlString = "<div class='ticket' data-ticketNum='"+i+"' data-requestType='"+this.RequestType1+"' data-listId='"+this.ID+"'><div class='ticketCell'><div class='editBtn'>"+this.ID+"</div></div><div class='ticketCell'><div>"+this.Request_x0020_State+"</div></div><div class='ticketCell'><div>"+this.RequestType1+"</div></div><div class='ticketCell'><div>"+this.Title+"</div></div><div class='ticketCell'><div>"+this.Created.substring(0,10)+"</div></div>";
           $("#ticketList").append(htmlString);
         });
         //attach the needed events

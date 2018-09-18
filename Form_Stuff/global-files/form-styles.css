@@ -53,3 +53,10 @@ textarea{resize: none;}
       .formInput:hover{outline: none !important; border-color:#243b56 !important;}
       #ownerInput{width: 295px;}
       #coownerInput{width: 295px;}
+  /*button styles*/
+  #buttonContainer{display:flex; flex-direction: column; margin:15px 0 15px 0;}
+    .inputBtn{cursor: pointer; background:#243b56; padding:10px; color:white; text-align: center; border-radius:4px;}
+    #addBtn{width:200px; font-size: 14px; margin: 0px auto; margin-top: 10px; margin-bottom: 10px;}
+    .thankYouBtn{width: 140px; margin-bottom: 10px !important; margin:0px auto;}
+    .loadingImg{width: 20px; height: 20px; margin: 0px auto;}
+    #submitLoadingText{margin:5px; text-align: center;}
