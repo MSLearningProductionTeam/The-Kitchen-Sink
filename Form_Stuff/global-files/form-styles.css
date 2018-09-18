@@ -53,6 +53,15 @@ textarea{resize: none;}
       .formInput:hover{outline: none !important; border-color:#243b56 !important;}
       #ownerInput{width: 295px;}
       #coownerInput{width: 295px;}
+      /*date picker input styles*/
+      #datePicker{position: relative;; z-index: 1; top:-100px; left:115px;}
+        #calendarImg{width: 22px; height: auto; position: absolute; cursor:pointer;}
+        .ui-datepicker-inline{background:white; border: 1px solid lightgray; padding:5px; position: absolute;}
+          .ui-widget-header{border: none !important; background:#243b56 !important;}
+          .ui-state-default, .ui-widget-content .ui-state-default{border: 1px solid white !important; background: white !important; font-weight: normal !important; color: black !important;}
+          .ui-state-active, .ui-widget-content .ui-state-active {border: 1px solid #243b56 !important; background: #243b56 !important; font-weight: normal !important; color: #ffffff !important;}
+          .ui-datepicker-next-hover, .ui-state-hover{border:none !important; background: none !important;}
+          .ui-widget-content{color:black !important; cursor: pointer !important; text-align: center !important;}
   /*button styles*/
   #buttonContainer{display:flex; flex-direction: column; margin:15px 0 15px 0;}
     .inputBtn{cursor: pointer; background:#243b56; padding:10px; color:white; text-align: center; border-radius:4px;}
