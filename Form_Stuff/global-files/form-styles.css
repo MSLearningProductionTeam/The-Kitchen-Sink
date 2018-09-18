@@ -1,0 +1,55 @@
+/*common styles used across all from pages*/
+
+/*generic styles*/
+.correct_color{background-color: rgb(28, 203, 33) !important;}
+.incorrect_color{background-color: rgb(251, 51, 51) !important;}
+.hidden{display:none !important;}
+.flexibleDisplay{display: flex;}
+.fillContentArea{min-width: 100%; max-width: 100%;}
+.subText{font-size: 12px; margin: 5px 0 5px 0;}
+.hyperLinkBlue{color:#0061A7 !important;}
+body{background:#E6E6E6!important;}
+textarea{resize: none;}
+.ms-webpart-titleText{display: none;}
+.page-title{display:none !important;}
+.blackText{color:black !important;}
+.noselect {-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;}
+
+/*animation styles*/
+.growAndShrink:hover{transform-origin: center; animation: grow-and-shrink .3s;}
+.delayedFade{transition: .3s;}
+@keyframes grow-and-shrink {
+  0% {
+    transform: scale(1.0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  75% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1.0);
+  }
+}
+
+/*content container styling*/
+#intakeFormContentContainer{position: relative; left: 50%; transform: translateX(-50%); width: 1100px; background: white; border-radius: 4px; height: fit-content;}
+/*header/footer banner styles*/
+#intakeFormHeader{padding:10px 15px 5px 15px; font-size: 14px; height: 40px; display: flex; justify-content: space-between; margin-bottom: 15px;}
+.intakeFormBanner{background:#243b56; color:white; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif; border-radius: 4px;}
+  #formDateTime{float:right; font-size: 14px !important; width:450px; text-align: right;}
+#intakeFormFooter{padding: 7px 7px 7px 15px; font-size: 12px; height: 30px; width: 1085px; margin: 0px auto; margin-bottom: 15px;}
+/*form container styles*/
+#intakeFormContainer{position: relative; width: 864px; left: 50%; transform: translate3d(-50%,0,0); margin-top:10px; margin-bottom:10px;}
+/*form section styles*/
+  .intakeFormSection{border: 1px solid rgb(228, 233, 246); display: flex; font-size:14px; margin:-1px;}
+    .formSectionTitle{padding:10px; width: 185px; min-width: 185px; border-right: 1px solid rgb(228, 233, 246); text-align: right; font-family: "SegoeUI Light", "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;}
+      .formSectionTitle ul li{list-style-type: none; font-size:12px; }
+      /*form section input styles*/
+    .formSectionInput{margin:10px; flex-grow: 1; align-self: center;}
+      .formInput{border-radius: 4px !important; transition: .5s;}
+      .formInput:focus{outline: none !important; box-shadow: 0px 0px 1px 1px #243b56; border-color: #243b56 !important;}
+      .formInput:hover{outline: none !important; border-color:#243b56 !important;}
+      #ownerInput{width: 295px;}
+      #coownerInput{width: 295px;}

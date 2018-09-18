@@ -16,7 +16,7 @@ function initEditListView(){
     setDateAndTime(data.d.Title);
     //get user list items
     //the query string to specify what items are returned for the user's list items
-    var query = "?$select=ID,RequestType1,Title,Created,TimeStamp,RequestDetails,Attachments,SourceFileLocation,ShortDescription,Confidentiality,ProductGroup,Comments,Details,DocumentTitle,FileName,PageTitle,RequestTypeTitle,Owner,CoOwner,PublishDate,PageURL,deleteContent&$orderby=ID%20desc&$filter=RequestType1 ne 'Update Existing Ticket' and Request_x0020_State ne 'Completed' and Request_x0020_State ne 'Rejected'and AuthorId eq "+data.d.Id+"";
+    var query = "?$select=ID,RequestType1,Title,Created,TimeStamp,RequestDetails,Attachments,SourceFileLocation,ShortDescription,Confidentiality,ProductGroup,Comments,Details,DocumentTitle,FileName,PageTitle,RequestTypeTitle,Owner,CoOwner,PublishDate,PageURL,deleteContent,Request_x0020_State&$orderby=ID%20desc&$filter=RequestType1 ne 'Update Existing Ticket' and Request_x0020_State ne 'Completed' and Request_x0020_State ne 'Rejected'and AuthorId eq "+data.d.Id+"";
     getUserListItems(query).done(function(data){
       //if no items were returned add text to the list that says the user has no items
       if(data.d.results.length <= 0){
@@ -29,7 +29,7 @@ function initEditListView(){
           //add each list item to the global object
           listItems.push(this);
           //add each list item to the screen
-          var htmlString = "<div class='ticket' data-ticketNum='"+i+"' data-requestType='"+this.RequestType1+"' data-listId='"+this.ID+"'><div><div class='editBtn'>...</div></div><div>"+this.ID+"</div><div>"+this.RequestType1+"</div><div>"+this.Title+"</div><div>"+this.Created.substring(0,10)+"</div>";
+          var htmlString = "<div class='ticket' data-ticketNum='"+i+"' data-requestType='"+this.RequestType1+"' data-listId='"+this.ID+"'><div class='ticketCe;;'><div class='editBtn'>"+this.ID+"</div></div><div class='ticketCell'><div>"+this.Request_x0020_State+"</div></div><div class='ticketCell'><div>"+this.RequestType1+"</div></div><div class='ticketCell'><div>"+this.Title+"</div></div><div class='ticketCell'><div>"+this.Created.substring(0,10)+"</div></div>";
           $("#ticketList").append(htmlString);
         });
         //attach the needed events

@@ -1,0 +1,12 @@
+/*form edit list specific styles*/
+
+#listView{width: 1075px; margin:0px auto; margin-top: 15px;}
+  .ticket{display:flex; margin-bottom: 10px; font-size: 13px;}
+    .ticket .editBtn{width: 30px !important; height: 30px; font-size: 12px; text-align: center; border: 1px solid lightgray; border-radius: 4px; padding:0; line-height: 28px; cursor: pointer;}
+    .ticket .editBtn:hover{background: #243b56; color: white;}
+#addNewRequest{display: flex; padding: 7px 7px 7px 11px}
+  #addNewRequest a {line-height: 27px; color: #007bd7}
+  #newRequestBtn{background: #243b56; cursor: pointer; color: white; font-size: 27px; width: 30px; height: 30px; border-radius: 4px; text-align: center; font-weight: bold; margin-right: 10px; line-height: 25px;}
+  #cancelBtn{width:130px; font-size: 12px;margin: 0px auto; margin-bottom: 5px; margin-top: 5px; cursor:pointer; text-align: center;}
+.intakeFormSection.disabled{color:lightgray !important;}
+.intakeFormSection.disabled .formInput{color:lightgray !important; border-color:lightgray !important;}

@@ -1,13 +1,3 @@
-.noselect {
-  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
-}
-.page-title{display:none !important;}
 #adminColumnHeaders{display: flex; font-size: 12px; margin-bottom: 15px; padding: 7px 7px 7px 15px; color:white; background: #243b56; border-radius: 4px;}
   #adminColumnHeaders div:nth-child(1){width:5%;}
   #adminColumnHeaders div:nth-child(2){width:10%;}
@@ -18,24 +8,20 @@
   #adminColumnHeaders div:nth-child(7){width:8%;}
   #adminColumnHeaders div:nth-child(8){width:36%;}
 #adminTicketList{padding:7px 7px 7px 11px;}
-  #adminTicketList .ticket{display:flex; margin-bottom: 10px; font-size: 13px;}
-    #adminTicketList .ticket div{padding-right: 10px;}
-      #adminTicketList .ticket .editBtn{width: 30px !important; height: 30px; font-size: 12px; text-align: center; border: 1px solid lightgray; border-radius: 4px; padding:0; line-height: 28px; cursor: pointer;}
-      #adminTicketList .ticket .editBtn:hover{background: #243b56; color: white;}
-    #adminTicketList .ticket .ticketCell:nth-child(1){width:5%;}
-    #adminTicketList .ticket .ticketCell:nth-child(2){width:10%;}
-    #adminTicketList .ticket .ticketCell:nth-child(3){width:5%;}
-    #adminTicketList .ticket .ticketCell:nth-child(4){width:15%;}
-    #adminTicketList .ticket .ticketCell:nth-child(5){width:13%;}
-    #adminTicketList .ticket .ticketCell:nth-child(6){width:8%;}
-    #adminTicketList .ticket .ticketCell:nth-child(7){width:8%;}
-    #adminTicketList .ticket .ticketCell:nth-child(8){width:36%;}
-#topContainer{display: flex; width: 425px;}
-  #statsContainer{margin-left: 155px;}
-    #statsContainer div{padding:5px;}
+  #adminTicketList .ticket .ticketCell:nth-child(1){width:5%;}
+  #adminTicketList .ticket .ticketCell:nth-child(2){width:10%;}
+  #adminTicketList .ticket .ticketCell:nth-child(3){width:5%;}
+  #adminTicketList .ticket .ticketCell:nth-child(4){width:15%;}
+  #adminTicketList .ticket .ticketCell:nth-child(5){width:13%;}
+  #adminTicketList .ticket .ticketCell:nth-child(6){width:8%;}
+  #adminTicketList .ticket .ticketCell:nth-child(7){width:8%;}
+  #adminTicketList .ticket .ticketCell:nth-child(8){width:36%;}
+#topContainer{display: flex;}
+#statsContainer{margin-left: 150px;}
+  #statsContainer div{padding:5px;}
 #pageNavBtnContainer{display: flex; margin: 11px;}
-  .pageNavBtn{ margin-right: 20px; border: 1px solid #243b56; padding: 4px; border-radius: 4px; cursor: pointer; color: #243b56; height: 29px;}
-  .pageNavBtn:hover{background:#243b56; color:white;}
-  #navText{margin:0px 10px 0px 10px; line-height: 27px;}
-  #productGroupToggle{width: 105px; text-align: center;}
-  #stateToggle{width: 105px; text-align: center;}
+.pageNavBtn{ margin-right: 20px; border: 1px solid #243b56; padding: 4px; border-radius: 4px; cursor: pointer; color: #243b56; height: 29px;}
+.pageNavBtn:hover{background:#243b56; color:white;}
+#navText{margin:0px 10px 0px 10px; line-height: 27px;}
+#productGroupToggle{width: 105px; text-align: center;}
+#stateToggle{width: 105px; text-align: center;}

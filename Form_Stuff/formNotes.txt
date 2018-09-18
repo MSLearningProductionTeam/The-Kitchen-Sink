@@ -40,7 +40,7 @@ admin page:
    - show total in each state \
    - change green button to blue (thank god) \
 
-  -restyle attachment input in edge and IE
+  -restyle attachment input in edge and IE \
 
 
   -rename currentUser to created by in power bi

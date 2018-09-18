@@ -1,25 +1,13 @@
-.page-title{display:none !important;}
-#contentContainer{position: relative; left: 50%; transform: translateX(-50%); width: 1100px; height: fit-content; background: white; border-radius: 4px;}
-  #listView{width: 1075px; margin:0px auto;}
-    #intakeFormHeader{margin-bottom: 65px;}
-    #columnHeaders{display: flex; font-size: 12px; margin-bottom: 15px; padding: 7px 7px 7px 15px; color:white; background: #243b56; border-radius: 4px;}
-      #columnHeaders div:nth-child(1){width:102px;}
-      #columnHeaders div:nth-child(2){width:66px;}
-      #columnHeaders div:nth-child(3){width:154px;}
-      #columnHeaders div:nth-child(4){width:450px;}
-      #columnHeaders div:nth-child(5){width:138px;}
-    #ticketList{padding:7px 7px 7px 11px;}
-      #ticketList .ticket{display:flex; margin-bottom: 10px; font-size: 13px;}
-        #ticketList .ticket div{padding-right: 10px;}
-        #ticketList .ticket div:nth-child(1){width:102px;}
-          #ticketList .ticket .editBtn{width: 30px !important; height: 30px; font-size: 20px; text-align: center; border: 1px solid lightgray; border-radius: 4px; padding:0; line-height: 13px; cursor: pointer;}
-        #ticketList .ticket div:nth-child(2){width:66px;}
-        #ticketList .ticket div:nth-child(3){width:154px;}
-        #ticketList .ticket div:nth-child(4){width:450px;}
-        #ticketList .ticket div:nth-child(5){width:138px;}
-      #addNewRequest{display: flex; padding: 7px 7px 7px 11px}
-        #addNewRequest a {line-height: 27px; color: #007bd7}
-        #newRequestBtn{background: #243b56; cursor: pointer; color: white; font-size: 27px; width: 30px; height: 30px; border-radius: 4px; text-align: center; font-weight: bold; margin-right: 10px; line-height: 25px;}
-        #cancelBtn{width:130px; font-size: 12px;margin: 0px auto; margin-bottom: 5px; margin-top: 5px; cursor:pointer; text-align: center;}
-  .intakeFormSection.disabled{color:lightgray !important;}
-    .intakeFormSection.disabled .formInput{color:lightgray !important; border-color:lightgray !important;}
+#listView{width: 1075px; margin:0px auto; margin-top: 15px;}
+  #columnHeaders{display: flex; font-size: 12px; margin-bottom: 15px; padding: 7px 7px 7px 15px; color:white; background: #243b56; border-radius: 4px;}
+    #columnHeaders div:nth-child(1){width:10%;}
+    #columnHeaders div:nth-child(2){width:10%;}
+    #columnHeaders div:nth-child(3){width:10%;}
+    #columnHeaders div:nth-child(4){width:60%;}
+    #columnHeaders div:nth-child(5){width:10%;}
+  #ticketList{padding:7px 7px 7px 11px;}
+      #ticketList .ticket div:nth-child(1){width:10%;}
+      #ticketList .ticket div:nth-child(2){width:10%;}
+      #ticketList .ticket div:nth-child(3){width:10%;}
+      #ticketList .ticket div:nth-child(4){width:60%;}
+      #ticketList .ticket div:nth-child(5){width:10%;}
