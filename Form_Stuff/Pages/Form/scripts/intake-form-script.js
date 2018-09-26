@@ -694,7 +694,7 @@ function attachEvents(){
     var footer = $(this).attr("data-footerVal");
     //show the correct form input fields
     swapFormContent(selectedForm,footer);
-
+      //animate the hover bar to the position of the selction clicked on
       $("#hoverBar").removeClass("hidden");
       $("#hoverBar").animate({
         top:$(this).position().top

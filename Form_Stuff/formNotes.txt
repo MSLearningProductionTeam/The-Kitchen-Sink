@@ -7,7 +7,3 @@ Next Steps:
   3. Spice up the Css
     -Add cool effects/ secondary animation to make the form feel more alive
   4. Mobile responsive design
-  5. Refactor the project file structure
-    -Common css and scripts should be placed in a common css/script directory for all pages to use
-      - This will require the js to be refactored, removing common/generic functionality from the page specific script
-  6. Admin page, sort by a date range
