@@ -2,6 +2,8 @@
 var productGroupToggleValues;
 var stateToggleValues;
 var currentPage;
+var startDate;
+var endDate;
 
 
 //call the initalize function
@@ -21,13 +23,25 @@ function initAdminView(){
   stateToggleValues = ["New","In-Progress","Completed"];
   currentPage = 1;
 
+  startDate = "";
+  endDate = "";
+
   //initalize the date picker element
   //this is a jquery ui widget
   $("#datePicker").datepicker({
-    //when a user selects a date update the publishDateInput with the selected value and close the date picker
+    //when a user selects two dates, show the date range selected and close the datepicker
     onSelect: function(date,instance){
-      $("#publishDateInput").val(date);
-      $("#datePicker").fadeOut(500);
+      //if no start date has been selected, set the start date
+      if(startDate == ""){
+        startDate = date;
+      }
+      //if the end date is not set, set it
+      else if(endDate == ""){
+        endDate = date;
+        rendertListView();
+        $("#publishDateInput").val(startDate +" - " + endDate);
+        $("#datePicker").fadeOut(500);
+      }
     },
   });
   //start the program by getting the current user
@@ -53,8 +67,9 @@ function initAdminView(){
           //the number of list items that should be displayed on each page
           var numPerPage = 15;
           var pageNum = Math.floor(1+(i * (1/numPerPage)));
+          var dateNum = convertDateToNumber(this.Created.substring(0,10));
           //add each list item to the screen
-          var htmlString = "<div class='ticket hidden filtered' data-group='"+this.ProductGroup+"' data-state='"+this.Request_x0020_State+"' data-date='"++this.Created.substring(0,10)+"' data-ticketNum='"+i+"' data-requestType='"+this.RequestType1+"' data-listId='"+this.ID+"'><div class='ticketCell'><div class='editBtn'>"+this.ID+"</div></div><div class='ticketCell'>"+this.Request_x0020_State+"</div><div class='ticketCell'>"+this.VSO_ID+"</div><div class='ticketCell'>"+this.RequestType1+"</div><div class='ticketCell'>"+this.PublishDate+"</div><div class='ticketCell'>"+this.Created.substring(0,10)+"</div><div class='ticketCell'>"+this.Author.Title+"</div><div class='ticketCell'>"+this.field18+"</div>";
+          var htmlString = "<div class='ticket hidden filtered' data-group='"+this.ProductGroup+"' data-state='"+this.Request_x0020_State+"' data-date='"+dateNum+"' data-ticketNum='"+i+"' data-requestType='"+this.RequestType1+"' data-listId='"+this.ID+"'><div class='ticketCell'><div class='editBtn'>"+this.ID+"</div></div><div class='ticketCell'>"+this.Request_x0020_State+"</div><div class='ticketCell'>"+this.VSO_ID+"</div><div class='ticketCell'>"+this.RequestType1+"</div><div class='ticketCell'>"+this.PublishDate+"</div><div class='ticketCell'>"+this.Created.substring(0,10)+"</div><div class='ticketCell'>"+this.Author.Title+"</div><div class='ticketCell'>"+this.field18+"</div>";
           $("#adminTicketList").append(htmlString);
         });
         //show the first page of results
@@ -135,6 +150,21 @@ function attachEvents(){
       $(".ticket.filtered").slice((currentPage * 15) - 15,(currentPage * 15)).removeClass("hidden");
     }
   });
+
+  $("#screenOverlay").on("click",function(){
+    //hide the date picker
+    $("#datePicker").fadeOut(500);
+    //hide the overlay
+    $("#screenOverlay").addClass("hidden");
+  });
+  //shows the date picker
+  $("#publishDateInput, #calendarImg").on("click",function(){
+    //reset the start and end dates
+    startDate = "";
+    endDate = "";
+    $("#datePicker").fadeIn(500);
+    $("#screenOverlay").removeClass("hidden");
+  });
 }
 //changes which list items are shown based on the state of the product group and state toggle buttons
 function rendertListView(){
@@ -145,12 +175,27 @@ function rendertListView(){
   //add the filtered class to the tickets that meet the filtered criteria
   $(".ticket").removeClass('filtered');
   $(".ticket" + groupSort + stateSort).addClass('filtered');
+  //if there is a date range selected remove the filtered class from tickets that are outside the date range
+  if(startDate !== "" && endDate !== ""){
+    $(".ticket.filtered").each(function(i,val){
+      //get the created date number
+      var createdDate = parseInt($(this).attr("data-date"));
+      //figure out which is the high number, and which is the low number
+      var low = Math.min(convertDateToNumber(startDate),convertDateToNumber(endDate));
+      var high = Math.max(convertDateToNumber(startDate),convertDateToNumber(endDate));
+      //if the created date is lower then the start date of the date range
+      //or if the created date is high then the end date of the date range
+      //it is outside the date range, so remove the filtered class
+      if(createdDate < low || createdDate > high){
+        $(this).removeClass("filtered");
+      }
+    });
+  }
   //show the first page of filtered tickets
   $(".ticket").addClass("hidden");
   $(".ticket.filtered").slice(0,15).removeClass("hidden");
-
   //reset the current page
-  currentPage = 0;
+  currentPage = 1;
 }
 //gets the total number of items and the total number of items sorted by state and displays it on the page
 function getTotals(){
@@ -164,6 +209,6 @@ function getTotals(){
   $("#completedItems").html("Completed: "+ completedItems);
 }
 //takes a date string and converts it to a number
-function convertToNumber(dateStr){
-  return Date.parse(dateStr)
+function convertDateToNumber(dateStr){
+  return Date.parse(dateStr+" 00:00:00 GMT")
 }

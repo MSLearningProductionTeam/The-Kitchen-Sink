@@ -1,13 +1,3 @@
-list list poc:
-
-
-form poc:
-
-fix attaching video files so that attaching and sending a video does not crash the browser
-
-allow large file attachments to be sent to sharepoint, files will need to be broken up and sent in smaller parts
-
-
 Next Steps:
   1. A way to add additional content to the same list item:
     -User clicks add more content, new and blank input fields replace the old ones and the user fills out more information
@@ -21,11 +11,3 @@ Next Steps:
     -Common css and scripts should be placed in a common css/script directory for all pages to use
       - This will require the js to be refactored, removing common/generic functionality from the page specific script
   6. Admin page, sort by a date range
-
-
-
-
-admin page:
-
-
-  -rename currentUser to created by in power bi

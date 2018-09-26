@@ -714,7 +714,7 @@ function attachEvents(){
   //shows the date picker
   $("#publishDateInput, #calendarImg").on("click",function(){
     $("#datePicker").fadeIn(500);
-    $("#screenOverlay").addClass("hidden");
+    $("#screenOverlay").removeClass("hidden");
   });
 
   //toggles the value of a fake checkbox between Yes and No

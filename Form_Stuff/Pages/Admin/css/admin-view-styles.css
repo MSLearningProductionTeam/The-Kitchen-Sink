@@ -25,3 +25,5 @@
 #navText{margin:0px 10px 0px 10px; line-height: 27px;}
 #productGroupToggle{width: 105px; text-align: center;}
 #stateToggle{width: 105px; text-align: center;}
+#datePicker{position: relative; top: -100px;}
+  #calendarImg{height: 22px !important; position: relative !important; cursor:pointer; margin-left: 5px;}
