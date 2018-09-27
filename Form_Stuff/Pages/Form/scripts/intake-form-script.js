@@ -741,7 +741,6 @@ function attachEvents(){
 
 
 
-  /*
   $("#ninjaTile").draggable();
 
   $('#ninjaButton').on("click",function(){
@@ -757,6 +756,6 @@ function attachEvents(){
           $("#ninjaCat").addClass("hidden");
         });
       });
-    }); */
+    });
 
 }
